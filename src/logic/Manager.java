@@ -66,8 +66,15 @@ public class Manager {
 		dataSource.getConnection().close();
 	}
 
-	public void registraPersona(Persona p) {
+	public void insertPersona(Persona p) {
 		personaDao.insert(p);
+	}
+	public void updatePersona(Persona p) {
+		personaDao.update(p);
+	}
+	
+	public void registraPersona(Persona p) {
+		insertPersona(p);
 	}
 	
 	public void cambiaPassword(Persona p)  {
@@ -204,6 +211,10 @@ public class Manager {
 	
 	public List<Citta> cercaCitta (CittaSearch cs) {
 		return cittaDao.loadAll(cs);
+	}
+	
+	public List<Rel_Persona_Medico> cercaRel_Persona_Medico(Rel_Persona_MedicoSearch s){
+		return relPersonaMedicoDao.loadAll(s);
 	}
 
 	public String save() {

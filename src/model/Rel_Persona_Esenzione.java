@@ -1,6 +1,6 @@
 package model;
 
-public class Rel_Persona_Esenzione {
+public class Rel_Persona_Esenzione extends E {
 
 	private String dataA;
 	private String dataDa;
