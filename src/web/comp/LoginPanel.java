@@ -49,10 +49,11 @@ public class LoginPanel extends BasePanel {
 				target.add(LoginPanel.this);
 				setResponsePage(Home.class);
 			}		
-			/*@Override
+			
+			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.add(LoginPanel.this);
-			}*/
+			}
 		};
 		form.add(button);
 		add(form);
