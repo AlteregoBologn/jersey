@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.FarmacoDao">
+
+	<select id="cerca" resultType="model.Farmaco">
+		SELECT * from t_farmaco
+		WHERE 1=1
+		<if test="unid != null">
+			AND unid = #{unid}
+		</if>
+		<if test="descrizione != null">
+			AND descrizione = #{descrizione}
+		</if>
+	</select>
+
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT seq.nextval from dual
+		</selectKey>
+		INSERT into t_farmaco( unid, descrizione) 
+		VALUES(#{unid},
+		#{descrizione})
+	</insert>
+
+	<update id="update">
+		UPDATE t_farmaco SET descrizione=#{descrizione}
+		WHERE unid=#{unid}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM t_farmaco WHERE
+		unid=#{unid}
+	</delete>
+	
+</mapper> 

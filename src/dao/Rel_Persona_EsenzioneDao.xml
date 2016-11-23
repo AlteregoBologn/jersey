@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.Rel_Persona_EsenzioneDao">
+
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  		<![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="dataA != null ">
+			AND DATA_A = #{dataA}
+		</if>
+		<if test="dataDa != null ">
+			AND DATA_DA = #{dataDa}
+		</if>
+		<if test="idesenzione != null ">
+			AND IDESENZIONE = #{idesenzione}
+		</if>
+		<if test="idpersona != null ">
+			AND IDPERSONA = #{idpersona}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into REL_PERSONA_ESENZIONE (
+		DATA_A,
+		DATA_DA,
+		IDESENZIONE,
+		IDPERSONA
+		) VALUES (
+		#{dataA},
+		#{dataDa},
+		#{idesenzione},
+		#{idpersona})		
+	</insert>
+
+	<select id="count" resultType="Integer">
+		SELECT count(0) from REL_PERSONA_ESENZIONE
+		WHERE 1=1
+		<include refid="condition" />
+	</select>
+
+	<update id="update">
+		update REL_PERSONA_ESENZIONE set
+		DATA_A = #{dataA},
+		DATA_DA = #{dataDa},
+		IDESENZIONE = #{idesenzione},
+		IDPERSONA =
+		#{idpersona}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="model.Rel_Persona_Esenzione">
+		SELECT * from REL_PERSONA_ESENZIONE
+		WHERE 1=1
+		<include refid="condition" />
+		<include refid="orderBy" />
+	</select>
+
+	<delete id="delete">
+		delete from REL_PERSONA_ESENZIONE
+		WHERE IDPERSONA=#{idpersona}
+	</delete>
+</mapper>

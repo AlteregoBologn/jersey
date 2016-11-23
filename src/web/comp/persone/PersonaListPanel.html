@@ -1,0 +1,25 @@
+<wicket:panel>
+<fieldset>
+<legend>List Persona</legend>
+	
+
+	<form wicket:id="form">
+	
+		Cognome:<input type="text" wicket:id="cognome" value="" size="50" /> 	
+		<input wicket:id="cerca" type="button" value="cerca" />
+	
+	
+		<table wicket:id="lista" style="display: table-row;">
+				<tr>
+					<td><span wicket:id="nome" style="display: table-cell;"></span></td>
+					<td><span wicket:id="cognome" style="display: table-cell;"></span></td>
+					<td><input wicket:id="edit" type="button" value="salva!" /></td>
+					<td><input wicket:id="del" type="button" value="salva!" /></td>
+				</tr>				
+			</table>
+			
+			<table wicket:id="persone"></table>
+			
+	</form>
+</fieldset>
+</wicket:panel>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.AmbulatorioDao">
+
+	<select id="cerca" resultType="model.Ambulatorio">
+		SELECT * from t_ambulatorio
+		WHERE 1=1
+		<if test="unid != null">
+			AND unid = #{unid}
+		</if>
+		<if test="via != null">
+			AND via = #{via}
+		</if>
+		<if test="civico != null">
+			AND civico = #{civico}
+		</if>
+		<if test="citta != null">
+			AND citta = #{citta}
+		</if>
+		<if test="nome != null">
+			AND nome = #{nome}
+		</if>
+	</select>
+
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT seq.nextval from dual
+		</selectKey>
+		INSERT into t_ambulatorio( unid, via, civico, citta, nome) 
+		VALUES(#{unid},
+		#{via},
+		#{civico},
+		#{citta},
+		#{nome})
+	</insert>
+
+	<update id="update">
+		UPDATE t_ambulatorio 
+		SET via=#{via}
+			civico=#{civico}
+			citta=#{citta}
+			nome=#{nome}
+		WHERE unid=#{unid}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM t_ambulatorio WHERE
+		unid=#{unid}
+	</delete>
+	
+</mapper> 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.PrescrizioneDao">
+
+	<select id="cerca" resultType="model.Prescrizione">
+		SELECT * from t_prescrizione
+		WHERE 1=1
+		<if test="unid != null">
+			AND unid = #{unid}
+		</if>
+		<if test="urgenza != null">
+			AND urgenza = #{urgenza}
+		</if>
+	</select>
+
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT seq.nextval from dual
+		</selectKey>
+		INSERT into t_prescrizione( unid, urgenza) 
+		VALUES(#{unid},
+		#{urgenza})
+	</insert>
+
+	<update id="update">
+		UPDATE t_prescrizione SET urgenza=#{urgenza}
+		WHERE unid=#{unid}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM t_prescrizione WHERE
+		unid=#{unid}
+	</delete>
+	
+</mapper> 

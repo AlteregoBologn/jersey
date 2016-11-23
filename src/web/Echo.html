@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.apache.org">
+<head>
+<title>Wicket Examples - echo</title>
+<link rel="stylesheet" type="text/css" href="style/style.css" />
+<link rel="stylesheet" type="text/css" href="style/reset.css" />
+</head>
+<body>
+	<span wicket:id="mainNavigation" />
+	
+	<span wicket:id="welcome" />
+
+	<form wicket:id="form">
+		<input type="text" wicket:id="msgInput" value="" size="50" /> 
+		<input type="text" wicket:id="msgInput2" value="" size="50" /> 
+		<input type="submit" value="set message" />
+		<input wicket:id="test" type="button" value="Scrivi ora esatta" />
+	</form>
+	<span wicket:id="msg" id="msg">Message goes here</span>
+
+	<br/>
+	<div wicket:id="listaPersone"></div>
+	<br/>
+	<div wicket:id="editPersona"></div>
+
+</body>
+</html>

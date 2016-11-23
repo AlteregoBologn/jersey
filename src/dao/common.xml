@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.common">
+
+	<sql id="orderBy">
+		<if test="orderBy != null">
+			order by ${orderBy}
+		</if>
+	</sql>
+
+	<sql id="prePage">
+	select * from ( select rownum rnum, a.*
+    from (
+	</sql>
+	
+	<sql id="postPage"><![CDATA[
+		) a
+  		where rownum <= #{pageTo} )
+		where rnum >=  #{pageFrom}
+	]]></sql>
+	
+	<sql id="preCount">
+		select count(0) from (
+	</sql>
+	<sql id="postCount">
+		) a
+	</sql>
+	
+</mapper> 

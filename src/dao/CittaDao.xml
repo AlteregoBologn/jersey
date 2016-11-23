@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.CittaDao">
+	<sql id="orderBy">
+	
+	order by NOMECITTA
+		
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="nomeCittaLike != null ">
+			AND NOMECITTA like #{nomeCittaLike}||'%'
+		</if>
+		<if test="nomecitta != null ">
+			AND NOMECITTA = #{nomecitta}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	
+	<insert id="insert">
+		insert into T_CITTA (
+		NOMECITTA,
+		UNID)
+		VALUES (
+		#{nomecitta},
+		#{unid})
+	</insert>
+
+	<select id="count" resultType="Integer">
+		SELECT count(0) from T_CITTA
+		
+		<include refid="condition" />
+	</select>
+
+	<update id="update">
+		update T_CITTA set
+		NOMECITTA = #{nomecitta},
+		UNID =
+		#{unid}
+		WHERE 1=1
+		AND UNID = #{unid}
+	</update>
+
+	<select id="loadAll" resultType="model.Citta">
+		SELECT * from T_CITTA
+		<include refid="condition" />
+		<include refid="orderBy" />
+	</select>
+
+	<delete id="delete">
+		delete from T_CITTA
+		WHERE UNID = #{unid}
+	</delete>
+
+</mapper>

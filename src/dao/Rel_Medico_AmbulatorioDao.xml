@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.Rel_Medico_AmbulatorioDao">
+
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="dataA != null ">
+			AND DATA_A = #{dataA}
+		</if>
+		<if test="dataDa != null ">
+			AND DATA_DA = #{dataDa}
+		</if>
+		<if test="idambulatorio != null ">
+			AND IDAMBULATORIO = #{idambulatorio}
+		</if>
+		<if test="idmedico != null ">
+			AND IDMEDICO = #{idmedico}
+		</if>
+	</sql>
+	
+	<insert id="insert">
+		insert into REL_MEDICO_AMBULATORIO (
+		DATA_A,
+		DATA_DA,
+		IDAMBULATORIO,
+		IDMEDICO,
+		) VALUES (
+		#{dataA},
+		#{dataDa},
+		#{idambulatorio},
+		#{idmedico})
+	</insert>
+
+	<select id="count" resultType="Integer">
+		SELECT count(0) from REL_MEDICO_AMBULATORIO
+		WHERE 1=1
+		<include refid="condition" />
+	</select>
+
+	<update id="update">
+		update REL_MEDICO_AMBULATORIO set
+		DATA_A = #{dataA},
+		DATA_DA = #{dataDa},
+		IDAMBULATORIO = #{idambulatorio},
+		IDMEDICO = #{idmedico}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="model.Rel_Medico_Ambulatorio">
+		SELECT * fromREL_MEDICO_AMBULATORIO
+		WHERE 1=1
+		<include refid="condition" />
+		<include refid="orderBy" />
+	</select>
+
+	<delete id="delete">
+		delete from REL_MEDICO_AMBULATORIO
+		WHERE 1=1
+	</delete>
+	
+</mapper>

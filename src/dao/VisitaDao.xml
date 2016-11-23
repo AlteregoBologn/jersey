@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.VisitaDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="diagnosi != null ">
+			AND DIAGNOSI = #{diagnosi}
+		</if>
+		<if test="note != null ">
+			AND NOTE = #{note}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into T_VISITA (
+		DIAGNOSI,
+		NOTE,
+		UNID
+		) VALUES (
+		#{diagnosi},
+		#{note},
+		#{unid})
+	</insert>
+
+	<select id="count" resultType="Integer">
+		SELECT count(0) from T_VISITA
+		WHERE 1=1
+		<include refid="condition" />
+	</select>
+
+	<update id="update">
+		update T_VISITA set
+		DIAGNOSI = #{diagnosi},
+		NOTE =
+		#{note},
+		UNID = #{unid}
+		WHERE 1=1
+		AND UNID = #{unid}
+	</update>
+
+	<select id="loadAll" resultType="model.Visita">
+		SELECT * fromT_VISITA
+		WHERE 1=1
+		<include refid="condition" />
+		<include refid="orderBy" />
+	</select>
+
+	<delete id="delete">
+		delete from T_VISITA
+		WHERE UNID = #{unid}
+	</delete>
+</mapper>

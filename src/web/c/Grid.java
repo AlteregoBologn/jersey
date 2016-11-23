@@ -1,0 +1,126 @@
+package web.c;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.NavigationToolbar;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
+public class Grid<T> extends Panel {
+	SortParam<T> sort;
+
+	@SuppressWarnings("rawtypes")
+	public <S> Grid(String id) {
+		super(id);
+
+		final SortableDataProvider dp = new SortableDataProvider<T, S>() {
+
+			@Override
+			public Iterator<? extends T> iterator(long first, long count) {
+				return (Grid.this.getList(first, count)).iterator();
+			}
+
+			@Override
+			public long size() {
+
+				return Grid.this.getSize();
+			}
+
+			@Override
+			public IModel<T> model(T object) {
+
+				return new Model((Serializable) object);
+			}
+		};
+
+		DefaultDataTable table = new DefaultDataTable("datatable", Grid.this._getColumns(), dp, getMaxRows());
+		table.addBottomToolbar(new NavigationToolbar(table));
+		//table.addTopToolbar(new HeadersToolbar(table, dp));
+
+		add(table);
+	}
+
+	public List<T> getList(long f, long c) {
+		return new ArrayList();
+	}
+
+	public long getSize() {
+		return 1000L;
+	}
+
+	public int getMaxRows() {
+		return 10;
+	}
+
+	final private List<IColumn> _getColumns() {
+		List<IColumn> columns = getColumns();
+		/*columns.add(new PropertyColumn(new Model("First Name"), "name.first", "name.first"));
+		columns.add(new PropertyColumn(new Model("Last Name"), "name.last", "name.last"));*/
+		columns.add(new AbstractColumn<T, String>(new Model("Edit")) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void populateItem(final Item<ICellPopulator<T>> item, final String componentId, final IModel<T> rowModel)
+			{
+
+				item.add(new GridAjaxButtonPanel<T>(componentId, "Edit", rowModel.getObject()){
+					@Override
+					public void onClick(AjaxRequestTarget target, T o) {
+						
+						onEdit(target,o);
+					}
+				});				
+			}
+
+		});
+		columns.add(new AbstractColumn<T, String>(new Model("Del")) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void populateItem(final Item<ICellPopulator<T>> item, final String componentId, final IModel<T> rowModel)
+			{
+				item.add(new GridAjaxButtonPanel<T>(componentId,  "Delete", rowModel.getObject()){
+					@Override
+					public void onClick(AjaxRequestTarget target, T o) {
+						
+						onDelete(target,rowModel.getObject());
+					}
+				});						
+							
+			}
+
+		});
+		return columns;
+
+	}
+	
+	public List<IColumn> getColumns() {
+		List<IColumn> columns = new ArrayList();
+		/*columns.add(new PropertyColumn(new Model("First Name"), "name.first", "name.first"));
+		columns.add(new PropertyColumn(new Model("Last Name"), "name.last", "name.last"));*/
+		return columns;
+
+	}
+	
+	public void onEdit(AjaxRequestTarget target, T object) {
+		
+	}
+	public void onDelete(AjaxRequestTarget target, T object) {
+		
+		
+	}
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.MedicoDao">
+	
+	<sql id="condition">
+		<if test="cf != null">
+			AND cf = #{cf}
+		</if>
+		<if test="nome != null">
+			AND nome = #{nome}
+		</if>
+		<if test="cognome != null">
+			AND cognome = #{cognome}
+		</if>
+		<if test="canc != null">
+			AND canc = #{canc}
+		</if>
+		<if test="unid != null">
+			AND unid = #{unid}
+		</if>
+		<if test="password != null">
+			AND password = #{password}
+		</if>
+		<if test="email != null">
+			AND email = #{email}
+		</if>
+	</sql>
+
+	<sql id="load" >
+		SELECT * from t_medico
+		WHERE 1=1
+		<include refid="condition"></include>
+	</sql>
+	
+	<select id="cerca" resultType="model.Medico">
+		<include refid="dao.common.prePage"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postPage"></include>
+		<include refid="dao.common.orderBy"></include>
+	</select>
+	
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.preCount"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postCount"></include>
+	</select>
+
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT
+			seq.nextval from dual
+		</selectKey>
+		INSERT into t_medico( unid, nome, cognome, cf, canc, email, password )
+		VALUES(#{unid}, #{nome},
+		#{cognome}, #{cf}, #{canc}, #{email}, #{password} )
+	</insert>
+
+	<update id="update">
+		UPDATE t_medico SET nome=#{nome}
+		cognome=#{cognome},
+		cf=#{cf}, canc=#{canc}, email=#{email}, password=#{password}
+		WHERE unid=#{unid}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM t_medico WHERE
+		unid=#{unid}
+	</delete>
+
+</mapper> 
