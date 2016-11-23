@@ -121,8 +121,8 @@ public class ManagerTest
 	@Test
 	public void testinserisciRel_Persona_Medico() {
 		Rel_Persona_Medico a = new Rel_Persona_Medico();
-		a.setDataA("09-OTT-2016");
-		a.setDataDa("06-GEN-1990");
+		//a.setDataA("09-OTT-2016");
+		//a.setDataDa("06-GEN-1990");
 		a.setIdmedico(17);
 		a.setIdpersona(58);
 		manager.inserisciRel_Persona_Medico(a);

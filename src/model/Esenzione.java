@@ -1,6 +1,6 @@
 package model;
 
-public class Esenzione {
+public class Esenzione extends E{
 	private Integer unid;
 	private String descrizione;
 	
