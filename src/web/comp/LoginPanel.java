@@ -17,7 +17,7 @@ import web.c.BasePanel;
 
 public class LoginPanel extends BasePanel {
 	 @Autowired
-	 @SpringBean 
+	 @SpringBean(name="manager")
 	Manager manager;
 	String pwd="";
 	String username="";

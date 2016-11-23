@@ -14,7 +14,7 @@ import web.c.BasePanel;
 
 public class ChangePwdPanel extends BasePanel {
 	@Autowired
-	@SpringBean 
+	@SpringBean(name="manager")
 	Manager manager;
 	Persona persona = new Persona();
 	Boolean flag = true;

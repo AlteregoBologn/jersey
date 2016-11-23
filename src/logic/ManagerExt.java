@@ -19,24 +19,24 @@ public class ManagerExt extends Manager {
 		
 		List<Persona> persone = cercaPersone(ps);
 		for(Persona p:persone){
-			PersonaCompleta n=new PersonaCompleta();
-			n.setOperation(n.OP_UPDATE);
-			n.setPersona(p);
+			PersonaCompleta pc = new PersonaCompleta();
+			pc.setOperation(pc.OP_UPDATE);
+			pc.setPersona(p);
 			
-			Rel_Persona_MedicoSearch s=new Rel_Persona_MedicoSearch();
-			s.setIdpersona(p.getUnid());			
-			List<Rel_Persona_Medico> rel_Persona_Medico = cercaRel_Persona_Medico(s);
+			Rel_Persona_MedicoSearch rpms =new Rel_Persona_MedicoSearch();
+			rpms.setIdpersona(p.getUnid());			
+			List<Rel_Persona_Medico> rel_Persona_Medico = cercaRel_Persona_Medico(rpms);
 			
-			for(Rel_Persona_Medico r:rel_Persona_Medico){
-				r.setOperation(n.OP_UPDATE);
+			for(Rel_Persona_Medico rpm:rel_Persona_Medico){
+				rpm.setOperation(pc.OP_UPDATE);
 				MedicoSearch ms=new MedicoSearch();
-				ms.setUnid(r.getIdmedico());
+				ms.setUnid(rpm.getIdmedico());
 				List<Medico> medici = cercaMedico(ms);
 				//
 				MedicoDiPersona m=new MedicoDiPersona();
-				m.setOperation(n.OP_UPDATE);
+				m.setOperation(pc.OP_UPDATE);
 				m.setMedico(medici.get(0));
-				m.setRelazione(r);
+				m.setRelazione(rpm);
 			}
 			
 			

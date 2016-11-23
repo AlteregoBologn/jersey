@@ -26,7 +26,7 @@ import web.c.Grid;
 
 public class PersonaListPanel extends Panel {
 	@Autowired
-	@SpringBean
+	@SpringBean(name="manager")
 	Manager manager;
 	PersonaSearch search = new PersonaSearch();
 
