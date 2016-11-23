@@ -18,7 +18,7 @@ import web.c.BasePanel;
 
 public class VisualizzaMedicoPanel extends BasePanel {
 	@Autowired
-	@SpringBean
+	@SpringBean(name="manager")
 	Manager manager;
 	
 	Persona persona = new Persona();

@@ -13,7 +13,7 @@ import web.c.BasePanel;
 
 public class LogoutPanel extends BasePanel {
 	@Autowired
-	@SpringBean 
+	@SpringBean(name="manager")
 	Manager manager;
 
 	public LogoutPanel(String id) {

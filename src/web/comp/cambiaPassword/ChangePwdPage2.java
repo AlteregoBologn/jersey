@@ -9,7 +9,7 @@ import web.BasePage;
 
 public class ChangePwdPage2 extends BasePage {
 	@Autowired
-	@SpringBean
+	@SpringBean(name="manager")
 	Manager manager;
 	
 	

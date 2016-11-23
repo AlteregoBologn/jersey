@@ -20,7 +20,7 @@ import web.comp.registrazione.RegistrazionePanel;
 
 public class WizardRegistrazionePanel extends BasePanel {
 	@Autowired
-	@SpringBean
+	@SpringBean(name="manager")
 	Manager manager;
 	Persona persona = new Persona();
 	//int pannelloAttivo = 0;
