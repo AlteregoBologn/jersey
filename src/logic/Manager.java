@@ -110,6 +110,10 @@ public class Manager {
 		return personaDao.count(ps);
 	}
 	
+	public void aggiornaPersona(Persona p) {
+		personaDao.update(p);
+	}
+	
 	public List<Medico> cercaMedico(MedicoSearch ms) {
 		return medicoDao.cerca(ms);
 	}
