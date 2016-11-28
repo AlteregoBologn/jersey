@@ -1,5 +1,6 @@
-package web;
+package web.comp.persone;
 
+import web.BasePage;
 import web.comp.esenzioni.EsenzioniListPanel;
 import web.comp.medico.WizardScegliMedicoPanel;
 import web.comp.persone.WizardModificaPersonaPanel;

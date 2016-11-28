@@ -14,8 +14,8 @@ import logic.Manager;
 import model.Persona;
 
 public class PersonaPanel extends Panel {
-	 @Autowired
-	 @SpringBean 
+	@Autowired
+	@SpringBean(name="manager")
 	Manager manager;
 	
 	Persona persona=new Persona();

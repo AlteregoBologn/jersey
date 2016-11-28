@@ -1,26 +1,12 @@
 package web.comp.registrazione;
 
-import java.util.ArrayList;
-
-import org.apache.wicket.datetime.StyleDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.form.EmailTextField;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RadioChoice;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import logic.Manager;
 import model.Citta;
 import model.Persona;
-import web.MySession;
 import web.c.BasePanel;
-import web.c.CssBeahvior;
 
 public class RegistrazionePanel extends BasePanel {
 	@Autowired
@@ -91,22 +77,25 @@ public class RegistrazionePanel extends BasePanel {
 		datanascitaField.add(datePicker);
 		datanascitaField.setRequired(true);
 		datanascitaField.add(new CssBeahvior());
-	
-			
-	/*
-		final AutoCompleteTextField<Citta> comunenascita = new AutoCompleteTextField<Citta>("comunenascita", new PropertyModel<Citta>() {
-			@Override
-			public void setObject(Citta object) {
-				super.setObject(object);
-				persona.setComunenascita(object.getUnid());
-			}
-		},new AbstractAutoCompleteTextRenderer<Citta>() {
+		
+		final IModel<Citta> model = new PropertyModel<Citta>(
+				
+					/*@Override
+					public void setObject(Citta object) {
+						super.setObject(object);
+						persona.setComunenascita(object.getNomecitta());
+					},
+					
+					new AbstractAutoCompleteTextRenderer<Citta>() {
 
-			@Override
-			protected String getTextValue(Citta object) {
-				return object.getNomecitta();
-			}
-		}) {
+					@Override
+					protected String getTextValue(Citta object) {
+						return object.getNomecitta();
+					}
+				});
+	
+
+		final AutoCompleteTextField<Citta> comunenascita = new AutoCompleteTextField<Citta>("comunenascita", model) {
 
 
 			@Override
@@ -122,7 +111,7 @@ public class RegistrazionePanel extends BasePanel {
 					return ret.iterator();
 				} catch (Exception e) {
 					e.printStackTrace();
-					return new ArrayList().iterator();
+					return new ArrayList<Citta>().iterator();
 				}
 			}
 	
@@ -133,8 +122,7 @@ public class RegistrazionePanel extends BasePanel {
 	        protected void onUpdate(AjaxRequestTarget target) {
 	            System.out.println( "Value: " + comunenascita.getValue() );
 	            target.add(RegistrazionePanel.this);
-	        }
-	        
+	        }	        
 
 	        @Override
 	        protected void onError(AjaxRequestTarget target, RuntimeException e) {
@@ -145,7 +133,7 @@ public class RegistrazionePanel extends BasePanel {
 	        }
 	    });
 	    form.add(comunenascita);
-	    */
+	    
 		
 		form.add(nome, cognome, codFisc, email, password, sesso, datanascitaField);
 
