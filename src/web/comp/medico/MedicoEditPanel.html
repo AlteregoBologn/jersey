@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<wicket:panel>
+	<fieldset>
+		<form wicket:id="form">
+			
+			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label> 
+			<br /> 
+			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
+			<br /> 
+			<label for="codFisc">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 
+			<br /> 
+			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label> 
+			<br /> 
+			<label for="datanascita">Data di nascita: <input type="text" class="form-control" wicket:id="datanascita" id="datanascita" /></label> 
+			<br />
+		 
+		 	<input wicket:id="salva" type="button" value="salva" />
+		 	<input wicket:id="aggiorna" type="button" value="aggiorna" /> 
+		 	<input wicket:id="annulla" type="button" value="annulla" />
 
-</body>
-</html>
+		</form>
+	</fieldset>
+</wicket:panel>

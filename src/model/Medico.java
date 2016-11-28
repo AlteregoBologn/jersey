@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Medico extends E {
 
+	
 	private Integer unid;
 	private String nome, cognome, cf, canc;
 	private String password;
@@ -65,4 +66,10 @@ public class Medico extends E {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	@Override
+	public String toString() {
+		return "Medico [unid=" + unid + ", nome=" + nome + ", cognome=" + cognome + ", cf=" + cf + "]";
+	}
+
 }

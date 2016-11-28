@@ -1,5 +1,8 @@
 package logic;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -9,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import model.Medico;
+import model.MedicoSearch;
 import model.Persona;
 import model.Rel_Medico_Ambulatorio;
 import model.Rel_Medico_Visita;
@@ -103,8 +107,12 @@ public class ManagerTest
 	public void testinserisciRel_Persona_Esenzione() 
 	{
 		Rel_Persona_Esenzione a = new Rel_Persona_Esenzione();
-		a.setDataA(null);
-		a.setDataDa(null);
+		Date dataA = new Date();
+		dataA.setDate(10-12-2016);
+		Date dataDa = new Date();
+		dataDa.setDate(9-2-2016);
+		a.setDataA(dataA);
+		a.setDataDa(dataDa);
 		a.setIdesenzione("2");
 		a.setIdpersona("58");
 		manager.inserisciRel_Persona_Esenzione(a);
@@ -121,8 +129,12 @@ public class ManagerTest
 	@Test
 	public void testinserisciRel_Persona_Medico() {
 		Rel_Persona_Medico a = new Rel_Persona_Medico();
-		//a.setDataA("09-OTT-2016");
-		//a.setDataDa("06-GEN-1990");
+		Date dateA = new Date();
+		dateA.setDate(9-9-2016);
+		Date dateDa = new Date();
+		dateDa.setDate(10-2-2016);
+		a.setDataA(dateA);
+		a.setDataDa(dateDa);
 		a.setIdmedico(17);
 		a.setIdpersona(58);
 		manager.inserisciRel_Persona_Medico(a);
@@ -227,5 +239,23 @@ public class ManagerTest
 		Rel_Prescrizione_Prestazione a = new Rel_Prescrizione_Prestazione();
 		a.setIdprestazione("1");
 		manager.deleteRel_Prescrizione_Prestazione(a);
+	}
+	
+	@Test
+	public void testcercaMedico() {
+		MedicoSearch ms = new MedicoSearch();
+		ms.setUnid(79);
+		List<Medico> medici = manager.cercaMedico(ms);
+		if(medici.isEmpty())
+			throw new RuntimeException();
+		System.out.println(medici.get(0).toString());	
+	}
+	
+	@Test
+	public void testcountMedico() {
+		MedicoSearch ms = new MedicoSearch();
+		ms.setUnid(79);
+		int count = manager.countMedico(ms);
+		System.out.println(count);
 	}
 }

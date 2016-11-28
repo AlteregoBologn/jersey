@@ -2,16 +2,19 @@
 	<fieldset>
 		<form wicket:id="form">
 			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label>
-			<br /> 
-			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
-			<br /> 
-			<label for="codFisc">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 
 			<br />
 			<!--   
-			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label> 
+			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
+			<br /> 
+			<label for="cf">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 
+			<br />
+			<label for="dataA">Data a: <input type="text" class="form-control" wicket:id="dataA" id="dataA" /></label> 
+			<br />
+			<label for="dataDa">Data Da: <input type="text" class="form-control" wicket:id="dataDa" id="dataDa" /></label>
 			<br />
 			-->
 			<input wicket:id="scegli" type="button" value="scegli" />
 		</form>
+		<div wicket:id="medici"></div>
 	</fieldset>
 </wicket:panel>

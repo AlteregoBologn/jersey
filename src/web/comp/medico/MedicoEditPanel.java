@@ -15,8 +15,12 @@ public class MedicoEditPanel extends Panel {
 	public MedicoEditPanel(String id, Medico e, boolean isNew) {
 		super(id);
 		Form form = new Form("form");
-		form.add(new TextField<>("descrizione", new PropertyModel<>(e, "esenzione.descrizione")));
-
+		form.add(new TextField<>("nome", new PropertyModel<>(e, "medico.nome")));
+		form.add(new TextField<>("cognome", new PropertyModel<>(e, "medico.cognome")));
+		form.add(new TextField<>("cf", new PropertyModel<>(e, "medico.cf")));		
+		form.add(new TextField<>("dataA", new PropertyModel<>(e, "medico.relazione.dataA")));
+		form.add(new TextField<>("dataDa", new PropertyModel<>(e, "medicoAttivo.relazione.dataDa")));
+		
 		AjaxButton annulla = new AjaxButton("annulla") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
