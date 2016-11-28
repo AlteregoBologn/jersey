@@ -1,40 +1,27 @@
 <wicket:panel>
+
 	<h2>Modifica i tuoi dati</h2>
+	<fieldset>
+		<form wicket:id="form">
 
-	<label for="nome">Nome: <input type="text" class="form-control"
-		wicket:id="nome" id="nome" />
-	</label>
-	<br />
+			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label> 
+			<br /> 
+			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
+			<br /> 
+			<label for="codFisc">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 
+			<br /> 
+			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label> 
+			<br /> 
+			<label for="datanascita">Data di nascita: <input type="text" class="form-control" wicket:id="datanascita" id="datanascita" /></label> 
+			<br />
 
-	<label for="cognome">Cognome: <input type="text"
-		class="form-control" wicket:id="cognome" id="cognome" />
-	</label>
-	<br />
+			<div wicket:id="listaEsenzioni"></div>
 
-	<label for="codFisc">Codice fiscale: <input type="text"
-		class="form-control" wicket:id="codFisc" id="codFisc" />
-	</label>
-	<br />
+			<div wicket:id="sceltaMedico"></div>
 
-	<label for="email">Email: <input type="email"
-		class="form-control" wicket:id="email" id="email" />
-	</label>
-	<br />
+			<input wicket:id="salva" type="button" value="salva" />
 
-	<label for="password">Password: <input type="password"
-		class="form-control" wicket:id="password" id="password" />
-	</label>
-	<br />
 
-	<label for="sessoGroup">Sesso: <br /> <radiogroup
-			wicket:id="sessoGroup"> <input type="radio"
-			id="sessoGroup" /> M <input type="radio" id="sessoGroup" /> F <input
-			type="radio" id="sessoGroup" /> Altro </radiogroup>
-	</label>
-	<br />
-
-	<label for="datanascita">Data di nascita: <input type="text"
-		class="form-control" wicket:id="datanascita" id="datanascita" />
-	</label>
-
+		</form>
+	</fieldset>
 </wicket:panel>

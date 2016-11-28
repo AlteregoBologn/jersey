@@ -20,44 +20,42 @@ import web.comp.registrazione.RegistrazionePanel;
 
 public class WizardRegistrazionePanel extends BasePanel {
 	@Autowired
-	@SpringBean(name="manager")
+	@SpringBean(name = "manager")
 	Manager manager;
 	Persona persona = new Persona();
-	//int pannelloAttivo = 0;
+	// int pannelloAttivo = 0;
 
 	public WizardRegistrazionePanel(String Id, Persona p) {
-		
+
 		super(Id);
-		
+
 		persona = p;
 
 		List<Panel> listaPannelli = new ArrayList();
-		
+
 		listaPannelli.add(new RegistrazionePanel("registrazione", persona));
-		
+
 		listaPannelli.add(new ConfermaRegistrazionePanel("confermaRegistrazione", persona));
-		
+
 		listaPannelli.add(new RegistrazioneEffettuataPanel("regeffRegistrazione"));
 
-
 		add(new WizardPanel("wizard", listaPannelli) {
-			
+
 			@Override
 			public void onConferma(AjaxRequestTarget target) {
 				setVisible(false);
-				//manager.registraPersona(persona);
+				// manager.registraPersona(persona);
 				setResponsePage(Home.class);
 			}
-			
+
 			@Override
 			public void onChangePanel(AjaxRequestTarget target, Integer attivo) {
 				if (attivo == 2) {
 					manager.registraPersona(persona);
 					setShowButton(false);
-				}				
+				}
 			}
 		});
 	}
-	
 
 }

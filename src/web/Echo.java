@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 
 import model.Persona;
-import web.comp.VisualizzaMedicoPanel;
 import web.comp.persone.PersonaListPanel;
 import web.comp.persone.PersonaPanel;
 

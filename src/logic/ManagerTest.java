@@ -103,8 +103,8 @@ public class ManagerTest
 	public void testinserisciRel_Persona_Esenzione() 
 	{
 		Rel_Persona_Esenzione a = new Rel_Persona_Esenzione();
-		a.setDataA("09-OTT-2016");
-		a.setDataDa("06-MAG-1990");
+		a.setDataA(null);
+		a.setDataDa(null);
 		a.setIdesenzione("2");
 		a.setIdpersona("58");
 		manager.inserisciRel_Persona_Esenzione(a);
@@ -228,12 +228,4 @@ public class ManagerTest
 		a.setIdprestazione("1");
 		manager.deleteRel_Prescrizione_Prestazione(a);
 	}
-	
-	@Test
-	public void testcercaPersonaMedico() {
-		Rel_Persona_MedicoSearch s = new Rel_Persona_MedicoSearch();
-		s.setIdpersona(139);
-		manager.cercaPersonaMedico(s);
-	}
-
 }
