@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.LocaleDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="foglio != null ">
+			AND FOGLIO = #{foglio}
+		</if>
+		<if test="mq != null ">
+			AND MQ = #{mq}
+		</if>
+		<if test="particella != null ">
+			AND PARTICELLA = #{particella}
+		</if>
+		<if test="subalterno != null ">
+			AND SUBALTERNO = #{subalterno}
+		</if>
+		<if test="tipo != null ">
+			AND TIPO = #{tipo}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into T_LOCALE (
+		FOGLIO,
+		MQ,
+		PARTICELLA,
+		SUBALTERNO,
+		TIPO,
+		UNID) VALUES (
+		#{foglio},
+		#{mq},
+		#{particella},
+		#{subalterno},
+		#{tipo},
+		#{unid})
+	</insert>
+
+	<sql id="load">
+		SELECT * from T_LOCALE	
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update ">
+		update T_LOCALE set
+		FOGLIO = #{foglio},
+		MQ = #{mq},
+		PARTICELLA = #{particella},
+		SUBALTERNO = #{subalterno},
+		TIPO = #{tipo},
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.Locale">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from T_LOCALE
+		WHERE UNID= #{unid}
+	</delete>
+</mapper>

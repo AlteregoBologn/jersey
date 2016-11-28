@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.ImmobileDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="civico != null ">
+			AND CIVICO = #{civico}
+		</if>
+		<if test="datada != null ">
+			AND DATADA = #{datada}
+		</if>
+		<if test="interno != null ">
+			AND INTERNO = #{interno}
+		</if>
+		<if test="nomeprecedentedetentore != null ">
+			AND NOMEPRECEDENTEDETENTORE = #{nomeprecedentedetentore}
+		</if>
+		<if test="nomeproprietario != null ">
+			AND NOMEPROPRIETARIO = #{nomeproprietario}
+		</if>
+		<if test="piano != null ">
+			AND PIANO = #{piano}
+		</if>
+		<if test="qualita != null ">
+			AND QUALITA = #{qualita}
+		</if>
+		<if test="via != null ">
+			AND VIA = #{via}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into T_IMMOBILE (
+		CIVICO,
+		DATADA,
+		INTERNO,
+		NOMEPRECEDENTEDETENTORE,
+		NOMEPROPRIETARIO,
+		PIANO,
+		QUALITA,
+		UNID,
+		VIA)
+		VALUES (
+		#{civico},
+		#{datada},
+		#{interno},
+		#{nomeprecedentedetentore},
+		#{nomeproprietario},
+		#{piano},
+		#{qualita},
+		#{unid},
+		#{via})
+	</insert>
+	
+	<sql id="load">
+		SELECT * from T_PERSONA	
+		<include refid="condition" />
+	</sql>
+	
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.preCount" />
+		<include refid="load" />
+		<include refid="dao.common.postCount" />
+	</select>
+	
+	<select id="loadAll" resultType="tari.model.Immobile">	
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update T_IMMOBILE set
+		CIVICO = #{civico},
+		DATADA = #{datada},
+		INTERNO = #{interno},
+		NOMEPRECEDENTEDETENTORE =
+		#{nomeprecedentedetentore},
+		NOMEPROPRIETARIO = #{nomeproprietario},
+		PIANO = #{piano},
+		QUALITA = #{qualita},
+		UNID = #{unid},
+		VIA = #{via}
+		WHERE 1=1
+	</update>
+
+	<delete id="delete">
+		delete from T_IMMOBILE
+		WHERE UNID= #{unid}
+	</delete>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.PersonaGiuridicaDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="descrizione != null ">
+			AND DESCRIZIONE = #{descrizione}
+		</if>
+		<if test="pec != null ">
+			AND PEC = #{pec}
+		</if>
+		<if test="piva != null ">
+			AND PIVA = #{piva}
+		</if>
+		<if test="rappresentante != null ">
+			AND RAPPRESENTANTE = #{rappresentante}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into T_PERSONAGIURIDICA (
+		DESCRIZIONE,
+		PEC,
+		PIVA,
+		RAPPRESENTANTE,
+		UNID)
+		VALUES (
+		#{descrizione},
+		#{pec},
+		#{piva},
+		#{rappresentante},
+		#{unid})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM T_PERSONAGIURIDICA
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update T_PERSONAGIURIDICA set
+		DESCRIZIONE = #{descrizione},
+		PEC = #{pec},
+		PIVA = #{piva},
+		RAPPRESENTANTE = #{rappresentante},
+		UNID = #{unid}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.PersonaGiuridica">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from T_PERSONAGIURIDICA
+		WHERE UNID= #{unid}
+	</delete>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.PrecedenteDichiarazioneDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="civico != null ">
+			AND CIVICO = #{civico}
+		</if>
+		<if test="datada != null ">
+			AND DATADA = #{datada}
+		</if>
+		<if test="interno != null ">
+			AND INTERNO = #{interno}
+		</if>
+		<if test="motivo != null ">
+			AND MOTIVO = #{motivo}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+		<if test="via != null ">
+			AND VIA = #{via}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into T_PRECEDENTEDICHIARAZIONE (
+		CIVICO,
+		DATADA,
+		INTERNO,
+		MOTIVO,
+		UNID,
+		VIA) 
+		VALUES (
+		#{civico},
+		#{datada},
+		#{interno},
+		#{motivo},
+		#{unid},
+		#{via})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM T_PRECEDENTEDICHIARAZIONE
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update T_PRECEDENTEDICHIARAZIONE set
+		CIVICO = #{civico},
+		DATADA = #{datada},
+		INTERNO = #{interno},
+		MOTIVO = #{motivo},
+		UNID = #{unid},
+		VIA = #{via}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.PrecedenteDichiarazione">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from T_PRECEDENTEDICHIARAZIONE
+		WHERE UNID = #{unid}
+	</delete>
+</mapper>

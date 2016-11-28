@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.PersonaTariDao">
+
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  	<![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="canc != null ">
+			AND CANC = #{canc}
+		</if>
+		<if test="cf != null ">
+			AND CF = #{cf}
+		</if>
+		<if test="cognome != null ">
+			AND COGNOME = #{cognome}
+		</if>
+		<if test="cognomeLike != null ">
+			AND COGNOME Like #{cognomeLike}||'%'
+		</if>
+		<if test="comunenascita != null ">
+			AND COMUNENASCITA = #{comunenascita}
+		</if>
+		<if test="datanascita != null ">
+			AND DATANASCITA = #{datanascita}
+		</if>
+		<if test="email != null ">
+			AND EMAIL = #{email}
+		</if>
+		<if test="nome != null ">
+			AND NOME = #{nome}
+		</if>
+		<if test="password != null ">
+			AND PASSWORD = #{password}
+		</if>
+		<if test="sesso != null ">
+			AND SESSO = #{sesso}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+		<if test="pec != null ">
+    		AND PEC = #{pec} 
+  		</if>
+	</sql>
+	
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT
+			seq.nextval from dual
+		</selectKey>
+		insert into T_PERSONA (
+		CANC,
+		CF,
+		COGNOME,
+		COMUNENASCITA,
+		DATANASCITA,
+		EMAIL,
+		NOME,
+		PASSWORD,
+		SESSO,
+		PEC,
+		UNID
+		) VALUES (
+		'N',
+		#{cf},
+		#{cognome},
+		#{comunenascita},
+		#{datanascita},
+		#{email},
+		#{nome},
+		#{password},
+		#{sesso},
+		#{pec},
+		#{unid})
+	</insert>
+	
+	<sql id="load">
+		SELECT * from T_PERSONA	
+		<include refid="condition" />
+	</sql>
+	
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.preCount" />
+		<include refid="load" />
+		<include refid="dao.common.postCount" />
+	</select>
+	
+	<select id="cerca" resultType="tari.model.PersonaTari">	
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+	
+	<update id="update">
+		update T_PERSONA set
+		CANC = #{canc},
+		CF = #{cf},
+		COGNOME = #{cognome},
+		COMUNENASCITA = #{comunenascita},
+		DATANASCITA = #{datanascita},
+		EMAIL = #{email},
+		NOME = #{nome},
+		PASSWORD = #{password},
+		PEC = #{pec},
+		SESSO = #{sesso},
+		UNID = #{unid}
+		WHERE 1=1
+		AND UNID = #{unid}
+	</update>
+
+
+
+	<delete id="delete">
+		delete from T_PERSONA
+		WHERE UNID = #{unid}
+	</delete>
+	
+	<sql id="cambiaPassword">
+		Update T_PERSONA SET PASSWORD = #{password}
+		<include refid="condition" />
+	</sql>
+
+</mapper> 
