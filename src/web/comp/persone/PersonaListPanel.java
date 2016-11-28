@@ -88,9 +88,9 @@ public class PersonaListPanel extends Panel {
 			}
 
 			@Override
-			public List getList(long f, long c) {
-				search.setPageFrom(f);
-				search.setPageTo(f + c);
+			public List getList(int f, int c) {
+				search.setPageFrom((long)f);
+				search.setPageTo((long)f + (long)c);
 				return manager.cercaPersone(search);
 			}
 
@@ -107,6 +107,7 @@ public class PersonaListPanel extends Panel {
 				return columns;
 			}
 			
+			/*
 			@Override
 			public void onEdit(AjaxRequestTarget target, Object object) {
 				
@@ -117,6 +118,7 @@ public class PersonaListPanel extends Panel {
 				// TODO Auto-generated method stub
 				super.onDelete(target, object);
 			}
+			*/
 		});
 
 		add(form);

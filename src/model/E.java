@@ -3,10 +3,10 @@ package model;
 import java.io.Serializable;
 
 public class E implements Serializable {
-	final public String OP_INSERT = "I";
-	final public String OP_NOP = "NOP";
-	final public String OP_DELETE = "D";
-	final public String OP_UPDATE = "U";
+	final static public String OP_INSERT = "I";
+	final static public String OP_NOP = "NOP";
+	final static public String OP_DELETE = "D";
+	final static public String OP_UPDATE = "U";
 
 	Long pageFrom = 1L;
 	Long pageTo = 10L;
@@ -41,10 +41,46 @@ public class E implements Serializable {
 		return operation;
 	}
 
-	public void setOperation(String operation) {
+	public void setOperation(String op) {
+		if( isInsert(operation) ) {
+			if( isInsert(op) ) ;
+			if( isDelete(op) ) operation=OP_NOP ;
+			if( isUpdate(op) ) ;
+		}
+		if( isDelete(operation) ) {
+			if( isInsert(op) ) operation=OP_INSERT ;
+			if( isDelete(op) ) ;
+			if( isUpdate(op) ) operation=OP_UPDATE;
+		}
+		if( isUpdate(operation) ) {
+			if( isInsert(op) ) ;
+			if( isDelete(op) ) operation=OP_DELETE;
+			if( isUpdate(op) ) ;
+		}
+		if( isNop(operation) ) {
+			if( isInsert(op) ) operation=OP_INSERT;
+			if( isDelete(op) ) operation=OP_DELETE;
+			if( isUpdate(op) ) operation=OP_UPDATE;
+		}
 		this.operation = operation;
 	}
 
+	static public boolean isInsert(String operation) {
+		return OP_INSERT.equals(operation);
+	}
+
+	static public boolean isDelete(String operation) {
+		return OP_DELETE.equals(operation);
+	}
+
+	static public boolean isUpdate(String operation) {
+		return OP_UPDATE.equals(operation);
+	}
+
+	static public boolean isNop(String operation) {
+		return OP_NOP.equals(operation);
+	}
+	
 	public boolean isInsert() {
 		return OP_INSERT.equals(operation);
 	}

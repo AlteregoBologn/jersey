@@ -13,22 +13,20 @@ import web.c.BasePanel;
 
 public class LogoutPanel extends BasePanel {
 	@Autowired
-	@SpringBean(name="manager")
+	@SpringBean(name = "manager")
 	Manager manager;
 
 	public LogoutPanel(String id) {
 		super(id);
 
-		
-
 		Form<?> form = new Form("form");
-		
+
 		AjaxButton button = new AjaxButton("logout") {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				MySession.get().setUtente(null);
-				target.add(LogoutPanel.this);	
+				target.add(LogoutPanel.this);
 				setResponsePage(Home.class);
 			}
 		};

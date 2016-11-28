@@ -3,8 +3,8 @@ package model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Medico extends E  {
-	
+public class Medico extends E {
+
 	private Integer unid;
 	private String nome, cognome, cf, canc;
 	private String password;

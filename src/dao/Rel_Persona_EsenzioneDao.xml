@@ -56,7 +56,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="loadAll" resultType="model.Rel_Persona_Esenzione">
 		SELECT * from REL_PERSONA_ESENZIONE
-		WHERE 1=1
 		<include refid="condition" />
 		<include refid="orderBy" />
 	</select>

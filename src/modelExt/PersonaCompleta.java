@@ -9,11 +9,10 @@ import model.Persona;
 
 public class PersonaCompleta extends E {
 	Persona persona;
-	
-	List<Esenzione>	esenzioni=new ArrayList();
-	List<MedicoDiPersona> medici=new ArrayList();
-	
-	
+
+	List<EsenzioneDiPersona> esenzioni = new ArrayList();
+	List<MedicoDiPersona> medici = new ArrayList();
+
 	public Persona getPersona() {
 		return persona;
 	}
@@ -22,11 +21,11 @@ public class PersonaCompleta extends E {
 		this.persona = persona;
 	}
 
-	public List<Esenzione> getEsenzioni() {
+	public List<EsenzioneDiPersona> getEsenzioni() {
 		return esenzioni;
 	}
 
-	public void setEsenzioni(List<Esenzione> esenzioni) {
+	public void setEsenzioni(List<EsenzioneDiPersona> esenzioni) {
 		this.esenzioni = esenzioni;
 	}
 
@@ -74,5 +73,12 @@ public class PersonaCompleta extends E {
 			return false;
 		return true;
 	}
+
 	
+	public MedicoDiPersona getMedicoAttivo(){
+		if (medici.isEmpty()){
+			return new MedicoDiPersona();
+		}	
+		return getMedici().get(0);
+	}
 }

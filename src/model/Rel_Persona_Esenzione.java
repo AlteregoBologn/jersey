@@ -1,25 +1,27 @@
 package model;
 
+import java.util.Date;
+
 public class Rel_Persona_Esenzione extends E {
 
-	private String dataA;
-	private String dataDa;
+	private Date dataA;
+	private Date dataDa;
 	private String idesenzione;
 	private String idpersona;
 
-	public void setDataA(String a) {
+	public void setDataA(Date a) {
 
 		this.dataA = a;
 	}
-	public String getDataA() {
+	public Date getDataA() {
 
 		return dataA;
 	}
-	public void setDataDa(String a) {
+	public void setDataDa(Date a) {
 
 		this.dataDa = a;
 	}
-	public String getDataDa() {
+	public Date getDataDa() {
 
 		return dataDa;
 	}
@@ -39,4 +41,11 @@ public class Rel_Persona_Esenzione extends E {
 
 		return idpersona;
 	}
+	@Override
+	public String toString() {
+		return "Rel_Persona_Esenzione [dataA=" + dataA + ", dataDa=" + dataDa + ", idesenzione=" + idesenzione
+				+ ", idpersona=" + idpersona + "]";
+	}
+	
+	
 }

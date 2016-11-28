@@ -6,9 +6,9 @@ import web.Home;
 import web.LoginPage;
 import web.LogoutPage;
 import web.MySession;
-import web.VisualizzaMedicoPage;
 import web.c.BasePanel;
 import web.comp.cambiaPassword.ChangePwdPage;
+import web.comp.persone.ModificaPersonaPage;
 import web.comp.registrazione.RegistrazionePage;
 
 public class NavbarPanel extends BasePanel {
@@ -66,15 +66,14 @@ public class NavbarPanel extends BasePanel {
 				return !utenteLoggato();
 			}
 		});
-		add(new Link("VisualizzaMedico") {
+		add(new Link("Modifica Persona") {
 			@Override
 			public void onClick() {
-				setResponsePage(VisualizzaMedicoPage.class);
+				setResponsePage(ModificaPersonaPage.class);
 			}
 			@Override
 			public boolean isVisible() {
-				
-				return utenteLoggato();
+				return true;//utenteLoggato();
 			}
 		});
 	}
