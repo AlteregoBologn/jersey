@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.relationDao.Rel_Immobile_LocaleDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="idimmobile != null ">
+			AND IDIMMOBILE = #{idimmobile}
+		</if>
+		<if test="idlocale != null ">
+			AND IDLOCALE = #{idlocale}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into REL_IMMOBILE_LOCALE (
+		IDIMMOBILE,
+		IDLOCALE)
+		VALUES (
+		#{idimmobile},
+		#{idlocale})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM REL_IMMOBILE_LOCALE
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update REL_IMMOBILE_LOCALE set
+		IDIMMOBILE = #{idimmobile},
+		IDLOCALE = #{idlocale}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.Rel_Immobile_Locale">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from REL_IMMOBILE_LOCALE
+		WHERE IDIMMOBILE = #{idimmobile} AND
+		IDLOCALE = #{idlocale}
+	</delete>
+</mapper>

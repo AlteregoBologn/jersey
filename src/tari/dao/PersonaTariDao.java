@@ -2,21 +2,21 @@ package tari.dao;
 
 import java.util.List;
 
-import model.Persona;
-import model.PersonaSearch;
+import tari.model.PersonaTari;
+import tari.model.PersonaTariSearch;
 
 public interface PersonaTariDao {
 
-	List<Persona> cerca(PersonaSearch ps);
+	List<PersonaTari> loadAll(PersonaTariSearch ps);
 
-	Integer count (PersonaSearch ps);
+	Integer count (PersonaTariSearch ps);
 
-	void insert(Persona p);
+	void insert(PersonaTari p);
 
-	void update(Persona p);
+	void update(PersonaTari p);
 
-	void delete(Persona p);
+	void delete(PersonaTari p);
 	
-	void cambiaPassword(Persona p);
+	void cambiaPassword(PersonaTari p);
 
 }

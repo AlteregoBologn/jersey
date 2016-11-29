@@ -7,8 +7,8 @@ public class PersonaGiuridica extends E {
 	private String descrizione;
 	private String pec;
 	private String piva;
-	private int rappresentante;
-	private int unid;
+	private Integer rappresentante;
+	private Integer unid;
 
 	public void setDescrizione(String a) {
 
@@ -34,19 +34,19 @@ public class PersonaGiuridica extends E {
 
 		return piva;
 	}
-	public void setRappresentante(int a) {
+	public void setRappresentante(Integer a) {
 
 		this.rappresentante = a;
 	}
-	public int getRappresentante() {
+	public Integer getRappresentante() {
 
 		return rappresentante;
 	}
-	public void setUnid(int a) {
+	public void setUnid(Integer a) {
 
 		this.unid = a;
 	}
-	public int getUnid() {
+	public Integer getUnid() {
 
 		return unid;
 	}

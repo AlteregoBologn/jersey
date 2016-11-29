@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.relationDao.Rel_Dichiarazione_ImmobileDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="iddichiarazione != null ">
+			AND IDDICHIARAZIONE = #{iddichiarazione}
+		</if>
+		<if test="idimmobile != null ">
+			AND IDIMMOBILE = #{idimmobile}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into REL_DICHIARAZIONE_IMMOBILE (
+		IDDICHIARAZIONE,
+		IDIMMOBILE) 
+		VALUES (
+		#{iddichiarazione},
+		#{idimmobile})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM REL_DICHIARAZIONE_IMMOBILE
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update REL_DICHIARAZIONE_IMMOBILE set
+		IDDICHIARAZIONE = #{iddichiarazione},
+		IDIMMOBILE = #{idimmobile},
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_Dichiarazione_Immobile">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from REL_DICHIARAZIONE_IMMOBILE
+		WHERE IDDICHIARAZIONE = #{iddichiarazione} AND
+		IDIMMOBILE = #{idimmobile}
+	</delete>
+</mapper>

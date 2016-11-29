@@ -9,7 +9,7 @@ public class Locale extends E {
 	private String particella;
 	private String subalterno;
 	private String tipo;
-	private int unid;
+	private Integer unid;
 
 	public void setFoglio(String a) {
 
@@ -51,10 +51,10 @@ public class Locale extends E {
 
 		return tipo;
 	}
-	public int getUnid() {
+	public Integer getUnid() {
 		return unid;
 	}
-	public void setUnid(int unid) {
+	public void setUnid(Integer unid) {
 		this.unid = unid;
 	}
 }

@@ -36,11 +36,19 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="dao" />
+	</bean> 
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="tari.dao" />
 	</bean>
 
 	<bean id="manager" class="logic.Manager" />
 	
 	<bean id="managerExt" class="logic.ManagerExt" />
+	
+	<bean id="TariManager" class="tari.logic.TariManager" />
+	
+	<bean id="TariManagerExt" class="tari.logic.TariManagerExt" />
 	
 	<bean id="printerManager" class="stampe.PrinterManager" />
 	

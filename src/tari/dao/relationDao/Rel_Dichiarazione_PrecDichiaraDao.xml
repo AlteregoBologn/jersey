@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.relationDao.Rel_Dichiarazione_PrecDichiaraDao">
+
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="iddichiarazione != null ">
+			AND IDDICHIARAZIONE = #{iddichiarazione}
+		</if>
+		<if test="idprecedentedichiarazione != null ">
+			AND IDPRECEDENTEDICHIARAZIONE = #{idprecedentedichiarazione}
+		</if>
+	</sql>
+	<insert id="insert">
+		insert into REL_DICHIARAZIONE_PRECDICHIARA (
+		IDDICHIARAZIONE,
+		IDPRECEDENTEDICHIARAZIONE) 
+		VALUES (
+		#{iddichiarazione},
+		#{idprecedentedichiarazione})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM REL_DICHIARAZIONE_PRECDICHIARA
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update REL_DICHIARAZIONE_PRECDICHIARA set
+		IDDICHIARAZIONE = #{iddichiarazione},
+		IDPRECEDENTEDICHIARAZIONE = #{idprecedentedichiarazione}
+		WHERE 1=1
+	</update>
+
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_Dichiarazione_PrecDichiara">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from REL_DICHIARAZIONE_PRECDICHIARA
+		WHERE IDDICHIARAZIONE = #{iddichiarazione} AND
+		IDPRECEDENTEDICHIARAZIONE = #{idprecedentedichiarazione}
+	</delete>
+</mapper>

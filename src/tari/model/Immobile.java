@@ -1,5 +1,7 @@
 package tari.model;
 
+import java.util.List;
+
 import model.E;
 
 public class Immobile extends E {
@@ -12,7 +14,7 @@ public class Immobile extends E {
 	private String piano;
 	private String qualita;
 	private String via;
-	private int unid;
+	private Integer unid;
 
 	public void setCivico(String a) {
 
@@ -78,11 +80,11 @@ public class Immobile extends E {
 
 		return via;
 	}
-	public void setUnid(int a) {
+	public void setUnid(Integer a) {
 
 		this.unid = a;
 	}
-	public int getUnid() {
+	public Integer getUnid() {
 
 		return unid;
 	}

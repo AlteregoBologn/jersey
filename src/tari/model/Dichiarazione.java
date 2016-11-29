@@ -9,7 +9,7 @@ public class Dichiarazione extends E {
 	private String firma;
 	private String italianoallestero;
 	private String unicooccupante;
-	private int unid;
+	private Integer unid;
 
 	public void setAgricoltore(String a) {
 
@@ -51,11 +51,11 @@ public class Dichiarazione extends E {
 
 		return unicooccupante;
 	}
-	public void setUnid(int a) {
+	public void setUnid(Integer a) {
 
 		this.unid = a;
 	}
-	public int getUnid() {
+	public Integer getUnid() {
 
 		return unid;
 	}

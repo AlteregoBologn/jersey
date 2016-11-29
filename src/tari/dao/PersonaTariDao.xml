@@ -92,7 +92,7 @@
 		<include refid="dao.common.postCount" />
 	</select>
 	
-	<select id="cerca" resultType="tari.model.PersonaTari">	
+	<select id="loadAll" resultType="tari.model.PersonaTari">	
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />

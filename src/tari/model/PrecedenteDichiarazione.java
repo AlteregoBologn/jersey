@@ -11,7 +11,7 @@ public class PrecedenteDichiarazione extends E {
 	private String datada;// TODO rivedere tipo per interfaccia
 	private String interno;
 	private String motivo;
-	private int unid;
+	private Integer unid;
 	private String via;
 
 	public void setCivico(String a) {
@@ -46,11 +46,11 @@ public class PrecedenteDichiarazione extends E {
 
 		return motivo;
 	}
-	public void setUnid(int a) {
+	public void setUnid(Integer a) {
 
 		this.unid = a;
 	}
-	public int getUnid() {
+	public Integer getUnid() {
 
 		return unid;
 	}
