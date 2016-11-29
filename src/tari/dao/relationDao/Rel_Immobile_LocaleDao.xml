@@ -43,7 +43,7 @@
 		WHERE 1=1
 	</update>
 
-	<select id="loadAll" resultType="tari.model.Rel_Immobile_Locale">
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_Immobile_Locale">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />

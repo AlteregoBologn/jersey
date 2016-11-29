@@ -44,7 +44,7 @@
 		WHERE 1=1
 	</update>
 
-	<select id="loadAll" resultType="tari.model.Rel_PersGiuridica_Dichiarazion">
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_PersGiuridica_Dichiarazion">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />
