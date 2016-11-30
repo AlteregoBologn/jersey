@@ -1,12 +1,15 @@
 package tari.logic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
 import tari.model.ImmobileSearch;
+import tari.model.Locale;
+import tari.model.LocaleSearch;
 import tari.model.PersonaTari;
 import tari.model.PersonaTariSearch;
 import tari.model.PrecedenteDichiarazione;
@@ -15,16 +18,20 @@ import tari.model.relationModel.Rel_Dichiarazione_Immobile;
 import tari.model.relationModel.Rel_Dichiarazione_ImmobileSearch;
 import tari.model.relationModel.Rel_Dichiarazione_PrecDichiara;
 import tari.model.relationModel.Rel_Dichiarazione_PrecDichiaraSearch;
+import tari.model.relationModel.Rel_Immobile_Locale;
+import tari.model.relationModel.Rel_Immobile_LocaleSearch;
 import tari.model.relationModel.Rel_PersonaTari_Dichiarazione;
 import tari.model.relationModel.Rel_PersonaTari_DichiarazioneSearch;
-import tari.modelExt.DichiarazioneDiImmobile;
 import tari.modelExt.DichiarazioneDiPersonaTari;
+import tari.modelExt.ImmobileDiDichiarazione;
+import tari.modelExt.LocaleDiImmobile;
 import tari.modelExt.PersonaTariCompleta;
+import util.JACK;
 
 public class TariManagerExt extends TariManager {
 
 	public List<PersonaTariCompleta> loadPersoneTariCompleta(PersonaTariSearch ps) {
-		List<PersonaTariCompleta> ret = new ArrayList();
+		List<PersonaTariCompleta> ret = new ArrayList<PersonaTariCompleta>();
 
 		List<PersonaTari> personeTari = cercaPersonaTari(ps);
 		for (PersonaTari p : personeTari) {
@@ -33,7 +40,7 @@ public class TariManagerExt extends TariManager {
 			
 			pc.setOperation(pc.OP_UPDATE);
 			pc.setPersonaTari(p);
-			ret.add(pc);
+			ret.add(pc);					
 
 			Rel_PersonaTari_DichiarazioneSearch rpds = new Rel_PersonaTari_DichiarazioneSearch();
 			rpds.setIdpersona(p.getUnid());
@@ -49,7 +56,7 @@ public class TariManagerExt extends TariManager {
 				d.setOperation(pc.OP_UPDATE);
 				d.setDichiarazione(dichiarazioni.get(0));
 				d.setRel_Persona_Dichiarazione(rpd);
-				pc.getDichiarazioni().add(d);
+				pc.getDichiarazioniDiPersona().add(d);
 
 				Rel_Dichiarazione_ImmobileSearch rdis = new Rel_Dichiarazione_ImmobileSearch();
 				rdis.setIddichiarazione(d.getDichiarazione().getUnid());
@@ -61,11 +68,30 @@ public class TariManagerExt extends TariManager {
 					is.setUnid(rdi.getIdimmobile());
 					List<Immobile> immobile = cercaImmobile(is);
 					//
-					DichiarazioneDiImmobile di = new DichiarazioneDiImmobile();
+					ImmobileDiDichiarazione di = new ImmobileDiDichiarazione();
 					di.setOperation(pc.OP_UPDATE);
 					di.setImmobile(immobile.get(0));
 					di.setRel_Dichiarazione_Immobile(rdi);
-					pc.getDichiarazioniImmobili().add(di);
+					d.getDichiarazioniImmobili().add(di);
+					pc.getDichiarazioniDiPersona().add(d);
+					
+					Rel_Immobile_LocaleSearch rils = new Rel_Immobile_LocaleSearch();
+					rils.setIdimmobile(di.getImmobile().getUnid());
+					List<Rel_Immobile_Locale> rel_Immobile_Locale = cercaRel_Immobile_Locale(rils);
+					
+					for(Rel_Immobile_Locale ril : rel_Immobile_Locale) {
+						ril.setOperation(pc.OP_UPDATE);
+						LocaleSearch ls = new LocaleSearch();
+						ls.setUnid(ril.getIdlocale());
+						List<Locale> locali = cercaLocale(ls);
+						//
+						LocaleDiImmobile li = new LocaleDiImmobile();
+						li.setOperation(pc.OP_UPDATE);
+						li.setLocale(locali.get(0));
+						li.setRel_Immobile_Locale(ril);
+						d.getDichiarazioniImmobili().get(0).getLocaliDiImmobile().add(li);
+						pc.getDichiarazioniDiPersona().add(d);
+					}
 				}
 				
 				Rel_Dichiarazione_PrecDichiaraSearch rdps = new Rel_Dichiarazione_PrecDichiaraSearch();
@@ -82,7 +108,10 @@ public class TariManagerExt extends TariManager {
 					dpt.setOperation(pc.OP_UPDATE);
 					dpt.setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
 					dpt.setRel_Dichiarazione_PrecDichiara(rdp);
-					pc.getDichiarazioni().add(dpt);
+					//pc.getDichiarazioniDiPersona().get(0).setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
+					//pc.getDichiarazioniDiPersona().get(0).setRel_Dichiarazione_PrecDichiara(rdp);
+					pc.getDichiarazioniDiPersona().add(dpt);
+					System.out.println(pc.toString());
 				}
 			}
 		}
@@ -112,12 +141,12 @@ public class TariManagerExt extends TariManager {
 	public void savePersonaTariCompleta(PersonaTariCompleta p) {
 		if (p.isInsert() || p.isUpdate()) {
 			savePersonaTari(p.getPersonaTari());
-			for (DichiarazioneDiPersonaTari d : p.getDichiarazioni()) {
+			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
 				saveDichiarazioneDiPersonaTari(d);
 			}
 		} else if (p.isDelete()) {
 			savePersonaTari(p.getPersonaTari());
-			for (DichiarazioneDiPersonaTari d : p.getDichiarazioni()) {
+			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
 				saveDichiarazioneDiPersonaTari(d);
 			}
 		}
@@ -153,4 +182,60 @@ public class TariManagerExt extends TariManager {
 	}
 
 
+	public PersonaTariCompleta createPersonaTariCompleta(PersonaTari p) throws Exception{
+			
+		
+		PersonaTariCompleta pc=new PersonaTariCompleta();
+		pc.setPersonaTari(p);
+		
+		Dichiarazione dichiarazione1=new Dichiarazione();
+		/* TODO Inserire il setData corretto
+		 * dichiarazione1.setData(new Date());
+		 */
+		dichiarazione1.setAgricoltore("S");
+		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
+		precedenteDichiarazione1.setDataDa(new Date());
+		
+		Immobile immobile1=new Immobile();
+		immobile1.setDatada(new Date());
+		immobile1.setCivico("1");
+		
+		Locale l=new Locale();
+		
+		LocaleDiImmobile lim=new LocaleDiImmobile();
+		lim.setLocale(l);	
+
+		ImmobileDiDichiarazione di1=new ImmobileDiDichiarazione();
+		di1.setImmobile(immobile1);
+		di1.getLocaliDiImmobile().add(lim);
+		
+		Immobile immobile2=new Immobile();
+		immobile2.setDatada(new Date());
+		immobile2.setCivico("2");
+		
+		ImmobileDiDichiarazione di2=new ImmobileDiDichiarazione();
+		di2.setImmobile(immobile2);
+		
+		DichiarazioneDiPersonaTari dich1=new DichiarazioneDiPersonaTari();
+		dich1.setDichiarazione(dichiarazione1);
+		dich1.setPrecedenteDichiarazione(precedenteDichiarazione1);
+		dich1.getDichiarazioniImmobili().add(di2);
+		dich1.getDichiarazioniImmobili().add(di1);
+		
+		Dichiarazione dichiarazione2=new Dichiarazione();
+		/* TODO Inserire il setData corretto
+		 * dichiarazione2.setData(new Date());
+		 */
+		dichiarazione2.setAgricoltore("N");		
+		DichiarazioneDiPersonaTari dich2=new DichiarazioneDiPersonaTari();		
+		dich2.setDichiarazione(dichiarazione2);
+		dich2.setPrecedenteDichiarazione(null);
+		//dich2.getDichiarazioniImmobili().add(e); illegale !
+		
+		pc.getDichiarazioniDiPersona().add(dich1);
+		pc.getDichiarazioniDiPersona().add(dich2);
+		System.out.println(JACK.toJSON(pc));
+		return pc;
+	}
+	
 }

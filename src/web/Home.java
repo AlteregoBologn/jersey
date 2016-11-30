@@ -13,6 +13,7 @@ public class Home extends BasePage {
 	ManagerExt managerExt;
 
 	public Home() {
+		
 		Persona persona = MySession.get().getUtente();
 
 		PersonaCompleta pc = managerExt.loadPersonaCompleta(29);// TODO:

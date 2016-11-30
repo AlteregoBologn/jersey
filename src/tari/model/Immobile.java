@@ -1,5 +1,6 @@
 package tari.model;
 
+import java.util.Date;
 import java.util.List;
 
 import model.E;
@@ -7,7 +8,7 @@ import model.E;
 public class Immobile extends E {
 
 	private String civico;
-	private String datada;
+	private Date datada;
 	private String interno;
 	private String nomeprecedentedetentore;
 	private String nomeproprietario;
@@ -24,11 +25,11 @@ public class Immobile extends E {
 
 		return civico;
 	}
-	public void setDatada(String a) {
+	public void setDatada(Date a) {
 
 		this.datada = a;
 	}
-	public String getDatada() {
+	public Date getDatada() {
 
 		return datada;
 	}

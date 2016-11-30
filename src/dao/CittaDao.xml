@@ -12,10 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="condition">
 		WHERE 1=1
 		<if test="nomeCittaLike != null ">
-			AND NOMECITTA like #{nomeCittaLike}||'%'
+			AND UPPER(NOMECITTA) like UPPER(#{nomeCittaLike}||'%')
 		</if>
 		<if test="nomecitta != null ">
-			AND NOMECITTA = #{nomecitta}
+			AND  UPPER(NOMECITTA) = UPPER(#{nomecitta})
 		</if>
 		<if test="unid != null ">
 			AND UNID = #{unid}

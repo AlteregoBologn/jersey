@@ -63,7 +63,7 @@
 	</insert>
 	
 	<sql id="load">
-		SELECT * from T_PERSONA	
+		SELECT * from T_IMMOBILE	
 		<include refid="condition" />
 	</sql>
 	

@@ -5,7 +5,7 @@ import model.E;
 public class Locale extends E {
 
 	private String foglio;
-	private double mq;
+	private Integer mq;
 	private String particella;
 	private String subalterno;
 	private String tipo;
@@ -19,11 +19,11 @@ public class Locale extends E {
 
 		return foglio;
 	}
-	public void setMq(double a) {
+	public void setMq(Integer a) {
 
 		this.mq = a;
 	}
-	public double getMq() {
+	public Integer getMq() {
 
 		return mq;
 	}

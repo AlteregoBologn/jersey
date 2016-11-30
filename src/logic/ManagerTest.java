@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import model.Citta;
+import model.CittaSearch;
 import model.Medico;
 import model.Persona;
 import model.Rel_Medico_Ambulatorio;
@@ -44,6 +47,16 @@ public class ManagerTest
 		p.setCf("cf");
 		p.setUnid(null);
 		manager.registraPersona(p);
+	}
+	
+	@Test
+	public void testCercaCitta()
+	{
+		CittaSearch cs = new CittaSearch();
+		cs.setNomeCittaLike("bo");
+		List<Citta> ret = manager.cercaCitta(cs);
+		System.out.println(ret);
+		if(ret.isEmpty()) throw new RuntimeException("non va");
 	}
 	
 	@Test

@@ -1,17 +1,19 @@
 package tari.modelExt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.E;
+import tari.model.PersonaGiuridica;
 import tari.model.PersonaTari;
 
 public class PersonaTariCompleta extends E {
-	
 	PersonaTari personaTari;
 	
-	List<DichiarazioneDiPersonaTari> dichiarazioni;
 	
-	List<DichiarazioneDiImmobile> dichiarazioniImmobili;
+	List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona = new ArrayList<DichiarazioneDiPersonaTari>();
+	
+	
 		
 	public PersonaTari getPersonaTari() {
 		return personaTari;
@@ -19,23 +21,24 @@ public class PersonaTariCompleta extends E {
 	public void setPersonaTari(PersonaTari personaTari) {
 		this.personaTari = personaTari;
 	}
-	public List<DichiarazioneDiPersonaTari> getDichiarazioni() {
-		return dichiarazioni;
+	public List<DichiarazioneDiPersonaTari> getDichiarazioniDiPersona() {
+		return dichiarazioniDiPersona;
 	}
-	public void setDichiarazioni(List<DichiarazioneDiPersonaTari> dichiarazioni) {
-		this.dichiarazioni = dichiarazioni;
+	public void setDichiarazioniDiPersona(List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona) {
+		this.dichiarazioniDiPersona = dichiarazioniDiPersona;
 	}
-	public List<DichiarazioneDiImmobile> getDichiarazioniImmobili() {
-		return dichiarazioniImmobili;
-	}
-	public void setDichiarazioniImmobili(List<DichiarazioneDiImmobile> dichiarazioniImmobili) {
-		this.dichiarazioniImmobili = dichiarazioniImmobili;
-	}
+	
+
 	@Override
 	public String toString() {
-		return "PersonaTariCompleta [NomepersonaTari=" + personaTari.getNome() + ", "
-				+ "CognomepersonaTari=" + personaTari.getCognome() + ", dichiarazioni=" + dichiarazioni
-				+ ", dichiarazioniImmobili=" + dichiarazioniImmobili + "]";
+		return "PersonaTariCompleta [personaTari=" + personaTari.getNome() + " " + personaTari.getCognome() + 
+				", dichiarazioniDiPersona=" + dichiarazioniDiPersona.get(0).getDichiarazione() +
+				", DichiarazioniDiImmobli= "+ dichiarazioniDiPersona.get(0).getDichiarazioniImmobili().get(0).getImmobile().getVia() + " "
+				 + dichiarazioniDiPersona.get(0).getDichiarazioniImmobili().get(0).getImmobile().getCivico() + 
+				", Locali= " + dichiarazioniDiPersona.get(0).getDichiarazioniImmobili().get(0).getLocaliDiImmobile().get(0).getLocale().getTipo()	
+				+"Precedenti dichiarazioni= "+ dichiarazioniDiPersona.get(3).getPrecedenteDichiarazione().getVia() + " " +
+				 dichiarazioniDiPersona.get(3).getPrecedenteDichiarazione().getMotivo() + "]";
 	}
+
 
 }

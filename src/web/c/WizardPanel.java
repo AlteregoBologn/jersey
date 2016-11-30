@@ -2,14 +2,12 @@ package web.c;
 
 import java.util.List;
 
-import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.time.Duration;
 
 
 public class WizardPanel extends BasePanel {
@@ -32,16 +30,8 @@ public class WizardPanel extends BasePanel {
 
 		Form<?> form = new Form("form");
 
-		add(new AbstractAjaxTimerBehavior(Duration.seconds(1))
-	    {
-	        /**
-	         * @see org.apache.wicket.ajax.AbstractAjaxTimerBehavior#onTimer(org.apache.wicket.ajax.AjaxRequestTarget)
-	         */
-	        protected void onTimer(AjaxRequestTarget target)
-	        {
-	            target.add(getFeedbackPanel());
-	        }
-	    });
+		
+		
 		form.add(new ListView<Panel>("lista", panels) {
 			
 

@@ -1,5 +1,7 @@
 package tari.logic;
 
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +79,7 @@ public class TariManagerTest {
 	public void testinserisciImmobile() {
 		Immobile a = new Immobile();
 		a.setCivico("20");
-		a.setDatada("15-MAG-2016");
+		a.setDatada(new Date());
 		a.setInterno("5");
 		a.setNomeprecedentedetentore("Pippo Pappo");
 		a.setNomeproprietario("Pluto Pap");
@@ -132,7 +134,7 @@ public class TariManagerTest {
 	public void testinserisciDichiarazione() {
 		Dichiarazione a = new Dichiarazione();
 		a.setAgricoltore("false");
-		a.setData("20-DIC-2016");
+		a.setData(new Date());
 		a.setFirma("pippononsaFirmare");
 		a.setItalianoallestero("false");
 		a.setUnicooccupante("true");
@@ -166,7 +168,7 @@ public class TariManagerTest {
 	public void testinserisciPrecedenteDichiarazione() {
 		PrecedenteDichiarazione a = new PrecedenteDichiarazione();
 		a.setCivico("20");
-		a.setDatada("15-DIC-2016");
+		a.setDataDa(new Date());
 		a.setInterno("8");
 		a.setMotivo("Affitto alto");
 		a.setUnid(1);

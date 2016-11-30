@@ -8,10 +8,20 @@ public class E implements Serializable {
 	final static public String OP_DELETE = "D";
 	final static public String OP_UPDATE = "U";
 
+	boolean isNew=false;
 	Long pageFrom = 1L;
 	Long pageTo = 10L;
 	String orderBy;
-	String operation = "NOP"; // I,U,D,NOP
+	String operation = OP_INSERT; // I,U,D,NOP
+
+	
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
 
 	public Long getPageFrom() {
 		return pageFrom;

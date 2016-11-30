@@ -8,7 +8,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import tari.logic.TariManagerExt;
-import tari.modelExt.DichiarazioneDiImmobile;
+import tari.modelExt.ImmobileDiDichiarazione;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.PersonaTariCompleta;
 import web.c.BasePanel;

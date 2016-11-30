@@ -1,12 +1,35 @@
 package web.comp.registrazione;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AbstractAutoCompleteTextRenderer;
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.EmailTextField;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import logic.Manager;
 import model.Citta;
+import model.CittaSearch;
 import model.Persona;
 import web.c.BasePanel;
+import web.c.CssBeahvior;
 
 public class RegistrazionePanel extends BasePanel {
 	@Autowired
@@ -68,6 +91,7 @@ public class RegistrazionePanel extends BasePanel {
 		sesso.setRequired(true);
 		sesso.add(new CssBeahvior());
 
+		/*
 		DateTextField datanascitaField = new DateTextField("datanascita",
 				new PropertyModel<>(RegistrazionePanel.this, "persona.datanascita"),
 				new StyleDateConverter("S-", true));
@@ -77,45 +101,48 @@ public class RegistrazionePanel extends BasePanel {
 		datanascitaField.add(datePicker);
 		datanascitaField.setRequired(true);
 		datanascitaField.add(new CssBeahvior());
-		
-		final IModel<Citta> model = new PropertyModel<Citta>(
+		*/
+		final IModel<String> model = new PropertyModel<String>(RegistrazionePanel.this, "persona.comunenascita"){
 				
-					/*@Override
-					public void setObject(Citta object) {
-						super.setObject(object);
-						persona.setComunenascita(object.getNomecitta());
-					},
-					
-					new AbstractAutoCompleteTextRenderer<Citta>() {
-
 					@Override
-					protected String getTextValue(Citta object) {
-						return object.getNomecitta();
+					public void setObject(String object) {
+						super.setObject(object);
+						//persona.setComunenascita(((Citta)object).getNomecitta());
 					}
-				});
+		};
+					
+					
+		
 	
-
-		final AutoCompleteTextField<Citta> comunenascita = new AutoCompleteTextField<Citta>("comunenascita", model) {
+		final AutoCompleteTextField<String> comunenascita = new AutoCompleteTextField<String>("comunenascita", model ) {
 
 
 			@Override
-			protected Iterator<Citta> getChoices(String input) {
+			protected Iterator<String> getChoices(String input) {
+				ArrayList<String> rett=new ArrayList<String>();
 				try {
+					
+					
 					if (Strings.isEmpty(input)) {
-						List<Citta> emptyList = Collections.emptyList();
-						return emptyList.iterator();
+						return rett.iterator();
 					}
+					
 					CittaSearch cs = new CittaSearch();
 					cs.setNomeCittaLike(input);
 					List<Citta> ret = manager.cercaCitta(cs);
-					return ret.iterator();
+					
+					for(Citta c:ret){
+						rett.add(c.getNomecitta());
+					}
+					return rett.iterator();
 				} catch (Exception e) {
 					e.printStackTrace();
-					return new ArrayList<Citta>().iterator();
+					return rett.iterator();
 				}
 			}
 	
 		};
+		/*
 		comunenascita.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
 	        @Override
@@ -132,10 +159,11 @@ public class RegistrazionePanel extends BasePanel {
 	        	target.add(getFeedbackPanel());
 	        }
 	    });
+	    */
 	    form.add(comunenascita);
 	    
 		
-		form.add(nome, cognome, codFisc, email, password, sesso, datanascitaField);
+		form.add(nome, cognome, codFisc, email, password, sesso);
 
 		add(form);
 	}

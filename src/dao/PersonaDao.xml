@@ -79,7 +79,6 @@
 	<sql id="load">
 		SELECT * from T_PERSONA	
 		<include refid="condition" />
-		<!--<include refid="orderBy" /> -->
 	</sql>
 	
 	<select id="count" resultType="Integer">

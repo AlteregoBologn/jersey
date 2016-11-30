@@ -1,15 +1,19 @@
 package tari.modelExt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.E;
 import tari.model.Immobile;
 import tari.model.relationModel.Rel_Dichiarazione_Immobile;
 
-public class DichiarazioneDiImmobile extends E {
+public class ImmobileDiDichiarazione extends E {
 	
 	Immobile immobile;
 	
 	Rel_Dichiarazione_Immobile rel_Dichiarazione_Immobile;//TODO sono private?
 
+	List<LocaleDiImmobile> localiDiImmobile = new ArrayList<LocaleDiImmobile>();
 
 	public Immobile getImmobile() {
 		return immobile;
@@ -27,4 +31,13 @@ public class DichiarazioneDiImmobile extends E {
 		this.rel_Dichiarazione_Immobile = rel_Dichiarazione_Immobile;
 	}
 
+	public List<LocaleDiImmobile> getLocaliDiImmobile() {
+		return localiDiImmobile;
+	}
+
+	public void setLocaliDiImmobile(List<LocaleDiImmobile> localiDiImmobile) {
+		this.localiDiImmobile = localiDiImmobile;
+	}
+
+	
 }
