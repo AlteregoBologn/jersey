@@ -48,42 +48,46 @@ public class ManagerExtTest
 		
 		PersonaSearch ps=new PersonaSearch();
 		ps.setUnid(p.getUnid());
-		//TODO da completare il test
-		//List<PersonaCompleta>  ret=managerExt.loadPersonaCompleta(ps);
-		//if( ret.size()!=1) throw new RuntimeException("non va");
+		List<PersonaCompleta> ret = managerExt.loadPersoneCompleta(ps);
+		if (ret.isEmpty())
+			throw new RuntimeException("L'arrayList delle Persone Complete è vuoto");
+		System.out.println("L'arraylist delle Persone Complete contiene: " + ret);
 		
-		//if( !pc.equals(ret.get(0)) ) throw new RuntimeException("non va");
+		if (!pc.equals(ret.get(0)))
+			throw new RuntimeException("Le Persone Complete sono diverse");
+		System.out.println("La persona completa " +pc+ "è uguale alla persona completa dell'arraylist " +ret);
 	}
 	
 	@Test
-	public void relazionePersonaMedico() {
+	public void testscegliMedico() {
 		Medico m = new Medico();
-		m.setUnid(79);
+		m.setUnid(82);
+		Persona persona = new Persona();
+		persona.setUnid(138);
 		PersonaCompleta pc = new PersonaCompleta();
-		//pc.setPersona(persona);
-		MedicoDiPersona medicoAttivo = pc.getMedicoAttivo();
+		pc.setPersona(persona);
+		MedicoDiPersona medicoAttivo = managerExt.getMedicoAttivo(pc);
 		medicoAttivo.setMedico(m);
+		pc.getMedici().add(medicoAttivo);
 		Rel_Persona_Medico relazione=new Rel_Persona_Medico();
 		relazione.setIdmedico(m.getUnid());
 		relazione.setIdpersona(pc.getPersona().getUnid());
 		medicoAttivo.setRelazione(relazione);
-		System.out.println("Relazione:idMedico "+ relazione.getIdmedico() + " idPersona: "+ relazione.getIdpersona());
+		managerExt.inserisciRel_Persona_Medico(relazione);
+		System.out.println(medicoAttivo.toString());
 		
 	}
 	
 	@Test
-	public void salvaMedicoDiPersona(){
-		Medico m = new Medico();
-		m.setUnid(79);
-		MedicoDiPersona medicoattivo = new MedicoDiPersona();
-		medicoattivo.setMedico(m);
-		Persona p = new Persona();
-		p.setUnid(29);
-		PersonaCompleta pc = new PersonaCompleta();
-		pc.setPersona(p);
-		Rel_Persona_Medico rpm = new Rel_Persona_Medico();
-		rpm.setIdmedico(m.getUnid());
-		rpm.setIdpersona(p.getUnid());
+	public void testSalvaMedicoDiPersona(){
+		MedicoDiPersona mp = new MedicoDiPersona();
+		if(mp.isInsert()){
+			managerExt.inserisciRel_Persona_Medico(mp.getRelazione());
+		}		
 	}
 
+	
+	
+	
+	
 }

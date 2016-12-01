@@ -55,4 +55,11 @@ public class MedicoDiPersona extends E {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "MedicoDiPersona [medico=" + medico + ", relazione=" + relazione + "]";
+	}
+	
+	
 }

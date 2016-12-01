@@ -19,7 +19,6 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 	Panel editPanel;
 	Panel newEditPanel;
 	
-
 	public ListaEsenzioniDiPersonaPanel(String id, final PersonaCompleta pc) {
 		super(id);
 
@@ -31,10 +30,10 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 			@Override
 			public List<IColumn> getColumns() {
 				List<IColumn> columns = new ArrayList();
-				columns.add(new PropertyColumn(new Model("unid"), "esenzione.unid"));
-				columns.add(new PropertyColumn(new Model("descrizione"), "esenzione.descrizione"));
-				columns.add(new PropertyColumn(new Model("dataDA"), "relazione.dataDa"));
-				columns.add(new PropertyColumn(new Model("dataA"), "relazione.dataA"));
+				columns.add(new PropertyColumn(new Model("Unid"), "esenzione.unid"));
+				columns.add(new PropertyColumn(new Model("Descrizione"), "esenzione.descrizione"));
+				columns.add(new PropertyColumn(new Model("data Da"), "relazione.dataDa"));
+				columns.add(new PropertyColumn(new Model("data A"), "relazione.dataA"));
 				return columns;
 			}
 
@@ -65,7 +64,7 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 
 			@Override
 			public void onDelete(AjaxRequestTarget target, EsenzioneDiPersona esenzia) {
-				// pc.getEsenzioni().remove( object );
+				pc.getEsenzioni().remove(esenzia);
 				esenzia.setOperation(esenzia.OP_DELETE);
 				target.add(ListaEsenzioniDiPersonaPanel.this);
 			}
@@ -82,7 +81,6 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 				pc.getEsenzioni().add(esenzia);
 				target.add(ListaEsenzioniDiPersonaPanel.this);
 				setVisible(false);
-				//modale.close(target);
 			}
 
 			@Override

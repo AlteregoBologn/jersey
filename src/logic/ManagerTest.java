@@ -107,15 +107,12 @@ public class ManagerTest
 	public void testinserisciRel_Persona_Esenzione() 
 	{
 		Rel_Persona_Esenzione a = new Rel_Persona_Esenzione();
-		Date dataA = new Date();
-		dataA.setDate(10-12-2016);
-		Date dataDa = new Date();
-		dataDa.setDate(9-2-2016);
-		a.setDataA(dataA);
-		a.setDataDa(dataDa);
+		a.setDataA(new Date());
+		a.setDataDa(new Date());
 		a.setIdesenzione("2");
 		a.setIdpersona("58");
 		manager.inserisciRel_Persona_Esenzione(a);
+		System.out.println(a);
 	}
 
 	@Test
@@ -124,20 +121,18 @@ public class ManagerTest
 		Rel_Persona_Esenzione a = new Rel_Persona_Esenzione();
 		a.setIdpersona("29");
 		manager.deleteRel_Persona_Esenzione(a);
+		System.out.println(a);
 	}
 
 	@Test
 	public void testinserisciRel_Persona_Medico() {
 		Rel_Persona_Medico a = new Rel_Persona_Medico();
-		Date dateA = new Date();
-		dateA.setDate(9-9-2016);
-		Date dateDa = new Date();
-		dateDa.setDate(10-2-2016);
-		a.setDataA(dateA);
-		a.setDataDa(dateDa);
-		a.setIdmedico(17);
+		a.setDataA(new Date());
+		a.setDataDa(new Date());
+		a.setIdmedico(81);
 		a.setIdpersona(58);
 		manager.inserisciRel_Persona_Medico(a);
+		System.out.println(a);
 	}
 
 	@Test
@@ -258,4 +253,5 @@ public class ManagerTest
 		int count = manager.countMedico(ms);
 		System.out.println(count);
 	}
+	
 }

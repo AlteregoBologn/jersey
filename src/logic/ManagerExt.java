@@ -1,9 +1,8 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import javax.management.RuntimeErrorException;
 
 import model.Esenzione;
 import model.EsenzioneSearch;
@@ -20,7 +19,7 @@ import modelExt.MedicoDiPersona;
 import modelExt.PersonaCompleta;
 
 public class ManagerExt extends Manager {
-	
+
 	/************************ PERSONA *************************/
 
 	public List<PersonaCompleta> loadPersoneCompleta(PersonaSearch ps) {
@@ -52,14 +51,13 @@ public class ManagerExt extends Manager {
 			Rel_Persona_EsenzioneSearch rpes = new Rel_Persona_EsenzioneSearch();
 			rpes.setIdpersona(Integer.toString(p.getUnid()));
 			List<Rel_Persona_Esenzione> rel_Persona_Esenzione = cercaRel_Persona_Esenzione(rpes);
-			
-			for (Rel_Persona_Esenzione rpe : rel_Persona_Esenzione)
-			{
+
+			for (Rel_Persona_Esenzione rpe : rel_Persona_Esenzione) {
 				rpe.setOperation(pc.OP_UPDATE);
 				EsenzioneSearch es = new EsenzioneSearch();
 				es.setUnid(Integer.parseInt(rpes.getIdesenzione()));
 				List<Esenzione> esenzioni = cercaEsenzioni(es);
-				
+				//
 				EsenzioneDiPersona edp = new EsenzioneDiPersona();
 				edp.setOperation(pc.OP_UPDATE);
 				edp.setEsenzione(esenzioni.get(0));
@@ -69,7 +67,7 @@ public class ManagerExt extends Manager {
 		}
 		return ret;
 	}
-	
+
 	public PersonaCompleta loadPersonaCompleta(Integer unid) {
 		PersonaSearch ps = new PersonaSearch();
 		ps.setUnid(unid);
@@ -94,34 +92,66 @@ public class ManagerExt extends Manager {
 		if (p.isInsert() || p.isUpdate()) {
 			savePersona(p.getPersona());
 			for (MedicoDiPersona m : p.getMedici()) {
-				salvaMedicoDiPersona(m);
+				// salvaMedicoDiPersona(m);
 			}
 		} else if (p.isDelete()) {
 			savePersona(p.getPersona());
 			for (MedicoDiPersona m : p.getMedici()) {
-				salvaMedicoDiPersona(m);
+				// salvaMedicoDiPersona(m);
 			}
 		}
 		p.setOperation(p.OP_NOP);
 	}
-	
+
 	/************************ MEDICO DI PERSONA *************************/
-	
-	
-	
-	public void salvaMedicoDiPersona(MedicoDiPersona mp) {
-		
-		
+	/**
+	 * Torna ultimo medico scelto che ha data a null
+	 * 
+	 * @return
+	 */
+	public MedicoDiPersona getMedicoAttivo(PersonaCompleta pc) {
+		if (pc.getMedici().isEmpty()) {
+			return null;
+		}
+		for (MedicoDiPersona p : pc.getMedici()) {
+			if (p.getRelazione().getDataA() == null)
+				return p;
+		}
+		return null;
 	}
 
-	public void relazionePersonaMedico(Medico m) {
-		PersonaCompleta pc = new PersonaCompleta();
-		MedicoDiPersona medicoAttivo = pc.getMedicoAttivo();
-		medicoAttivo.setMedico(m);
-		Rel_Persona_Medico relazione=new Rel_Persona_Medico();
-		relazione.setIdmedico(m.getUnid());
-		relazione.setIdpersona(pc.getPersona().getUnid());
-		medicoAttivo.setRelazione(relazione);
-		
+	// chiude il medico precedente se esiste
+	public void chiudiMedicoAttivo(PersonaCompleta pc) {
+
+		MedicoDiPersona ultimoScelto = getMedicoAttivo(pc);
+		if (ultimoScelto != null) {
+			ultimoScelto.setOperation(ultimoScelto.OP_UPDATE);
+			ultimoScelto.getRelazione().setDataA(new Date());
+			ultimoScelto.getRelazione().setOperation(ultimoScelto.OP_UPDATE);
+		}
+
 	}
+
+	public MedicoDiPersona scegliMedico(PersonaCompleta pc, Medico m) {
+		// chiude il medico precedente se esiste
+		chiudiMedicoAttivo(pc);
+
+		// crea nuovo medico di persona con medico scelto
+		MedicoDiPersona nuovoScelto = new MedicoDiPersona();
+		nuovoScelto.setMedico(m);
+		nuovoScelto.setOperation(nuovoScelto.OP_INSERT);
+
+		Rel_Persona_Medico relazione = new Rel_Persona_Medico();
+		relazione.setIdpersona((pc.getPersona().getUnid()));
+		relazione.setIdmedico(m.getUnid());
+		relazione.setDataDa(new Date());
+		relazione.setDataA(null);
+		relazione.setOperation(relazione.OP_INSERT);
+		nuovoScelto.setRelazione(relazione);
+
+		pc.getMedici().add(nuovoScelto);
+
+		return nuovoScelto;
+	}
+
 }

@@ -37,6 +37,8 @@ import model.Rel_Persona_Visita;
 import model.Rel_Prescrizione_Farmaco;
 import model.Rel_Prescrizione_Prestazione;
 import model.Rel_Visita_Prestazione;
+import modelExt.MedicoDiPersona;
+import modelExt.PersonaCompleta;
 import web.MySession;
 
 public class Manager {
@@ -139,6 +141,12 @@ public class Manager {
 		medicoDao.delete(m);
 	}
 
+	public void aggiornaMedico(Medico m){
+		MedicoDiPersona mp = new MedicoDiPersona();
+		mp.setMedico(m);
+		
+	}
+	
 	public Integer countMedico(MedicoSearch ms) {
 		return medicoDao.count(ms);
 	}
@@ -153,6 +161,10 @@ public class Manager {
 
 	public void inserisciRel_Persona_Medico(Rel_Persona_Medico a) {
 		relPersonaMedicoDao.insert(a);
+	}
+	
+	public void aggiornaRel_Persona_Medico(Rel_Persona_Medico a) {
+		relPersonaMedicoDao.update(a);
 	}
 
 	public void deleteRel_Persona_Medico(Rel_Persona_Medico a) {
@@ -170,9 +182,8 @@ public class Manager {
 		} else {
 			throw new RuntimeException("Medico con CF " + m.getCf() + " esiste già");
 		}
-
 	}
-
+	
 	/************************* ESENZIONE *************************/
 
 	public void inserisciRel_Persona_Esenzione(Rel_Persona_Esenzione a) {
@@ -252,8 +263,5 @@ public class Manager {
 		return "1.0.0";
 	}
 
-	public void aggiornaMedico(Medico m) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

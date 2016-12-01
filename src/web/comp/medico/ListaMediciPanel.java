@@ -6,15 +6,19 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import logic.Manager;
+import logic.ManagerExt;
 import model.Medico;
 import model.MedicoSearch;
+import model.Rel_Persona_Medico;
 import modelExt.EsenzioneDiPersona;
+import modelExt.MedicoDiPersona;
 import modelExt.PersonaCompleta;
 import web.c.BasePanel;
 import web.c.Grid;
@@ -30,21 +34,19 @@ public class ListaMediciPanel extends BasePanel {
 	Panel newEditPanel;
 	MedicoSearch search=new MedicoSearch();
 	
-	public ListaMediciPanel(String id) {
+	public ListaMediciPanel(String id, final PersonaCompleta pc) {
 		super(id);
-		
+		setOutputMarkupId(true);
 
 		add(new Grid<Medico>("lista") {
-
+			
 			@Override
 			public List<IColumn> getColumns() {
 				List<IColumn> columns = new ArrayList();
-				columns.add(new PropertyColumn(new Model("unid"), "medico.unid"));
-				columns.add(new PropertyColumn(new Model("nome"), "medico.nome"));
-				columns.add(new PropertyColumn(new Model("cognome"), "medico.cognome"));
-				columns.add(new PropertyColumn(new Model("cf"), "medico.cf"));
-				columns.add(new PropertyColumn(new Model("dataDa"), "relazione.dataDa"));
-				columns.add(new PropertyColumn(new Model("dataA"), "relazione.dataA"));
+				columns.add(new PropertyColumn(new Model("unid"), "unid"));
+				columns.add(new PropertyColumn(new Model("nome"), "nome"));
+				columns.add(new PropertyColumn(new Model("cognome"), "cognome"));
+				columns.add(new PropertyColumn(new Model("cf"), "cf"));
 				return columns;
 			}
 
@@ -57,68 +59,34 @@ public class ListaMediciPanel extends BasePanel {
 			public long getSize() {
 				return manager.countMedico(search);
 			}
-
-			@Override
-			public void onEdit(AjaxRequestTarget target, Medico m) {
-				editPanel.replaceWith(getEditPanel(target, m, false));
-				target.add(ListaMediciPanel.this);
-				editPanel = newEditPanel;
-			}
 			
 			@Override
-			public void onSelect(AjaxRequestTarget target, Medico m) {
+			public void onSelect(AjaxRequestTarget target, Medico medico) {
+				onScegliMedico(target,medico);
+//				MedicoDiPersona mdp = new MedicoDiPersona();
+//				mdp.setMedico(medico);
+//				pc.getMedici().add(mdp);
+//				mdp.setOperation(medico.OP_INSERT);
+//				System.out.println(mdp.getOperation());
 				target.add(ListaMediciPanel.this);
-				onScegliMedico(target, m);
+				
 			}
 
 			@Override
-			public void onNew(AjaxRequestTarget target) {
-				Medico m = new Medico();
-				editPanel.replaceWith(getEditPanel(target, m,  true));
-				target.add(ListaMediciPanel.this);
-				editPanel = newEditPanel;
-			}
-
-			@Override
-			public void onDelete(AjaxRequestTarget target, Medico m) {
+			public void onDelete(AjaxRequestTarget target, Medico medico) {
+				MedicoDiPersona medicoAttivo = new MedicoDiPersona();
+				medicoAttivo.setMedico(medico);
+				pc.getMedici().remove(medicoAttivo);
+				medicoAttivo.setOperation(medico.OP_DELETE);
+				System.out.println(medicoAttivo.toString());
 				target.add(ListaMediciPanel.this);
 			}
 		});
 
 	}
-
-	private Panel getEditPanel(AjaxRequestTarget target, Medico m, boolean onNew) {
-		Panel p = new MedicoEditPanel("edit", m, onNew) {
-
-			@Override
-			public void onSalva(AjaxRequestTarget target, Medico m) {
-				manager.aggiornaMedico(m);
-				setVisible(false);
-				target.add(ListaMediciPanel.this);
-			}
-
-			@Override
-			public void onAggiorna(AjaxRequestTarget target, Medico esenzia) {
-				m.setCanc("S");
-				manager.aggiornaMedico(m);
-				target.add(ListaMediciPanel.this);
-				setVisible(false);
-			}
-
-			@Override
-			public void onAnnulla(AjaxRequestTarget target, Medico esenzia) {
-				target.add(ListaMediciPanel.this);
-				setVisible(false);
-			}
-		};
-		newEditPanel = p;
-		
-		return p;
 	
-	}
-	
-	public void onScegliMedico(AjaxRequestTarget t,Medico m) {
-		
+	public void onScegliMedico(AjaxRequestTarget target, Medico medico) {
+
 	}
 
 }
