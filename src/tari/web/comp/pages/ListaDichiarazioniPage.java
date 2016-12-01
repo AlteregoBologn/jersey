@@ -5,7 +5,7 @@ import web.BasePage;
 
 public class ListaDichiarazioniPage extends BasePage {
 
-	public ListaDichiarazioniPage () {
+	public ListaDichiarazioniPage () throws Exception {
 
 		add(new ListaDichiarazioniPanel("listaDichiarazioni"));
 	}

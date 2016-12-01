@@ -7,7 +7,7 @@ import model.E;
 public class Dichiarazione extends E {
 
 	private String agricoltore;
-	private String data;// TODO trasformare in Date
+	private Date data;// TODO trasformare in Date
 	private String firma;
 	private String italianoallestero;
 	private String unicooccupante;
@@ -23,12 +23,12 @@ public class Dichiarazione extends E {
 		return agricoltore;
 	}
 
-	public void setData(String a) {
+	public void setData(Date a) {
 
 		this.data = a;
 	}
 
-	public String getData() {
+	public Date getData() {
 
 		return data;
 	}

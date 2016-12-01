@@ -9,7 +9,7 @@ import model.E;
 public class PrecedenteDichiarazione extends E {
 
 	private String civico;
-	private String datada;// TODO rivedere tipo per interfaccia
+	private Date datada;// TODO rivedere tipo per interfaccia
 	private String interno;
 	private String motivo;
 	private Integer unid;
@@ -25,12 +25,12 @@ public class PrecedenteDichiarazione extends E {
 		return civico;
 	}
 
-	public void setDataDa(String a) {
+	public void setDataDa(Date a) {
 
 		this.datada = a;
 	}
 
-	public String getDataDa() {
+	public Date getDataDa() {
 
 		return datada;
 	}

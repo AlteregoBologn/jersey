@@ -60,4 +60,12 @@ public class DichiarazioneDiPersonaTari extends E {
 	public void setDichiarazioniImmobili(List<ImmobileDiDichiarazione> dichiarazioniImmobili) {
 		this.dichiarazioniImmobili = dichiarazioniImmobili;
 	}
+
+	@Override
+	public String toString() {
+		return "DichiarazioneDiPersonaTari [dichiarazione=" + dichiarazione + ", precedenteDichiarazione="
+				+ precedenteDichiarazione + ", dichiarazioniImmobili=" + dichiarazioniImmobili
+				+ ", rel_Dichiarazione_PrecDichiara=" + rel_Dichiarazione_PrecDichiara + ", rel_Persona_Dichiarazione="
+				+ rel_Persona_Dichiarazione + "]";
+	}
 }

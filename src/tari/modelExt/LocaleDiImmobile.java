@@ -25,7 +25,5 @@ public class LocaleDiImmobile extends E {
 	public void setRel_Immobile_Locale(Rel_Immobile_Locale rel_Immobile_Locale) {
 		this.rel_Immobile_Locale = rel_Immobile_Locale;
 	}
-	
-	
 
 }

@@ -6,40 +6,6 @@ header {
 	display: flex;
 	justify-content: space-between;	
 }
-/*
-.navbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #dddddd;
-}
-#logo {
-    display: flex;
-    justify-content: center;
-    width: 2em;
-}
-
-#logo img {
-    height: 6em;
-}
-.navbar a {
-    float: left;
-    border-right: 1px solid #bbb;
-}
-
-.navbar a {
-    display: block;
-    color: blue;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-.navbar a:last-child {
-    border-right: none;
-}
-*/
 .glyphicon {
 	margin: 2em 0 2em 0;
 }

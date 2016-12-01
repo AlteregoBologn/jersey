@@ -46,9 +46,9 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	
 	<bean id="managerExt" class="logic.ManagerExt" />
 	
-	<bean id="TariManager" class="tari.logic.TariManager" />
+	<bean id="tariManager" class="tari.logic.TariManager" />
 	
-	<bean id="TariManagerExt" class="tari.logic.TariManagerExt" />
+	<bean id="tariManagerExt" class="tari.logic.TariManagerExt" />
 	
 	<bean id="printerManager" class="stampe.PrinterManager" />
 	

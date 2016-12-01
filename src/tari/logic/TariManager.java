@@ -92,6 +92,10 @@ public class TariManager {
 	{
 		immobileDao.insert(a);
 	}
+	public void updateImmobile(Immobile a)
+	{
+		immobileDao.update(a);
+	}
 	public List<Immobile> cercaImmobile(ImmobileSearch as) {
 		return immobileDao.loadAll(as);
 	}
@@ -102,6 +106,11 @@ public class TariManager {
 	public void inserisciLocale(Locale a)
 	{
 		localeDao.insert(a);
+	}
+	
+	public void updateLocale(Locale a)
+	{
+		localeDao.update(a);
 	}
 
 	public List<Locale> cercaLocale(LocaleSearch as) {
@@ -139,7 +148,9 @@ public class TariManager {
 	public List<PrecedenteDichiarazione> cercaPrecedenteDichiarazione(PrecedenteDichiarazioneSearch as) {
 		return precedentedichiarazioneDao.loadAll(as);
 	}
-
+	public void updatePrecedenteDichiarazione(PrecedenteDichiarazione a) {
+		precedentedichiarazioneDao.update(a);
+	}
 	public void deletePrecedenteDichiarazione(PrecedenteDichiarazione a) {
 		precedentedichiarazioneDao.delete(a);
 	}

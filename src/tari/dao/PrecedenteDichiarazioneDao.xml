@@ -29,6 +29,10 @@
 		</if>
 	</sql>
 	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT
+			seq.nextval from dual
+		</selectKey>
 		insert into T_PRECEDENTEDICHIARAZIONE (
 		CIVICO,
 		DATADA,

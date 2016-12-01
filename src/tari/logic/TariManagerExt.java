@@ -40,82 +40,10 @@ public class TariManagerExt extends TariManager {
 			
 			pc.setOperation(pc.OP_UPDATE);
 			pc.setPersonaTari(p);
-			ret.add(pc);					
-
-			Rel_PersonaTari_DichiarazioneSearch rpds = new Rel_PersonaTari_DichiarazioneSearch();
-			rpds.setIdpersona(p.getUnid());
-			List<Rel_PersonaTari_Dichiarazione> rel_Persona_Dichiarazione = cercaRel_Persona_Dichiarazione(rpds);
-
-			for (Rel_PersonaTari_Dichiarazione rpd : rel_Persona_Dichiarazione) {
-				rpd.setOperation(pc.OP_UPDATE);
-				DichiarazioneSearch ds = new DichiarazioneSearch();
-				ds.setUnid(rpd.getIddichiarazione());
-				List<Dichiarazione> dichiarazioni = cercaDichiarazione(ds);
-				//
-				DichiarazioneDiPersonaTari d = new DichiarazioneDiPersonaTari();
-				d.setOperation(pc.OP_UPDATE);
-				d.setDichiarazione(dichiarazioni.get(0));
-				d.setRel_Persona_Dichiarazione(rpd);
-				pc.getDichiarazioniDiPersona().add(d);
-
-				Rel_Dichiarazione_ImmobileSearch rdis = new Rel_Dichiarazione_ImmobileSearch();
-				rdis.setIddichiarazione(d.getDichiarazione().getUnid());
-				List<Rel_Dichiarazione_Immobile> rel_Dichiarazione_Immobile = cercarel_Dichiarazione_Immobile(rdis);
-
-				for (Rel_Dichiarazione_Immobile rdi : rel_Dichiarazione_Immobile) {
-					rdi.setOperation(pc.OP_UPDATE);
-					ImmobileSearch is = new ImmobileSearch();
-					is.setUnid(rdi.getIdimmobile());
-					List<Immobile> immobile = cercaImmobile(is);
-					//
-					ImmobileDiDichiarazione di = new ImmobileDiDichiarazione();
-					di.setOperation(pc.OP_UPDATE);
-					di.setImmobile(immobile.get(0));
-					di.setRel_Dichiarazione_Immobile(rdi);
-					d.getDichiarazioniImmobili().add(di);
-					pc.getDichiarazioniDiPersona().add(d);
-					
-					Rel_Immobile_LocaleSearch rils = new Rel_Immobile_LocaleSearch();
-					rils.setIdimmobile(di.getImmobile().getUnid());
-					List<Rel_Immobile_Locale> rel_Immobile_Locale = cercaRel_Immobile_Locale(rils);
-					
-					for(Rel_Immobile_Locale ril : rel_Immobile_Locale) {
-						ril.setOperation(pc.OP_UPDATE);
-						LocaleSearch ls = new LocaleSearch();
-						ls.setUnid(ril.getIdlocale());
-						List<Locale> locali = cercaLocale(ls);
-						//
-						LocaleDiImmobile li = new LocaleDiImmobile();
-						li.setOperation(pc.OP_UPDATE);
-						li.setLocale(locali.get(0));
-						li.setRel_Immobile_Locale(ril);
-						d.getDichiarazioniImmobili().get(0).getLocaliDiImmobile().add(li);
-						pc.getDichiarazioniDiPersona().add(d);
-					}
-				}
-				
-				Rel_Dichiarazione_PrecDichiaraSearch rdps = new Rel_Dichiarazione_PrecDichiaraSearch();
-				rdps.setIddichiarazione(d.getDichiarazione().getUnid());
-				List<Rel_Dichiarazione_PrecDichiara> rel_Dichiarazione_PrecDichiara = cercaRel_Dichiarazione_PrecDichiara(rdps);
-
-				for (Rel_Dichiarazione_PrecDichiara rdp : rel_Dichiarazione_PrecDichiara) {
-					rdp.setOperation(pc.OP_UPDATE);
-					PrecedenteDichiarazioneSearch pds = new PrecedenteDichiarazioneSearch();
-					pds.setUnid(rdp.getIdprecedentedichiarazione());
-					List<PrecedenteDichiarazione> precedenteDichiarazione = cercaPrecedenteDichiarazione(pds);
-					//
-					DichiarazioneDiPersonaTari dpt = new DichiarazioneDiPersonaTari();
-					dpt.setOperation(pc.OP_UPDATE);
-					dpt.setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
-					dpt.setRel_Dichiarazione_PrecDichiara(rdp);
-					//pc.getDichiarazioniDiPersona().get(0).setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
-					//pc.getDichiarazioniDiPersona().get(0).setRel_Dichiarazione_PrecDichiara(rdp);
-					pc.getDichiarazioniDiPersona().add(dpt);
-					System.out.println(pc.toString());
-				}
-			}
+			loadDichiarazioniDiPersonaTari(p, pc);
+			ret.add(pc);
 		}
-		return ret;
+		return ret;		
 	}
 
 	public PersonaTariCompleta loadPersonaTariCompleta(Integer unid) {
@@ -142,18 +70,49 @@ public class TariManagerExt extends TariManager {
 		if (p.isInsert() || p.isUpdate()) {
 			savePersonaTari(p.getPersonaTari());
 			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
-				saveDichiarazioneDiPersonaTari(d);
+				saveDichiarazioneDiPersonaTari(d, p);
+				
 			}
 		} else if (p.isDelete()) {
 			savePersonaTari(p.getPersonaTari());
 			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
-				saveDichiarazioneDiPersonaTari(d);
+				saveDichiarazioneDiPersonaTari(d, p);
 			}
 		}
 		p.setOperation(p.OP_NOP);
 	}
 
-	/***** DICHIRAZIONE DI PERSONATARI ****/	
+	/***** DICHIARAZIONE DI PERSONATARI ****/	
+	
+	public void loadDichiarazioniDiPersonaTari (PersonaTari p, PersonaTariCompleta pc) {
+		
+		Rel_PersonaTari_DichiarazioneSearch rpds = new Rel_PersonaTari_DichiarazioneSearch();
+		rpds.setIdpersona(p.getUnid());
+		List<Rel_PersonaTari_Dichiarazione> rel_Persona_Dichiarazione = cercaRel_Persona_Dichiarazione(rpds);
+		
+		// TODO gestire meglio l'errore
+		if (rel_Persona_Dichiarazione.isEmpty()) {
+			new RuntimeException("nessuna dichiarazione corrispondente tra i due");
+		} 
+		else {
+
+		for (Rel_PersonaTari_Dichiarazione rpd : rel_Persona_Dichiarazione) {
+			rpd.setOperation(pc.OP_UPDATE);
+			DichiarazioneSearch ds = new DichiarazioneSearch();
+			ds.setUnid(rpd.getIddichiarazione());
+			List<Dichiarazione> dichiarazioni = cercaDichiarazione(ds);
+
+			DichiarazioneDiPersonaTari d = new DichiarazioneDiPersonaTari();
+			d.setOperation(pc.OP_UPDATE);
+			d.setDichiarazione(dichiarazioni.get(0));
+			d.setRel_Persona_Dichiarazione(rpd);
+			pc.getDichiarazioniDiPersona().add(d);
+			loadImmobileDiDichiarazione(d, pc);
+			loadPrecedenteDichiarazioneDiDichiarazione(d, pc);
+		}
+		}
+		
+	}
 
 	private void saveDichiarazione(Dichiarazione d) {
 		if (d.isInsert()) {
@@ -165,23 +124,158 @@ public class TariManagerExt extends TariManager {
 		}
 	}
 
-	public void saveDichiarazioneDiPersonaTari(DichiarazioneDiPersonaTari mp) {
+	public void saveDichiarazioneDiPersonaTari(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc) {
+		
 		if (mp.isInsert()) {
 			Rel_PersonaTari_Dichiarazione rpd = new Rel_PersonaTari_Dichiarazione();
+			saveDichiarazione(mp.getDichiarazione());
 			rpd.setIddichiarazione(mp.getDichiarazione().getUnid());
+			rpd.setIdpersona(pc.getPersonaTari().getUnid());			
 			inserisciRel_Persona_Dichiarazione(rpd);
-		} else if (mp.isUpdate()) {
-
-		} else if (mp.isDelete()) {
-
-		} else if (mp.isNop()) {
-
+			saveImmobileDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp, pc);
 		}
+	}
+	
+	/***** IMMOBILE DI DICHIARAZIONE ****/	
+	public void loadImmobileDiDichiarazione (DichiarazioneDiPersonaTari d, PersonaTariCompleta pc){
+		Rel_Dichiarazione_ImmobileSearch rdis = new Rel_Dichiarazione_ImmobileSearch();
+		rdis.setIddichiarazione(d.getDichiarazione().getUnid());
+		List<Rel_Dichiarazione_Immobile> rel_Dichiarazione_Immobile = cercarel_Dichiarazione_Immobile(rdis);
 
-
+		for (Rel_Dichiarazione_Immobile rdi : rel_Dichiarazione_Immobile) {
+			rdi.setOperation(pc.OP_UPDATE);
+			ImmobileSearch is = new ImmobileSearch();
+			is.setUnid(rdi.getIdimmobile());
+			List<Immobile> immobile = cercaImmobile(is);
+			// TODO gestire meglio l'errore
+			if (immobile.isEmpty()) {
+					immobile.get(0).setNomeproprietario("Nessun immobile corrispondente, è illegale");
+			}
+			ImmobileDiDichiarazione di = new ImmobileDiDichiarazione();
+			di.setOperation(pc.OP_UPDATE);
+			di.setImmobile(immobile.get(0));
+			di.setRel_Dichiarazione_Immobile(rdi);
+			d.getDichiarazioniImmobili().add(di);
+			loadLocaleDiImmobile(d, pc, di);
+		}
+	}
+	
+	public void saveImmobile(Immobile i){
+		if (i.isInsert()) {
+			inserisciImmobile(i);
+		} else if (i.isUpdate()) {
+			updateImmobile(i);
+		} else if (i.isDelete()) {
+			deleteImmobile(i);
+		}
 	}
 
+	public void saveImmobileDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc) {
+		
+		if (pc.isInsert()) {
+			Rel_Dichiarazione_Immobile rdi = new Rel_Dichiarazione_Immobile();
+				for (ImmobileDiDichiarazione idd : mp.getDichiarazioniImmobili()) {
+					saveImmobile(idd.getImmobile());
+					rdi.setIdimmobile(idd.getImmobile().getUnid());
+					rdi.setIddichiarazione(mp.getDichiarazione().getUnid());					
+					inseriscirel_Dichiarazione_Immobile(rdi);
+					saveLocaleDiImmobile(idd);									
+				}
+		} 
+	}
+	/***** LOCALE DI IMMOBILE ****/	
+	public void loadLocaleDiImmobile (DichiarazioneDiPersonaTari d, PersonaTariCompleta pc, ImmobileDiDichiarazione di){
+		
+		Rel_Immobile_LocaleSearch rils = new Rel_Immobile_LocaleSearch();
+		rils.setIdimmobile(di.getImmobile().getUnid());
+		List<Rel_Immobile_Locale> rel_Immobile_Locale = cercaRel_Immobile_Locale(rils);
+		
+		for(Rel_Immobile_Locale ril : rel_Immobile_Locale) {
+			ril.setOperation(pc.OP_UPDATE);
+			LocaleSearch ls = new LocaleSearch();
+			ls.setUnid(ril.getIdlocale());
+			List<Locale> locali = cercaLocale(ls);
+			//TODO gestire meglio l'errore
+			if (locali.isEmpty()) {
+					locali.get(0).setParticella("Nessun locale corrispondente, è illegale se c'è l'immobile");
+			}
+			LocaleDiImmobile li = new LocaleDiImmobile();
+			li.setOperation(pc.OP_UPDATE);
+			li.setLocale(locali.get(0));
+			li.setRel_Immobile_Locale(ril);
+			d.getDichiarazioniImmobili().get(0).getLocaliDiImmobile().add(li);
+		}
+	}
+	
+	public void saveLocale(Locale l){
+		if ( l.isInsert()) {
+			inserisciLocale(l);
+		} else if (l.isUpdate()) {
+			updateLocale(l);
+		} else if (l.isDelete()) {
+			deleteLocale(l);
+		}
+	}
+	
+	public void saveLocaleDiImmobile(ImmobileDiDichiarazione idd){
+		if (idd.isInsert()) {
+			Rel_Immobile_Locale ril = new Rel_Immobile_Locale();
+			for (LocaleDiImmobile ldi : idd.getLocaliDiImmobile()) {
+				saveLocale(ldi.getLocale());
+				ril.setIdlocale(ldi.getLocale().getUnid());
+				ril.setIdimmobile(idd.getImmobile().getUnid());				
+				inserisciRel_Immobile_Locale(ril);
+			}			
+		}
+	}
+	/***** PRECEDENTEDICHIARAZIONE DI DICHIARAZIONE****/	
+	public void loadPrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari d, PersonaTariCompleta pc){
+		Rel_Dichiarazione_PrecDichiaraSearch rdps = new Rel_Dichiarazione_PrecDichiaraSearch();
+		rdps.setIddichiarazione(d.getDichiarazione().getUnid());
+		List<Rel_Dichiarazione_PrecDichiara> rel_Dichiarazione_PrecDichiara = cercaRel_Dichiarazione_PrecDichiara(rdps);
 
+		for (Rel_Dichiarazione_PrecDichiara rdp : rel_Dichiarazione_PrecDichiara) {
+			rdp.setOperation(pc.OP_UPDATE);
+			PrecedenteDichiarazioneSearch pds = new PrecedenteDichiarazioneSearch();
+			pds.setUnid(rdp.getIdprecedentedichiarazione());
+			List<PrecedenteDichiarazione> precedenteDichiarazione = cercaPrecedenteDichiarazione(pds);
+			
+			// TODO gestire meglio l'errore
+			if (precedenteDichiarazione.isEmpty()) {
+					precedenteDichiarazione.get(0).setMotivo("Nessun precedente dichiarazione corrispondente, auguri per la nuova casa");
+			}
+			
+			DichiarazioneDiPersonaTari dpt = new DichiarazioneDiPersonaTari();
+			d.setOperation(pc.OP_UPDATE);
+			d.setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
+			d.setRel_Dichiarazione_PrecDichiara(rdp);
+			System.out.println(pc.toString());
+		}
+	}
+	
+	public void savePrecedenteDichiarazione(PrecedenteDichiarazione pd) {
+		if (pd.isInsert()) {
+			inserisciPrecedenteDichiarazione(pd);
+		} else if (pd.isUpdate()) {
+			updatePrecedenteDichiarazione(pd);
+		} else if (pd.isDelete()) {
+			deletePrecedenteDichiarazione(pd);
+		}
+	}
+	
+	public void savePrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc){
+		if (pc.isInsert()) {
+			Rel_Dichiarazione_PrecDichiara rdpd = new Rel_Dichiarazione_PrecDichiara();
+			for (DichiarazioneDiPersonaTari dpt : pc.getDichiarazioniDiPersona()) {
+				savePrecedenteDichiarazione(dpt.getPrecedenteDichiarazione());
+				rdpd.setIddichiarazione(dpt.getDichiarazione().getUnid());
+				rdpd.setIdprecedentedichiarazione(dpt.getPrecedenteDichiarazione().getUnid());				
+				inserisciRel_Dichiarazione_PrecDichiara(rdpd);
+			}			
+		}
+	}
+	/***** CREAZIONE DI PERSONATARICOMPLETA ****/	
 	public PersonaTariCompleta createPersonaTariCompleta(PersonaTari p) throws Exception{
 			
 		
