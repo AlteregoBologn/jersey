@@ -67,7 +67,6 @@ public class ListaMediciPanel extends BasePanel {
 			
 			@Override
 			public void onSelect(AjaxRequestTarget target, Medico m) {
-				
 				target.add(ListaMediciPanel.this);
 				onScegliMedico(target, m);
 			}
@@ -82,7 +81,6 @@ public class ListaMediciPanel extends BasePanel {
 
 			@Override
 			public void onDelete(AjaxRequestTarget target, Medico m) {
-				
 				target.add(ListaMediciPanel.this);
 			}
 		});
@@ -103,14 +101,12 @@ public class ListaMediciPanel extends BasePanel {
 			public void onAggiorna(AjaxRequestTarget target, Medico esenzia) {
 				m.setCanc("S");
 				manager.aggiornaMedico(m);
-				
 				target.add(ListaMediciPanel.this);
 				setVisible(false);
 			}
 
 			@Override
 			public void onAnnulla(AjaxRequestTarget target, Medico esenzia) {
-				
 				target.add(ListaMediciPanel.this);
 				setVisible(false);
 			}

@@ -2,8 +2,6 @@ package web.comp.medico;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
@@ -32,11 +30,11 @@ public class ScegliMedicoDiPersonaPanel extends BasePanel {
 		
 		medicoAttivo = pc.getMedicoAttivo();
 	
-		form.add(new TextField<>("nome", new PropertyModel<>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.medico.nome")));
-		form.add(new TextField<>("cognome", new PropertyModel<>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.medico.cognome")));
-		form.add(new TextField<>("cf", new PropertyModel<>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.medico.cf")));		
-		form.add(new TextField<>("dataA", new PropertyModel<>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.relazione.dataA")));
-		form.add(new TextField<>("dataDa", new PropertyModel<>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.relazione.dataDa")));
+		form.add(new TextField<>("nome", new PropertyModel<String>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.medico.nome")));
+		//form.add(new TextField<>("cognome", new PropertyModel<String>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.cognome")));
+		//form.add(new TextField<>("cf", new PropertyModel<String>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.medico.cf")));		
+		//form.add(new TextField<>("dataA", new PropertyModel<String>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.relazione.dataA")));
+		//form.add(new TextField<>("dataDa", new PropertyModel<String>(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.relazione.dataDa")));
 
 		AjaxButton scegli = new AjaxButton("scegli") {
 			@Override

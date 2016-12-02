@@ -49,7 +49,8 @@ public class TariManagerExtTest {
 		
 		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
 		precedenteDichiarazione1.setDataDa(new Date());
-		precedenteDichiarazione1.setUnid(null);
+		precedenteDichiarazione1.setInterno("8");
+		precedenteDichiarazione1.setCivico("12/5");
 		
 		Immobile immobile1=new Immobile();
 		immobile1.setDatada(new Date());
@@ -81,13 +82,20 @@ public class TariManagerExtTest {
 		
 		Dichiarazione dichiarazione2=new Dichiarazione();
 		dichiarazione2.setData(new Date());
-		dichiarazione2.setAgricoltore("N");	
+		dichiarazione2.setAgricoltore("N");			
+		
+		Immobile immobile3=new Immobile();
+		immobile3.setDatada(new Date());
+		immobile3.setCivico("15");
+		immobile3.setInterno("1");
+		
+		ImmobileDiDichiarazione di3=new ImmobileDiDichiarazione();
+		di3.setImmobile(immobile3);
 		
 		DichiarazioneDiPersonaTari dich2=new DichiarazioneDiPersonaTari();		
 		dich2.setDichiarazione(dichiarazione2);
-		PrecedenteDichiarazione precDich2 = new PrecedenteDichiarazione();
-		precDich2.setInterno("5");
-		dich2.setPrecedenteDichiarazione(precDich2);
+		dich2.getDichiarazioniImmobili().add(di3);
+		//dich2.setPrecedenteDichiarazione(null);
 		//dich2.getDichiarazioniImmobili().add(e); illegale !
 		
 		pc.getDichiarazioniDiPersona().add(dich1);
@@ -116,8 +124,6 @@ public class TariManagerExtTest {
 		 *  
 		 * if( !pcFound.equals(pc) ) throw new RuntimeException("nonva");
 		 */
-		
-		
 	}
 
 	

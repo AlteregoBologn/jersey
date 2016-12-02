@@ -21,11 +21,10 @@ public class ListaDichiarazioniPanel extends BasePanel {
 		
 		Form form = new Form("form");
 		
-		PersonaTariCompleta personaCompleta = tariManagerExt.loadPersonaTariCompleta(244);// TODO: persona.getUnid());
+		PersonaTariCompleta personaCompleta = tariManagerExt.loadPersonaTariCompleta(430);// TODO: persona.getUnid());
 		
 		form.add(new Label("personaCompleta", JACK.toJSON(personaCompleta)));
-		//form.add(new Label("dichiarazioni", personaCompleta.getDichiarazioni().get(0)));
-		//form.add(new Label("dichiarazioniImmobile", personaCompleta.getDichiarazioniImmobili().get(0)));
+
 		add(form);
 	}
 }

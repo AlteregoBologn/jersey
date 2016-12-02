@@ -272,7 +272,7 @@ public class TariManagerTest {
 	public void testupdateRel_Dichiarazione_PrecDichiara() {
 		Rel_Dichiarazione_PrecDichiara a = new Rel_Dichiarazione_PrecDichiara();
 		a.setIddichiarazione(1);
-		a.setIdprecedentedichiarazione(3);
+		a.setIdPrecedenteDichiarazione(3);
 		tariManager.updateRel_Dichiarazione_PrecDichiara(a);
 	}
 
@@ -280,7 +280,7 @@ public class TariManagerTest {
 	public void testdeleteRel_Dichiarazione_PrecDichiara() {
 		Rel_Dichiarazione_PrecDichiara a = new Rel_Dichiarazione_PrecDichiara();
 		a.setIddichiarazione(1);
-		a.setIdprecedentedichiarazione(1);
+		a.setIdPrecedenteDichiarazione(1);
 		tariManager.deleteRel_Dichiarazione_PrecDichiara(a);
 	}
 

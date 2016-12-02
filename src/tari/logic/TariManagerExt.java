@@ -148,10 +148,7 @@ public class TariManagerExt extends TariManager {
 			ImmobileSearch is = new ImmobileSearch();
 			is.setUnid(rdi.getIdimmobile());
 			List<Immobile> immobile = cercaImmobile(is);
-			// TODO gestire meglio l'errore
-			if (immobile.isEmpty()) {
-					immobile.get(0).setNomeproprietario("Nessun immobile corrispondente, è illegale");
-			}
+			// 
 			ImmobileDiDichiarazione di = new ImmobileDiDichiarazione();
 			di.setOperation(pc.OP_UPDATE);
 			di.setImmobile(immobile.get(0));
@@ -238,14 +235,9 @@ public class TariManagerExt extends TariManager {
 		for (Rel_Dichiarazione_PrecDichiara rdp : rel_Dichiarazione_PrecDichiara) {
 			rdp.setOperation(pc.OP_UPDATE);
 			PrecedenteDichiarazioneSearch pds = new PrecedenteDichiarazioneSearch();
-			pds.setUnid(rdp.getIdprecedentedichiarazione());
+			pds.setUnid(rdp.getIdPrecedenteDichiarazione());
 			List<PrecedenteDichiarazione> precedenteDichiarazione = cercaPrecedenteDichiarazione(pds);
-			
-			// TODO gestire meglio l'errore
-			if (precedenteDichiarazione.isEmpty()) {
-					precedenteDichiarazione.get(0).setMotivo("Nessun precedente dichiarazione corrispondente, auguri per la nuova casa");
-			}
-			
+			// 
 			DichiarazioneDiPersonaTari dpt = new DichiarazioneDiPersonaTari();
 			d.setOperation(pc.OP_UPDATE);
 			d.setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
@@ -268,10 +260,13 @@ public class TariManagerExt extends TariManager {
 		if (pc.isInsert()) {
 			Rel_Dichiarazione_PrecDichiara rdpd = new Rel_Dichiarazione_PrecDichiara();
 			for (DichiarazioneDiPersonaTari dpt : pc.getDichiarazioniDiPersona()) {
-				savePrecedenteDichiarazione(dpt.getPrecedenteDichiarazione());
-				rdpd.setIddichiarazione(dpt.getDichiarazione().getUnid());
-				rdpd.setIdprecedentedichiarazione(dpt.getPrecedenteDichiarazione().getUnid());				
-				inserisciRel_Dichiarazione_PrecDichiara(rdpd);
+				if(dpt.getPrecedenteDichiarazione() != null) {
+					savePrecedenteDichiarazione(dpt.getPrecedenteDichiarazione());
+					rdpd.setIddichiarazione(dpt.getDichiarazione().getUnid());
+					rdpd.setIdPrecedenteDichiarazione(dpt.getPrecedenteDichiarazione().getUnid());				
+					inserisciRel_Dichiarazione_PrecDichiara(rdpd);
+				}
+				else new RuntimeException("Nessuna precedente dichiarazione inserita, auguri per la nuova casa");
 			}			
 		}
 	}

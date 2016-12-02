@@ -94,12 +94,12 @@ public class ManagerExt extends Manager {
 		if (p.isInsert() || p.isUpdate()) {
 			savePersona(p.getPersona());
 			for (MedicoDiPersona m : p.getMedici()) {
-				saveMedicoDiPersona(m);
+				salvaMedicoDiPersona(m);
 			}
 		} else if (p.isDelete()) {
 			savePersona(p.getPersona());
 			for (MedicoDiPersona m : p.getMedici()) {
-				saveMedicoDiPersona(m);
+				salvaMedicoDiPersona(m);
 			}
 		}
 		p.setOperation(p.OP_NOP);
@@ -108,32 +108,20 @@ public class ManagerExt extends Manager {
 	/************************ MEDICO DI PERSONA *************************/
 	
 	
-	private void saveMedico(Medico m) {
-		if (m.isInsert()) {
-			insertMedico(m);
-		} else if (m.isUpdate()) {
-			updateMedico(m);
-		} else if (m.isDelete()) {
-			m.setCanc("S");
-			updateMedico(m);
-		}
-	}
 	
-	public void saveMedicoDiPersona(MedicoDiPersona mp) {
-		if (mp.isInsert()) {
-			Rel_Persona_Medico rpm = new Rel_Persona_Medico();
-			rpm.setIdmedico(mp.getMedico().getUnid());
-			rpm.setDataA(null);
-			rpm.setDataDa(null);
-			inserisciRel_Persona_Medico(rpm);
-		} else if (mp.isUpdate()) {
-
-		} else if (mp.isDelete()) {
-
-		} else if (mp.isNop()) {
-
-		}
+	public void salvaMedicoDiPersona(MedicoDiPersona mp) {
 		
+		
+	}
 
+	public void relazionePersonaMedico(Medico m) {
+		PersonaCompleta pc = new PersonaCompleta();
+		MedicoDiPersona medicoAttivo = pc.getMedicoAttivo();
+		medicoAttivo.setMedico(m);
+		Rel_Persona_Medico relazione=new Rel_Persona_Medico();
+		relazione.setIdmedico(m.getUnid());
+		relazione.setIdpersona(pc.getPersona().getUnid());
+		medicoAttivo.setRelazione(relazione);
+		
 	}
 }

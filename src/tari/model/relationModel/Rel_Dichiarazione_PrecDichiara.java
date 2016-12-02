@@ -15,11 +15,11 @@ public class Rel_Dichiarazione_PrecDichiara extends E {
 
 		return iddichiarazione;
 	}
-	public void setIdprecedentedichiarazione(Integer a) {
+	public void setIdPrecedenteDichiarazione(Integer a) {
 
 		this.idprecedentedichiarazione = a;
 	}
-	public Integer getIdprecedentedichiarazione() {
+	public Integer getIdPrecedenteDichiarazione() {
 
 		return idprecedentedichiarazione;
 	}
