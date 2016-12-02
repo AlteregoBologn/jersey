@@ -72,11 +72,4 @@ public class Dichiarazione extends E {
 
 		return unid;
 	}
-
-	@Override
-	public String toString() {
-		return "Dichiarazione [agricoltore=" + agricoltore + ", data=" + data + ", firma=" + firma
-				+ ", italianoallestero=" + italianoallestero + ", unicooccupante=" + unicooccupante + ", unid=" + unid
-				+ "]";
-	}
 }

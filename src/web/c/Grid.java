@@ -30,18 +30,20 @@ public class Grid<T extends E > extends Panel {
 	boolean showEdit=true;
 	boolean showDelete=true;
 	boolean showSelect=true;
+	boolean showOperation=true;
 	
 	public <S> Grid(String id) {
-		this(id,true,true,true,true);		
+		this(id,true,true,true,true, true);		
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public <S> Grid(String id,boolean showNuovo,boolean showEdit,boolean showDelete,boolean showSelect) {
+	public <S> Grid(String id,boolean showNuovo,boolean showSelect,boolean showEdit,boolean showDelete, boolean showOperation) {
 		super(id);
 		this.showEdit=showEdit;
 		this.showNuovo=showNuovo;
 		this.showDelete=showDelete;
 		this.showSelect=showSelect;
+		this.showOperation = showOperation;
 		
 		final SortableDataProvider dp = new SortableDataProvider<T, S>() {
 
@@ -68,12 +70,13 @@ public class Grid<T extends E > extends Panel {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				onNew(target);
-			}
+			}		
 			@Override
 			public boolean isVisible() {
+				// 
 				return showNuovo;
 			}
-		});
+		}); 
 		
 		DefaultDataTable table = new DefaultDataTable("datatable", Grid.this._getColumns(), dp, getMaxRows());
 		table.addBottomToolbar(new NavigationToolbar(table));
@@ -96,52 +99,46 @@ public class Grid<T extends E > extends Panel {
 
 	final private List<IColumn> _getColumns() {
 		List<IColumn> columns=new ArrayList();
-		columns.add(new PropertyColumn<T,String>(new Model("operation"), "operation"));
+		if(showOperation){
+			columns.add(new PropertyColumn<T,String>(new Model("operation"), "operation"));
+		}		
 		columns.addAll( getColumns() );
 		/*columns.add(new PropertyColumn(new Model("First Name"), "name.first", "name.first"));
 		columns.add(new PropertyColumn(new Model("Last Name"), "name.last", "name.last"));*/
+		
+	if(showSelect)	{
 		columns.add(new AbstractColumn<T, String>(new Model("Select")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void populateItem(final Item<ICellPopulator<T>> item, final String componentId, final IModel<T> rowModel)
 			{
-
 				item.add(new GridAjaxButtonPanel<T>(componentId, "Select", rowModel.getObject()){
 					@Override
-					public void onClick(AjaxRequestTarget target, T o) {
-						
+					public void onClick(AjaxRequestTarget target, T o) {	
 						onSelect(target,o);
 					}
-					@Override
-					public boolean isVisible() {
-						return showSelect;
-					}
-				});				
-			}
-			
+				});		
+			}			
 		});
+	}
+	if(showEdit){
 		columns.add(new AbstractColumn<T, String>(new Model("Edit")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void populateItem(final Item<ICellPopulator<T>> item, final String componentId, final IModel<T> rowModel)
 			{
-
 				item.add(new GridAjaxButtonPanel<T>(componentId, "Edit", rowModel.getObject()){
 					@Override
-					public void onClick(AjaxRequestTarget target, T o) {
-						
+					public void onClick(AjaxRequestTarget target, T o) {						
 						onEdit(target,o);
-					}
-					@Override
-					public boolean isVisible() {
-						return showEdit;
 					}
 				});				
 			}
-
 		});
+	}
+	if(showDelete) {
 		columns.add(new AbstractColumn<T, String>(new Model("Del")) {
 			private static final long serialVersionUID = 1L;
 
@@ -154,15 +151,10 @@ public class Grid<T extends E > extends Panel {
 						
 						onDelete(target,rowModel.getObject());
 					}
-					@Override
-					public boolean isVisible() {
-						return showDelete;
-					}
 				});						
-							
 			}
-
 		});
+	}
 		return columns;
 
 	}

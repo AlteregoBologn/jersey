@@ -24,10 +24,4 @@ public class PersonaTariCompleta extends E {
 	public void setDichiarazioniDiPersona(List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona) {
 		this.dichiarazioniDiPersona = dichiarazioniDiPersona;
 	}
-	@Override
-	public String toString() {
-		return "PersonaTariCompleta [personaTari=" + personaTari + ", dichiarazioniDiPersona=" + dichiarazioniDiPersona
-				+ "]";
-	}
-
 }

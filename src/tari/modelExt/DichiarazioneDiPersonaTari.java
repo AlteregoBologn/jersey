@@ -1,8 +1,5 @@
 package tari.modelExt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import model.E;
 import tari.model.Dichiarazione;
 import tari.model.PrecedenteDichiarazione;
@@ -15,7 +12,7 @@ public class DichiarazioneDiPersonaTari extends E {
 	
 	PrecedenteDichiarazione precedenteDichiarazione;
 	
-	List<ImmobileDiDichiarazione> dichiarazioniImmobili = new ArrayList<ImmobileDiDichiarazione>();
+	ImmobileDiDichiarazione dichiarazioneImmobile;
 	
 	Rel_Dichiarazione_PrecDichiara rel_Dichiarazione_PrecDichiara;
 	
@@ -54,18 +51,10 @@ public class DichiarazioneDiPersonaTari extends E {
 		this.precedenteDichiarazione = precedenteDichiarazione;
 	}
 
-	public List<ImmobileDiDichiarazione> getDichiarazioniImmobili() {
-		return dichiarazioniImmobili;
+	public ImmobileDiDichiarazione getDichiarazioneImmobile() {
+		return dichiarazioneImmobile;
 	}
-	public void setDichiarazioniImmobili(List<ImmobileDiDichiarazione> dichiarazioniImmobili) {
-		this.dichiarazioniImmobili = dichiarazioniImmobili;
-	}
-
-	@Override
-	public String toString() {
-		return "DichiarazioneDiPersonaTari [dichiarazione=" + dichiarazione + ", precedenteDichiarazione="
-				+ precedenteDichiarazione + ", dichiarazioniImmobili=" + dichiarazioniImmobili
-				+ ", rel_Dichiarazione_PrecDichiara=" + rel_Dichiarazione_PrecDichiara + ", rel_Persona_Dichiarazione="
-				+ rel_Persona_Dichiarazione + "]";
+	public void setDichiarazioneImmobile(ImmobileDiDichiarazione dichiarazioneImmobili) {
+		this.dichiarazioneImmobile = dichiarazioneImmobili;
 	}
 }

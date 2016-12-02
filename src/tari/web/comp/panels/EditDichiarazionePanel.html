@@ -1,0 +1,21 @@
+<wicket:panel>
+	<form wicket:id="formEdit">
+		<div class="container-fluid">
+			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label>		
+			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
+			<label for="cf">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 			
+			<label for="sesso">Sesso: <input type="text" class="form-control" wicket:id="sesso" id="sesso" /></label> 		
+			<label for="datanascita">Data di nascita: <input type="text" class="form-control" wicket:id="datanascita" id="datanascita" /></label>
+			<label for="comunenascita">Comune di nascita: <input type="text" class="form-control" wicket:id="comunenascita" id="comunenascita" /></label> 
+			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label>
+		</div>
+		
+		<label for="via">Via: <input type="text" class="form-control" wicket:id="via" id="via" /></label>
+	</form>
+	<form wicket:id="form2">
+		<div class="container-fluid">
+		<div wicket:id="listaLocali"></div>
+		<input type="button" wicket:id="salva" value="Salva" />
+		</div>
+	</form>
+</wicket:panel>
