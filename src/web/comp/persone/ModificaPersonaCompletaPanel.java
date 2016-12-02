@@ -2,6 +2,9 @@ package web.comp.persone;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.datetime.StyleDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import logic.ManagerExt;
 import modelExt.PersonaCompleta;
 import web.c.BasePanel;
+import web.c.CssBeahvior;
 import web.comp.esenzioni.ListaEsenzioniDiPersonaPanel;
 import web.comp.medico.ScegliMedicoDiPersonaPanel;
 
@@ -45,8 +49,19 @@ public class ModificaPersonaCompletaPanel extends BasePanel {
 			}
 		});
 
-		form.add(new TextField<>("datanascita", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.datanascita")));
-		//form.add(new ListaEsenzioniDiPersonaPanel("listaEsenzioni", persona));
+		DateTextField datanascitaField = new DateTextField("datanascita",
+				new PropertyModel(ModificaPersonaCompletaPanel.this, "persona.persona.datanascita"),
+				new StyleDateConverter("S-", true));
+		DatePicker datePicker = new DatePicker();
+		datePicker.setShowOnFieldClick(true);
+		datePicker.setAutoHide(true);
+		datanascitaField.add(datePicker);
+		datanascitaField.setRequired(true);
+		datanascitaField.add(new CssBeahvior());
+		form.add(datanascitaField);
+		
+		
+		form.add(new ListaEsenzioniDiPersonaPanel("listaEsenzioni", persona));
 		form.add(new ScegliMedicoDiPersonaPanel("sceltaMedico", persona));
 
 		AjaxButton button = new AjaxButton("salva") {

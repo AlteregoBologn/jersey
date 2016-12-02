@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -9,85 +11,97 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import model.Esenzione;
 import model.Medico;
 import model.Persona;
 import model.PersonaSearch;
+import model.Rel_Persona_Esenzione;
 import model.Rel_Persona_Medico;
+import modelExt.EsenzioneDiPersona;
 import modelExt.MedicoDiPersona;
 import modelExt.PersonaCompleta;
 
-@RunWith(value=SpringJUnit4ClassRunner.class)
-@ContextConfiguration(value={"classpath:context.xml"})
-public class ManagerExtTest
-{
+@RunWith(value = SpringJUnit4ClassRunner.class)
+@ContextConfiguration(value = { "classpath:context.xml" })
+public class ManagerExtTest {
 	@Autowired
 	private ManagerExt managerExt;
 	Logger log;
 
-	public ManagerExtTest()
-	{
+	public ManagerExtTest() {
 		log = Logger.getAnonymousLogger();
 	}
 
 	@Test
-	public void testSalvaPersonaCompleta()
-	{
+	public void testSalvaPersonaCompleta() {
 		Persona p = new Persona();
-		p.setNome("nome");
-		p.setCognome("cognome");
-		p.setEmail("a");
-		p.setPassword("b");
-		p.setCf("cf");
-		p.setUnid(null);
-		p.setOperation(p.OP_INSERT);
+		p.setNome("Adalberto");
+		p.setCognome("Carucchio");
+		p.setEmail("adalbertocarucchio@gmail.com");
+		p.setPassword("aldalberto2192");
+		p.setCf("ALDCRU92E47B291R");
+		p.setUnid(100);
 		
-		PersonaCompleta pc=new PersonaCompleta();
+		PersonaCompleta pc = new PersonaCompleta();
 		pc.setPersona(p);
+
+		Medico medicoUno = new Medico();
+		medicoUno.setNome("Giuseppe");
+		medicoUno.setCognome("Anzisi");
+		medicoUno.setCf("AOLWK83V29T628C");
+		medicoUno.setEmail("giuseppeanzisi@gmail.com");
+		medicoUno.setUnid(90);
+
+		Medico medicoDue = new Medico();
+		medicoDue.setNome("Marco");
+		medicoDue.setCognome("Mezzagamba");
+		medicoDue.setCf("ALQIWO19B28A276E");
+		medicoDue.setEmail("marcomezzagamba@gmail.com");
+		medicoDue.setUnid(91);
+
+		Medico medicoTre = new Medico();
+		medicoTre.setNome("Elisa");
+		medicoTre.setCognome("Bianchi");
+		medicoTre.setCf("BIAPSL97E12X289C");
+		medicoTre.setEmail("elisabianchi@gmail.com");
+		medicoTre.setUnid(92);
+
+		MedicoDiPersona mdpUno = new MedicoDiPersona();
+		mdpUno.setMedico(medicoUno);
+		MedicoDiPersona mdpDue = new MedicoDiPersona();
+		mdpDue.setMedico(medicoDue);
+		MedicoDiPersona mdpTre = new MedicoDiPersona();
+		mdpTre.setMedico(medicoTre);
+
+		Esenzione esenzioneUno = new Esenzione();
+		esenzioneUno.setUnid(5);
+		esenzioneUno.setDescrizione("malattie rare");
+
+		Esenzione esenzioneDue = new Esenzione();
+		esenzioneDue.setUnid(6);
+		esenzioneDue.setDescrizione("diagnosi precoce tumori");
+
+		Esenzione esenzioneTre = new Esenzione();
+		esenzioneTre.setUnid(7);
+		esenzioneTre.setDescrizione("test HIV");
+
+		EsenzioneDiPersona edpUno = new EsenzioneDiPersona();
+		edpUno.setEsenzione(esenzioneUno);
+
+		EsenzioneDiPersona edpDue = new EsenzioneDiPersona();
+		edpDue.setEsenzione(esenzioneDue);
+
+		EsenzioneDiPersona edpTre = new EsenzioneDiPersona();
+		edpTre.setEsenzione(esenzioneTre);
+
+		pc.getMedici().add(mdpUno);
+		pc.getMedici().add(mdpDue);
+		pc.getMedici().add(mdpTre);
+		pc.getEsenzioni().add(edpUno);
+		pc.getEsenzioni().add(edpDue);
+		pc.getEsenzioni().add(edpTre);
 		
 		managerExt.savePersonaCompleta(pc);
-		
-		PersonaSearch ps=new PersonaSearch();
-		ps.setUnid(p.getUnid());
-		List<PersonaCompleta> ret = managerExt.loadPersoneCompleta(ps);
-		if (ret.isEmpty())
-			throw new RuntimeException("L'arrayList delle Persone Complete è vuoto");
-		System.out.println("L'arraylist delle Persone Complete contiene: " + ret);
-		
-		if (!pc.equals(ret.get(0)))
-			throw new RuntimeException("Le Persone Complete sono diverse");
-		System.out.println("La persona completa " +pc+ "è uguale alla persona completa dell'arraylist " +ret);
-	}
-	
-	@Test
-	public void testscegliMedico() {
-		Medico m = new Medico();
-		m.setUnid(82);
-		Persona persona = new Persona();
-		persona.setUnid(138);
-		PersonaCompleta pc = new PersonaCompleta();
-		pc.setPersona(persona);
-		MedicoDiPersona medicoAttivo = managerExt.getMedicoAttivo(pc);
-		medicoAttivo.setMedico(m);
-		pc.getMedici().add(medicoAttivo);
-		Rel_Persona_Medico relazione=new Rel_Persona_Medico();
-		relazione.setIdmedico(m.getUnid());
-		relazione.setIdpersona(pc.getPersona().getUnid());
-		medicoAttivo.setRelazione(relazione);
-		managerExt.inserisciRel_Persona_Medico(relazione);
-		System.out.println(medicoAttivo.toString());
-		
-	}
-	
-	@Test
-	public void testSalvaMedicoDiPersona(){
-		MedicoDiPersona mp = new MedicoDiPersona();
-		if(mp.isInsert()){
-			managerExt.inserisciRel_Persona_Medico(mp.getRelazione());
-		}		
-	}
 
-	
-	
-	
-	
+	}
 }

@@ -82,8 +82,8 @@ public class Manager {
 		personaDao.update(p);
 	}
 
-	public void aggiornaPersona(Persona p) {
-		personaDao.update(p);
+	public void deletePersona(Persona p) {
+		personaDao.delete(p);
 	}
 
 	public void registraPersona(Persona p) {
@@ -163,7 +163,7 @@ public class Manager {
 		relPersonaMedicoDao.insert(a);
 	}
 	
-	public void aggiornaRel_Persona_Medico(Rel_Persona_Medico a) {
+	public void updateRel_Persona_Medico(Rel_Persona_Medico a) {
 		relPersonaMedicoDao.update(a);
 	}
 
@@ -185,11 +185,35 @@ public class Manager {
 	}
 	
 	/************************* ESENZIONE *************************/
+	
+	public void insertEsenzione(Esenzione e) {
+		esenzioneDao.insert(e);
+	}
 
+	public void updateEsenzione(Esenzione e) {
+		esenzioneDao.update(e);
+	}
+
+	public void deleteEsenzione(Esenzione e) {
+		esenzioneDao.delete(e);
+	}
+	
+	public Integer countEsenzione(EsenzioneSearch es) {
+		return esenzioneDao.count(es);
+	}
+	
+	public List<Esenzione> cercaEsenzioni(EsenzioneSearch es) {
+		return esenzioneDao.cerca(es);
+	}
+	
 	public void inserisciRel_Persona_Esenzione(Rel_Persona_Esenzione a) {
 		relPersonaEsenzioneDao.insert(a);
 	}
 
+	public void updateRel_Persona_Esenzione(Rel_Persona_Esenzione a) {
+		relPersonaEsenzioneDao.update(a);
+	}
+	
 	public void deleteRel_Persona_Esenzione(Rel_Persona_Esenzione a) {
 		relPersonaEsenzioneDao.delete(a);
 	}
@@ -198,9 +222,7 @@ public class Manager {
 		return relPersonaEsenzioneDao.loadAll(s);
 	}
 
-	public List<Esenzione> cercaEsenzioni(EsenzioneSearch es) {
-		return esenzioneDao.cerca(es);
-	}
+	/************************* AMBULATORIO *************************/
 	
 	public void inserisciRel_Medico_Ambulatorio(Rel_Medico_Ambulatorio a) {
 		relMedicoAmbulatorioDao.insert(a);
@@ -210,6 +232,8 @@ public class Manager {
 		relMedicoAmbulatorioDao.delete(a);
 	}
 
+	/************************* VISITA *************************/
+	
 	public void inserisciRel_Persona_Visita(Rel_Persona_Visita a) {
 		relPersonaVisitaDao.insert(a);
 	}
@@ -226,6 +250,8 @@ public class Manager {
 		relMedicoVisitaDao.delete(a);
 	}
 
+	/************************* PRESTAZIONE *************************/
+	
 	public void inserisciRel_Visita_Prestazione(Rel_Visita_Prestazione a) {
 		relVisitaPrestazioneDao.insert(a);
 	}

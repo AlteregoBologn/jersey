@@ -4,9 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dao.EsenzioneDao">
 
+	<!--  
 	<select id="cerca" resultType="model.Esenzione">
 		SELECT * from t_esenzione
-		WHERE 1=1
 		<if test="unid != null">
 			AND unid = #{unid}
 		</if>
@@ -14,7 +14,51 @@
 			AND descrizione = #{descrizione}
 		</if>
 	</select>
+	
+	
+	<select id="cerca" resultType="model.Medico">
+		<include refid="dao.common.prePage"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postPage"></include>
+		<include refid="dao.common.orderBy"></include>
+	</select>
+	
+	
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.preCount"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postCount"></include>
+	</select>
+-->
 
+	<sql id="condition">
+		<if test="unid != null">
+			AND unid = #{unid}
+		</if>
+		<if test="descrizione != null">
+			AND descrizione = #{descrizione}
+		</if>
+	</sql>
+
+	<sql id="load" >
+		SELECT * from t_esenzione
+		WHERE 1=1
+		<include refid="condition"></include>
+	</sql>
+	
+	<select id="cerca" resultType="model.Esenzione">
+		<include refid="dao.common.prePage"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postPage"></include>
+		<include refid="dao.common.orderBy"></include>
+	</select>
+	
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.preCount"></include>
+		<include refid="load"></include>
+		<include refid="dao.common.postCount"></include>
+	</select>
+	
 	<insert id="insert">
 		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
 			SELECT seq.nextval from dual

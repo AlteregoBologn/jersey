@@ -28,42 +28,12 @@ public class ManagerExt extends Manager {
 		List<Persona> persone = cercaPersone(ps);
 		for (Persona p : persone) {
 			PersonaCompleta pc = new PersonaCompleta();
+			
 			pc.setOperation(pc.OP_UPDATE);
 			pc.setPersona(p);
+			loadMedici(p,pc);
+			loadEsenzioni(p,pc);
 			ret.add(pc);
-
-			Rel_Persona_MedicoSearch rpms = new Rel_Persona_MedicoSearch();
-			rpms.setIdpersona(p.getUnid());
-			List<Rel_Persona_Medico> rel_Persona_Medico = cercaRel_Persona_Medico(rpms);
-
-			for (Rel_Persona_Medico rpm : rel_Persona_Medico) {
-				rpm.setOperation(pc.OP_UPDATE);
-				MedicoSearch ms = new MedicoSearch();
-				ms.setUnid(rpm.getIdmedico());
-				List<Medico> medici = cercaMedico(ms);
-				//
-				MedicoDiPersona m = new MedicoDiPersona();
-				m.setOperation(pc.OP_UPDATE);
-				m.setMedico(medici.get(0));
-				m.setRelazione(rpm);
-				pc.getMedici().add(m);
-			}
-			Rel_Persona_EsenzioneSearch rpes = new Rel_Persona_EsenzioneSearch();
-			rpes.setIdpersona(Integer.toString(p.getUnid()));
-			List<Rel_Persona_Esenzione> rel_Persona_Esenzione = cercaRel_Persona_Esenzione(rpes);
-
-			for (Rel_Persona_Esenzione rpe : rel_Persona_Esenzione) {
-				rpe.setOperation(pc.OP_UPDATE);
-				EsenzioneSearch es = new EsenzioneSearch();
-				es.setUnid(Integer.parseInt(rpes.getIdesenzione()));
-				List<Esenzione> esenzioni = cercaEsenzioni(es);
-				//
-				EsenzioneDiPersona edp = new EsenzioneDiPersona();
-				edp.setOperation(pc.OP_UPDATE);
-				edp.setEsenzione(esenzioni.get(0));
-				edp.setRelazione(rpe);
-				pc.getEsenzioni().add(edp);
-			}
 		}
 		return ret;
 	}
@@ -88,27 +58,96 @@ public class ManagerExt extends Manager {
 		}
 	}
 
-	public void savePersonaCompleta(PersonaCompleta p) {
-		if (p.isInsert() || p.isUpdate()) {
-			savePersona(p.getPersona());
-			for (MedicoDiPersona m : p.getMedici()) {
-				// salvaMedicoDiPersona(m);
+	public void savePersonaCompleta(PersonaCompleta pc) {
+		if (pc.isInsert() || pc.isUpdate()) {
+			savePersona(pc.getPersona());
+			for (MedicoDiPersona m : pc.getMedici()) {
+				salvaMedicoDiPersona(m,pc);
 			}
-		} else if (p.isDelete()) {
-			savePersona(p.getPersona());
-			for (MedicoDiPersona m : p.getMedici()) {
-				// salvaMedicoDiPersona(m);
+			for(EsenzioneDiPersona e: pc.getEsenzioni()){
+				salvaEsenzioneDiPersona(e,pc);
+			}
+		} else if (pc.isDelete()) {
+			savePersona(pc.getPersona());
+			for (MedicoDiPersona m : pc.getMedici()) {
+				salvaMedicoDiPersona(m,pc);
+			}
+			for(EsenzioneDiPersona e: pc.getEsenzioni()){
+				salvaEsenzioneDiPersona(e,pc);
 			}
 		}
-		p.setOperation(p.OP_NOP);
+		
+		pc.setOperation(pc.OP_NOP);
 	}
 
 	/************************ MEDICO DI PERSONA *************************/
+	
+	
+	public void loadMedici(Persona p, PersonaCompleta pc){
+		
+		Rel_Persona_MedicoSearch rpms = new Rel_Persona_MedicoSearch();
+		rpms.setIdpersona(p.getUnid());
+		List<Rel_Persona_Medico> rel_Persona_Medico = cercaRel_Persona_Medico(rpms);
+
+		if (rel_Persona_Medico.isEmpty()){
+			new RuntimeException("Non ci sono medici relativi alla persona");
+		}
+		else {
+				for (Rel_Persona_Medico rpm : rel_Persona_Medico) {
+					rpm.setOperation(pc.OP_UPDATE);
+					MedicoSearch ms = new MedicoSearch();
+					ms.setUnid(rpm.getIdmedico());
+					List<Medico> medici = cercaMedico(ms);
+					
+					MedicoDiPersona m = new MedicoDiPersona();
+					m.setOperation(pc.OP_UPDATE);
+					m.setMedico(medici.get(0));
+					m.setRelazione(rpm);
+					pc.getMedici().add(m);
+				}
+			}
+	}
+	
+	private void saveMedico(Medico m){
+		if(m.isInsert()){
+			insertMedico(m);
+		} else if(m.isUpdate()){
+			updateMedico(m);
+		} else if(m.isDelete()){
+			m.setCanc("S");
+			deleteMedico(m);
+		}
+	}
+	
+	public void salvaMedicoDiPersona(MedicoDiPersona m, PersonaCompleta pc){
+		if(m.isInsert()){
+			Rel_Persona_Medico rpm = new Rel_Persona_Medico();
+			saveMedico(m.getMedico());
+			rpm.setIdmedico(m.getMedico().getUnid());
+			rpm.setIdpersona(pc.getPersona().getUnid());
+			inserisciRel_Persona_Medico(rpm);
+		} else if(m.isUpdate()){
+			Rel_Persona_Medico rpm = new Rel_Persona_Medico();
+			saveMedico(m.getMedico());
+			rpm.setIdmedico(m.getMedico().getUnid());
+			rpm.setIdpersona(pc.getPersona().getUnid());
+			updateRel_Persona_Medico(rpm);
+		} else if(m.isDelete()){
+			Rel_Persona_Medico rpm = new Rel_Persona_Medico();
+			deleteMedico(m.getMedico());
+			rpm.setIdmedico(m.getMedico().getUnid());
+			rpm.setIdpersona(pc.getPersona().getUnid());
+			deleteRel_Persona_Medico(rpm);
+		}
+		
+	}
+	
 	/**
 	 * Torna ultimo medico scelto che ha data a null
 	 * 
 	 * @return
 	 */
+	
 	public MedicoDiPersona getMedicoAttivo(PersonaCompleta pc) {
 		if (pc.getMedici().isEmpty()) {
 			return null;
@@ -152,6 +191,108 @@ public class ManagerExt extends Manager {
 		pc.getMedici().add(nuovoScelto);
 
 		return nuovoScelto;
+	}
+
+	/************************ ESENZIONE DI PERSONA *************************/
+	
+	public void loadEsenzioni(Persona p, PersonaCompleta pc){
+		Rel_Persona_EsenzioneSearch rpes = new Rel_Persona_EsenzioneSearch();
+		rpes.setIdpersona(Integer.toString(p.getUnid()));
+		List<Rel_Persona_Esenzione> rel_Persona_Esenzione = cercaRel_Persona_Esenzione(rpes);
+
+		if(rel_Persona_Esenzione.isEmpty()){
+			new RuntimeException("Non ci sono esenzioni relative alla persona");
+		}
+		
+		for (Rel_Persona_Esenzione rpe : rel_Persona_Esenzione) {
+			rpe.setOperation(pc.OP_UPDATE);
+			EsenzioneSearch es = new EsenzioneSearch();
+			es.setUnid(Integer.parseInt(rpe.getIdesenzione()));
+			List<Esenzione> esenzioni = cercaEsenzioni(es);
+			
+			EsenzioneDiPersona edp = new EsenzioneDiPersona();
+			edp.setOperation(pc.OP_UPDATE);
+			edp.setEsenzione(esenzioni.get(0));
+			edp.setRelazione(rpe);
+			pc.getEsenzioni().add(edp);
+		}
+	}
+	
+	private void saveEsenzione(Esenzione e){
+		if(e.isInsert()){
+			insertEsenzione(e);
+		} else if(e.isUpdate()){
+			updateEsenzione(e);
+		} else if(e.isDelete()){
+			deleteEsenzione(e);
+		}
+	}
+	
+	public void salvaEsenzioneDiPersona(EsenzioneDiPersona edp, PersonaCompleta pc){
+		if(edp.isInsert()){
+			Rel_Persona_Esenzione rpe = new Rel_Persona_Esenzione();
+			saveEsenzione(edp.getEsenzione());
+			rpe.setIdesenzione(Integer.toString(edp.getEsenzione().getUnid()));;
+			rpe.setIdpersona(Integer.toString(pc.getPersona().getUnid()));
+			inserisciRel_Persona_Esenzione(rpe);
+		} else if(edp.isUpdate()){
+			Rel_Persona_Esenzione rpe = new Rel_Persona_Esenzione();
+			saveEsenzione(edp.getEsenzione());
+			rpe.setIdesenzione(Integer.toString(edp.getEsenzione().getUnid()));
+			rpe.setIdpersona(Integer.toString(pc.getPersona().getUnid()));
+			updateRel_Persona_Esenzione(rpe);
+		} else if(edp.isDelete()){
+			Rel_Persona_Esenzione rpe = new Rel_Persona_Esenzione();
+			deleteEsenzione(edp.getEsenzione());
+			rpe.setIdesenzione(Integer.toString(edp.getEsenzione().getUnid()));
+			rpe.setIdpersona(Integer.toString(pc.getPersona().getUnid()));
+			deleteRel_Persona_Esenzione(rpe);
+		}
+			
+	}
+	
+	public EsenzioneDiPersona getEsenzioneAttiva(PersonaCompleta pc) {
+		if (pc.getEsenzioni().isEmpty()) {
+			return null;
+		}
+		for (EsenzioneDiPersona edp : pc.getEsenzioni()) {
+			if (edp.getRelazione().getDataA() == null)
+				return edp;
+		}
+		return null;
+	}
+	
+	public void chiudiEsenzioneAttiva(PersonaCompleta pc) {
+
+		EsenzioneDiPersona ultimaEsenzione = getEsenzioneAttiva(pc);
+		if (ultimaEsenzione != null) {
+			ultimaEsenzione.setOperation(ultimaEsenzione.OP_UPDATE);
+			ultimaEsenzione.getRelazione().setDataA(new Date());
+			ultimaEsenzione.getRelazione().setOperation(ultimaEsenzione.OP_UPDATE);
+		}
+
+	}
+
+	public EsenzioneDiPersona selezionaEsenzione(PersonaCompleta pc, Esenzione esenzione) {
+		// chiude il medico precedente se esiste
+		chiudiEsenzioneAttiva(pc);
+
+		// crea nuovo medico di persona con medico scelto
+		EsenzioneDiPersona nuovaEsenzione = new EsenzioneDiPersona();
+		nuovaEsenzione.setEsenzione(esenzione);
+		nuovaEsenzione.setOperation(nuovaEsenzione.OP_INSERT);
+
+		Rel_Persona_Esenzione relazione = new Rel_Persona_Esenzione();
+		relazione.setIdpersona(Integer.toString((pc.getPersona().getUnid())));
+		relazione.setIdesenzione(Integer.toString(esenzione.getUnid()));
+		relazione.setDataDa(new Date());
+		relazione.setDataA(null);
+		relazione.setOperation(relazione.OP_INSERT);
+		nuovaEsenzione.setRelazione(relazione);
+
+		pc.getEsenzioni().add(nuovaEsenzione);
+
+		return nuovaEsenzione;
 	}
 
 }
