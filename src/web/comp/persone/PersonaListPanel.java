@@ -100,7 +100,6 @@ public class PersonaListPanel extends Panel {
 				columns.add(new PropertyColumn(new Model("Nome"), "name.first", "nome"));
 				columns.add(new PropertyColumn(new Model("Cognome"), "name.last", "cognome"));
 				
-				// pipp
 				// columns.add(new AjaxBuPropertyColumn(new Model("cognome"),
 				// "name.last", "cognome"));
 				

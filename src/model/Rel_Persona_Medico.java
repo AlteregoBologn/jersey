@@ -44,5 +44,10 @@ public class Rel_Persona_Medico extends E {
 	public void setIdpersona(Integer idpersona) {
 		this.idpersona = idpersona;
 	}
+	
+	@Override
+	public String toString() {
+		return "Rel_Persona_Medico [dataA=" + dataA + ", dataDa=" + dataDa + ", idmedico=" + idmedico + ", idpersona=" + idpersona + "]";
+	}
 
 }

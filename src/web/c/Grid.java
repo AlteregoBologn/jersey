@@ -26,10 +26,23 @@ import model.E;
 public class Grid<T extends E > extends Panel {
 	SortParam<T> sort;
 
-	@SuppressWarnings("rawtypes")
+	boolean showNuovo=true;
+	boolean showEdit=true;
+	boolean showDelete=true;
+	boolean showSelect=true;
+	
 	public <S> Grid(String id) {
+		this(id,true,true,true,true);		
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public <S> Grid(String id,boolean showNuovo,boolean showEdit,boolean showDelete,boolean showSelect) {
 		super(id);
-
+		this.showEdit=showEdit;
+		this.showNuovo=showNuovo;
+		this.showDelete=showDelete;
+		this.showSelect=showSelect;
+		
 		final SortableDataProvider dp = new SortableDataProvider<T, S>() {
 
 			@Override
@@ -50,13 +63,18 @@ public class Grid<T extends E > extends Panel {
 				return new Model((Serializable) object);
 			}
 		};
-
+		
 		add(new AjaxButton("nuovo"){
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				onNew(target);
 			}
-		});		
+			@Override
+			public boolean isVisible() {
+				return showNuovo;
+			}
+		});
+		
 		DefaultDataTable table = new DefaultDataTable("datatable", Grid.this._getColumns(), dp, getMaxRows());
 		table.addBottomToolbar(new NavigationToolbar(table));
 		//table.addTopToolbar(new HeadersToolbar(table, dp));
@@ -95,9 +113,13 @@ public class Grid<T extends E > extends Panel {
 						
 						onSelect(target,o);
 					}
+					@Override
+					public boolean isVisible() {
+						return showSelect;
+					}
 				});				
 			}
-
+			
 		});
 		columns.add(new AbstractColumn<T, String>(new Model("Edit")) {
 			private static final long serialVersionUID = 1L;
@@ -111,6 +133,10 @@ public class Grid<T extends E > extends Panel {
 					public void onClick(AjaxRequestTarget target, T o) {
 						
 						onEdit(target,o);
+					}
+					@Override
+					public boolean isVisible() {
+						return showEdit;
 					}
 				});				
 			}
@@ -127,6 +153,10 @@ public class Grid<T extends E > extends Panel {
 					public void onClick(AjaxRequestTarget target, T o) {
 						
 						onDelete(target,rowModel.getObject());
+					}
+					@Override
+					public boolean isVisible() {
+						return showDelete;
 					}
 				});						
 							

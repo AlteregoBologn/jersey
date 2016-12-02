@@ -46,7 +46,7 @@ public class ModificaPersonaCompletaPanel extends BasePanel {
 		});
 
 		form.add(new TextField<>("datanascita", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.datanascita")));
-		form.add(new ListaEsenzioniDiPersonaPanel("listaEsenzioni", persona));
+		//form.add(new ListaEsenzioniDiPersonaPanel("listaEsenzioni", persona));
 		form.add(new ScegliMedicoDiPersonaPanel("sceltaMedico", persona));
 
 		AjaxButton button = new AjaxButton("salva") {

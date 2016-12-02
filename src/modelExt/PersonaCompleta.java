@@ -75,10 +75,4 @@ public class PersonaCompleta extends E {
 	}
 
 	
-	public MedicoDiPersona getMedicoAttivo(){
-		if (medici.isEmpty()){
-			return new MedicoDiPersona();
-		}	
-		return getMedici().get(0);
-	}
 }
