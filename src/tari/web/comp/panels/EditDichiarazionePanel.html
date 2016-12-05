@@ -1,6 +1,7 @@
 <wicket:panel>
 	<form wicket:id="formEdit">
 		<div class="container-fluid">
+		<h3>Dati Persona:</h3>
 			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label>		
 			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
 			<label for="cf">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 			
@@ -10,11 +11,17 @@
 			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label>
 		</div>
 		
-		<label for="via">Via: <input type="text" class="form-control" wicket:id="via" id="via" /></label>
+		<div class="container-fluid">	
+		<h3>Dati Immobile:</h3>
+			<label for="via">Via: <input type="text" class="form-control" wicket:id="via" id="via" /></label>			
+		</div>
 	</form>
 	<form wicket:id="form2">
 		<div class="container-fluid">
-			<div wicket:id="listaLocali"></div>
+			<h3>Lista locali</h3>
+			<div wicket:id="listaLocali">
+				
+			</div>
 			<input type="button" wicket:id="salva" value="Salva" />
 		</div>
 	</form>
