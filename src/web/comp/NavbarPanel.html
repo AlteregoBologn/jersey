@@ -6,17 +6,31 @@
 	<a wicket:id="Logout">Logout</a>
 	<a wicket:id="Modifica Persona">Modifica Persona</a>
 	<a wicket:id="Lista Dichiarazioni">Lista Dichiarazioni</a> -->
-	
-<div class="container-fluid">
-      <ul class="nav navbar-nav">
-        <li><a wicket:id="Home">Home</a></li>
-        <li><a wicket:id="Registrazione">Registrazione</a></li>
-        <li><a wicket:id="Cambia Password">Cambia Password</a></li>
-        <li><a wicket:id="Login">Login</a></li>
-        <li><a wicket:id="Logout">Logout</a></li>
-        <li><a wicket:id="Modifica Persona">Modifica Persona</a></li>
-        <li><a wicket:id="Lista Dichiarazioni">Lista Dichiarazioni</a></li>
-      </ul>
-  </div><!-- /.container-fluid -->
+	<div class="container-fluid">
+	<!-- Mobile Navbar -->
+		<div class="navbar-header">
+      		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+      				data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        		<span class="sr-only">Toggle navigation</span>
+        		<span class="icon-bar"></span>
+       	 		<span class="icon-bar"></span>
+        		<span class="icon-bar"></span>
+      		</button>
+    	</div>
+
+		<!-- Desktop Navbar -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      		<ul class="nav navbar-nav">
+       			<li><a wicket:id="Home">Home</a></li>
+        		<li><a wicket:id="Registrazione">Registrazione</a></li>
+        		<li><a wicket:id="Cambia Password">Cambia Password</a></li>
+        		<li><a wicket:id="Login">Login</a></li>
+        		<li><a wicket:id="Logout">Logout</a></li>
+        		<li><a wicket:id="Modifica Persona">Modifica Persona</a></li>
+        		<li><a wicket:id="Lista Dichiarazioni">Lista Dichiarazioni</a></li>
+      		</ul>
+	</div>
+</div>
+
 </wicket:panel>
 

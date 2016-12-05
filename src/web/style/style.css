@@ -6,12 +6,17 @@ header {
 	display: flex;
 	justify-content: space-between;	
 }
+
+#altro{
+	padding-right: 0.5em;
+}
 .glyphicon {
 	margin: 2em 0 2em 0;
 }
-.container-fluid, .footer {
+nav .container-fluid, .footer {
 	background-color: #13287B;
 	color: white;
+	border-radius: 1.2em;
 }
 
 .navbar-default .navbar-nav>li>a {

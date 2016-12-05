@@ -12,7 +12,7 @@ public class E implements Serializable {
 	Long pageFrom = 1L;
 	Long pageTo = 10L;
 	String orderBy;
-	String operation = OP_INSERT; // I,U,D,NOP
+	String operation = OP_NOP; // I,U,D,NOP
 
 	
 	public boolean isNew() {

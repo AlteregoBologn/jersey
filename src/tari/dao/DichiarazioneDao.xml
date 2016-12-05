@@ -67,10 +67,9 @@
 		FIRMA = #{firma},
 		ITALIANOALLESTERO =
 		#{italianoallestero},
-		UNICOOCCUPANTE = #{unicooccupante},
-		UNID =
-		#{unid}
-		WHERE 1=1
+		UNICOOCCUPANTE = #{unicooccupante}
+		
+		WHERE UNID = #{unid}
 	</update>
 
 	<select id="loadAll" resultType="tari.model.Dichiarazione">

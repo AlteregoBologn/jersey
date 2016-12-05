@@ -61,21 +61,21 @@
 		<include refid="dao.common.postPage" />
 	</select>
 
-	<update id="update ">
-		update T_LOCALE set
-		FOGLIO = #{foglio},
-		MQ = #{mq},
-		PARTICELLA = #{particella},
-		SUBALTERNO = #{subalterno},
-		TIPO = #{tipo},
-		WHERE 1=1
-	</update>
-
 	<select id="loadAll" resultType="tari.model.Locale">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />
 	</select>
+	
+	<update id="update">
+		update T_LOCALE set
+		FOGLIO = #{foglio},
+		MQ = #{mq},
+		PARTICELLA = #{particella},
+		SUBALTERNO = #{subalterno},
+		TIPO = #{tipo}
+		WHERE UNID = #{unid}
+	</update>
 
 	<delete id="delete">
 		delete from T_LOCALE

@@ -26,11 +26,15 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 	Panel editPanel;
 	Panel newEditPanel;
 	DichiarazioneDiPersonaTari dpt;
+	LocaleDiImmobile ldi;
+
 	public ListaLocaliDiImmobilePanel(String id, DichiarazioneDiPersonaTari dpt, PersonaTariCompleta pc) {
 		super(id);	
+		
 		editPanel = new EmptyPanel("edit");
 		add(editPanel);
 		this.dpt = dpt;
+		
 		Form form = new Form ("form");
 		add(form);
 		form.add(new Grid<LocaleDiImmobile>("lista", true, true, true, true, true) {
@@ -38,7 +42,11 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			@Override
 			public List<IColumn> getColumns() {
 				List<IColumn> columns = new ArrayList();
-				columns.add(new PropertyColumn(new Model<>("MQ"), "locale.mq"));				
+				columns.add(new PropertyColumn(new Model<>("Tipo"), "locale.tipo"));
+				columns.add(new PropertyColumn(new Model<>("MQ"), "locale.mq"));
+				columns.add(new PropertyColumn(new Model<>("Riferimenti"), "locale.foglio"));
+				columns.add(new PropertyColumn(new Model<>("Riferimenti"), "locale.particella"));
+				columns.add(new PropertyColumn(new Model<>("Riferimenti"), "locale.subalterno"));
 				return columns;
 			}
 
@@ -55,6 +63,8 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			@Override
 			public void onNew(AjaxRequestTarget target) {
 				LocaleDiImmobile ldi = tariManagerExt.createLocaleDiImmobile();
+				pc.setOperation(pc.OP_UPDATE);
+				ldi.setOperation(ldi.OP_INSERT);			
 				editPanel.replaceWith(getEditPanel(target, ldi, pc, false));
 				target.add(ListaLocaliDiImmobilePanel.this);
 				editPanel = newEditPanel;
@@ -62,23 +72,32 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			
 			@Override
 			public void onEdit(AjaxRequestTarget target, LocaleDiImmobile object) {
-				 
-				 editPanel.replaceWith(getEditPanel(target, object, pc, false));
-				 target.add(ListaLocaliDiImmobilePanel.this);
-				 editPanel = newEditPanel;
+				
+				object.setOperation(ldi.OP_UPDATE);
+				editPanel.replaceWith(getEditPanel(target, object, pc, false));
+				target.add(ListaLocaliDiImmobilePanel.this);
+				editPanel = newEditPanel;
 			}
 		});	
 	}
-	private Panel getEditPanel(AjaxRequestTarget target, LocaleDiImmobile locali, PersonaTariCompleta pc, boolean onNew) {
-		Panel p = new EditLocaleDiImmobilePanel("edit", locali, pc, onNew) {
-			
-			public void onAnnulla(AjaxRequestTarget target, LocaleDiImmobile l ){
-				this.setVisible(false);
+	private Panel getEditPanel(AjaxRequestTarget target, LocaleDiImmobile locale, PersonaTariCompleta pc, boolean onNew) {
+
+		Panel p = new EditLocaleDiImmobilePanel("edit", locale, pc, onNew) {
+
+			public void onAnnulla(AjaxRequestTarget target, LocaleDiImmobile l){
+				this.setVisible(false);			
+				locale.setOperation(locale.OP_NOP);
 				target.add(ListaLocaliDiImmobilePanel.this);
 			}
-			public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l ){
-				l.setOperation(l.OP_UPDATE);
-				dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(l);
+			public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l){
+				
+				if(locale.isInsert()) {
+					
+					locale.setOperation(locale.OP_NOP);
+					l.setOperation(l.OP_NOP);					
+					dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(l);					
+				}
+
 				this.setVisible(false);
 				target.add(ListaLocaliDiImmobilePanel.this);
 			}

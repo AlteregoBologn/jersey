@@ -1,6 +1,19 @@
 <wicket:panel>
 	<form wicket:id="formLocale">
-		<label for="mq">MQ: <input type="text" class="form-control" wicket:id="mq" id="mq" /></label>	
+		<label for="tipo">Tipo locali tassabili: </label>
+    	<select wicket:id="tipo" id="tipo">
+                <option>Superficie a filo dei muri dell'abitazione compresa mansarda, taverna e scale (esclusi balconi e terrazze scoperte)</option>
+                <option>Superficie delle cantine</option>
+                <option>Superficie dei garage e/o posto auto coperto</option>
+        </select>
+
+		<label for="mq">MQ: <input type="text" class="form-control" wicket:id="mq" id="mq" /></label>
+		
+		<h4>Riferimenti catastali dell'immobile:</h4> 
+		<label for="foglio">Foglio <input type="text" class="form-control" wicket:id="foglio" id="foglio" /></label>
+		<label for="particella">Particella <input type="text" class="form-control" wicket:id="particella" id="particella" /></label>
+		<label for="subalterno">Subalterno <input type="text" class="form-control" wicket:id="subalterno" id="subalterno" /></label>	
+		
 		<input type="button" wicket:id="salva" value="Salva" />
 		<input type="button" wicket:id="annulla" value="Annulla" />
 	</form>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import model.E;
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
@@ -38,7 +39,7 @@ public class TariManagerExt extends TariManager {
 			
 			PersonaTariCompleta pc = new PersonaTariCompleta();
 			
-			pc.setOperation(pc.OP_UPDATE);
+			pc.setOperation(pc.OP_NOP);
 			pc.setPersonaTari(p);
 			loadDichiarazioniDiPersonaTari(p, pc);
 			ret.add(pc);
@@ -97,13 +98,13 @@ public class TariManagerExt extends TariManager {
 		else {
 
 		for (Rel_PersonaTari_Dichiarazione rpd : rel_Persona_Dichiarazione) {
-			rpd.setOperation(pc.OP_UPDATE);
+			rpd.setOperation(pc.OP_NOP);
 			DichiarazioneSearch ds = new DichiarazioneSearch();
 			ds.setUnid(rpd.getIddichiarazione());
 			List<Dichiarazione> dichiarazioni = cercaDichiarazione(ds);
 
 			DichiarazioneDiPersonaTari d = new DichiarazioneDiPersonaTari();
-			d.setOperation(pc.OP_UPDATE);
+			d.setOperation(pc.OP_NOP);
 			d.setDichiarazione(dichiarazioni.get(0));
 			d.setRel_Persona_Dichiarazione(rpd);
 			pc.getDichiarazioniDiPersona().add(d);
@@ -128,10 +129,21 @@ public class TariManagerExt extends TariManager {
 		
 		if (mp.isInsert()) {
 			Rel_PersonaTari_Dichiarazione rpd = new Rel_PersonaTari_Dichiarazione();
+			mp.getDichiarazione().setOperation(mp.OP_INSERT);
 			saveDichiarazione(mp.getDichiarazione());
 			rpd.setIddichiarazione(mp.getDichiarazione().getUnid());
 			rpd.setIdpersona(pc.getPersonaTari().getUnid());			
 			inserisciRel_Persona_Dichiarazione(rpd);
+			pc.setOperation(pc.OP_INSERT);
+			saveImmobileDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp, pc);
+		}
+		
+		if(mp.isUpdate()){
+			mp.getDichiarazione().setOperation(mp.OP_UPDATE);
+			saveDichiarazione(mp.getDichiarazione());
+			
+			pc.setOperation(pc.OP_UPDATE);			
 			saveImmobileDiDichiarazione(mp, pc);
 			savePrecedenteDichiarazioneDiDichiarazione(mp, pc);
 		}
@@ -144,13 +156,13 @@ public class TariManagerExt extends TariManager {
 		List<Rel_Dichiarazione_Immobile> rel_Dichiarazione_Immobile = cercarel_Dichiarazione_Immobile(rdis);
 
 		for (Rel_Dichiarazione_Immobile rdi : rel_Dichiarazione_Immobile) {
-			rdi.setOperation(pc.OP_UPDATE);
+			rdi.setOperation(pc.OP_NOP);
 			ImmobileSearch is = new ImmobileSearch();
 			is.setUnid(rdi.getIdimmobile());
 			List<Immobile> immobile = cercaImmobile(is);
 			// 
 			ImmobileDiDichiarazione di = new ImmobileDiDichiarazione();
-			di.setOperation(pc.OP_UPDATE);
+			di.setOperation(pc.OP_NOP);
 			di.setImmobile(immobile.get(0));
 			di.setRel_Dichiarazione_Immobile(rdi);
 			d.setDichiarazioneImmobile(di);
@@ -160,25 +172,38 @@ public class TariManagerExt extends TariManager {
 	
 	public void saveImmobile(Immobile i){
 		if (i.isInsert()) {
-			inserisciImmobile(i);
+			inserisciImmobile(i);			
 		} else if (i.isUpdate()) {
 			updateImmobile(i);
 		} else if (i.isDelete()) {
 			deleteImmobile(i);
 		}
+		i.setOperation(i.OP_NOP);
 	}
 
 	public void saveImmobileDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc) {
 		
 		if (pc.isInsert()) {
 			Rel_Dichiarazione_Immobile rdi = new Rel_Dichiarazione_Immobile();
-				 ImmobileDiDichiarazione idd = mp.getDichiarazioneImmobile();
-				 saveImmobile(idd.getImmobile());
-				 rdi.setIdimmobile(idd.getImmobile().getUnid());
-				 rdi.setIddichiarazione(mp.getDichiarazione().getUnid());					
-				 inseriscirel_Dichiarazione_Immobile(rdi);
-				 saveLocaleDiImmobile(idd);									
-			}
+			ImmobileDiDichiarazione idd = mp.getDichiarazioneImmobile();
+
+			idd.setOperation(idd.OP_INSERT);
+			idd.getImmobile().setOperation(idd.OP_INSERT);
+			saveImmobile(idd.getImmobile());
+			rdi.setIdimmobile(idd.getImmobile().getUnid());
+			rdi.setIddichiarazione(mp.getDichiarazione().getUnid());					
+			inseriscirel_Dichiarazione_Immobile(rdi);
+
+			saveLocaleDiImmobile(idd);									
+		}
+		
+		else if (pc.isUpdate()){
+			ImmobileDiDichiarazione idd = mp.getDichiarazioneImmobile();
+			idd.setOperation(idd.OP_UPDATE);
+			idd.getImmobile().setOperation(idd.OP_UPDATE);
+			saveImmobile(idd.getImmobile());
+			saveLocaleDiImmobile(idd);	
+		}
 		} 
 
 	/***** LOCALE DI IMMOBILE ****/	
@@ -189,7 +214,7 @@ public class TariManagerExt extends TariManager {
 		List<Rel_Immobile_Locale> rel_Immobile_Locale = cercaRel_Immobile_Locale(rils);
 		
 		for(Rel_Immobile_Locale ril : rel_Immobile_Locale) {
-			ril.setOperation(pc.OP_UPDATE);
+			ril.setOperation(pc.OP_NOP);
 			LocaleSearch ls = new LocaleSearch();
 			ls.setUnid(ril.getIdlocale());
 			List<Locale> locali = cercaLocale(ls);
@@ -198,7 +223,7 @@ public class TariManagerExt extends TariManager {
 					locali.get(0).setParticella("Nessun locale corrispondente, è illegale se c'è l'immobile");
 			}
 			LocaleDiImmobile li = new LocaleDiImmobile();
-			li.setOperation(pc.OP_UPDATE);
+			li.setOperation(pc.OP_NOP);
 			li.setLocale(locali.get(0));
 			li.setRel_Immobile_Locale(ril);
 			d.getDichiarazioneImmobile().getLocaliDiImmobile().add(li);
@@ -213,17 +238,30 @@ public class TariManagerExt extends TariManager {
 		} else if (l.isDelete()) {
 			deleteLocale(l);
 		}
+		l.setOperation(l.OP_NOP);
 	}
 	
-	public void saveLocaleDiImmobile(ImmobileDiDichiarazione idd){
+	public void saveLocaleDiImmobile(ImmobileDiDichiarazione idd) {
 		if (idd.isInsert()) {
 			Rel_Immobile_Locale ril = new Rel_Immobile_Locale();
 			for (LocaleDiImmobile ldi : idd.getLocaliDiImmobile()) {
+
+				ldi.setOperation(ldi.OP_INSERT);
+				ldi.getLocale().setOperation(ldi.OP_INSERT);
 				saveLocale(ldi.getLocale());
 				ril.setIdlocale(ldi.getLocale().getUnid());
 				ril.setIdimmobile(idd.getImmobile().getUnid());				
 				inserisciRel_Immobile_Locale(ril);
+
 			}			
+		}
+
+		else if(idd.isUpdate()){
+			for (LocaleDiImmobile ldi : idd.getLocaliDiImmobile()) {
+				ldi.setOperation(ldi.OP_UPDATE);
+				ldi.getLocale().setOperation(ldi.OP_UPDATE);
+				saveLocale(ldi.getLocale());
+			}
 		}
 	}
 	/***** PRECEDENTEDICHIARAZIONE DI DICHIARAZIONE****/	
@@ -233,13 +271,13 @@ public class TariManagerExt extends TariManager {
 		List<Rel_Dichiarazione_PrecDichiara> rel_Dichiarazione_PrecDichiara = cercaRel_Dichiarazione_PrecDichiara(rdps);
 
 		for (Rel_Dichiarazione_PrecDichiara rdp : rel_Dichiarazione_PrecDichiara) {
-			rdp.setOperation(pc.OP_UPDATE);
+			rdp.setOperation(pc.OP_NOP);
 			PrecedenteDichiarazioneSearch pds = new PrecedenteDichiarazioneSearch();
 			pds.setUnid(rdp.getIdPrecedenteDichiarazione());
 			List<PrecedenteDichiarazione> precedenteDichiarazione = cercaPrecedenteDichiarazione(pds);
 			// 
 			DichiarazioneDiPersonaTari dpt = new DichiarazioneDiPersonaTari();
-			d.setOperation(pc.OP_UPDATE);
+			d.setOperation(pc.OP_NOP);
 			d.setPrecedenteDichiarazione(precedenteDichiarazione.get(0));
 			d.setRel_Dichiarazione_PrecDichiara(rdp);
 		}
@@ -256,7 +294,7 @@ public class TariManagerExt extends TariManager {
 	}
 	
 	public void savePrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc){
-		if (pc.isInsert()) {
+		if (pc.isInsert() || pc.isUpdate()) {
 			Rel_Dichiarazione_PrecDichiara rdpd = new Rel_Dichiarazione_PrecDichiara();
 			for (DichiarazioneDiPersonaTari dpt : pc.getDichiarazioniDiPersona()) {
 				if(dpt.getPrecedenteDichiarazione() != null) {
@@ -362,10 +400,11 @@ public class TariManagerExt extends TariManager {
 
 	public LocaleDiImmobile createLocaleDiImmobile() {
 		
-		Locale l=new Locale();
+		Locale l = new Locale();
 		
 		LocaleDiImmobile lim=new LocaleDiImmobile();
-		lim.setLocale(l);	
+		lim.setLocale(l);
+		lim.setOperation(lim.OP_NOP);
 
 		return lim;
 	}

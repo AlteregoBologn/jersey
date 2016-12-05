@@ -92,10 +92,9 @@
 		#{nomeprecedentedetentore},
 		NOMEPROPRIETARIO = #{nomeproprietario},
 		PIANO = #{piano},
-		QUALITA = #{qualita},
-		UNID = #{unid},
+		QUALITA = #{qualita},		
 		VIA = #{via}
-		WHERE 1=1
+		WHERE UNID = #{unid}
 	</update>
 
 	<delete id="delete">

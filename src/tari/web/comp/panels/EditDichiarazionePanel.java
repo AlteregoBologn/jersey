@@ -20,7 +20,7 @@ public class EditDichiarazionePanel extends BasePanel {
 	TariManagerExt tariManagerExt;
 	DichiarazioneDiPersonaTari dichiarazione;
 	
-	public EditDichiarazionePanel(String id, final DichiarazioneDiPersonaTari dichiarazione, final PersonaTariCompleta pc, boolean onNew) {
+	public EditDichiarazionePanel(String id, final DichiarazioneDiPersonaTari dichiarazione, PersonaTariCompleta pc, boolean onNew) {
 		super(id);
 		Form form = new Form("formEdit"){
 			@Override
@@ -40,6 +40,7 @@ public class EditDichiarazionePanel extends BasePanel {
 		form.add(new EmailTextField("email", new PropertyModel<>(pc, "personaTari.email")));
 		
 		form.add(new TextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.via")));
+		
 		Form form2 = new Form("form2");
 		
 		form2.add(new ListaLocaliDiImmobilePanel("listaLocali", dichiarazione, pc));
@@ -48,6 +49,7 @@ public class EditDichiarazionePanel extends BasePanel {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				tariManagerExt.saveImmobileDiDichiarazione(dichiarazione, pc);
+
 				target.add(EditDichiarazionePanel.this);
 			}
 		});

@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import model.E;
 import tari.logic.TariManagerExt;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.PersonaTariCompleta;
@@ -33,6 +34,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 		Form form = new Form ("form");
 		add(form);
 		form.add(new Grid<DichiarazioneDiPersonaTari>("lista", true, true, true, true, true) {
+			
 
 			@Override
 			public List<IColumn> getColumns() {
@@ -43,7 +45,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 			}
 
 			@Override
-			public List<DichiarazioneDiPersonaTari> getList(int f, int c) {				
+			public List<DichiarazioneDiPersonaTari> getList(int f, int c) {		
 				return pc.getDichiarazioniDiPersona();
 			}
 
@@ -54,17 +56,16 @@ public class ListaDichiarazioniPanel extends BasePanel {
 			@Override
 			public void onNew(AjaxRequestTarget target) {
 				DichiarazioneDiPersonaTari n = tariManagerExt.createNuovaDichiarazioneDiPersonaTari();
+				pc.setOperation(pc.OP_INSERT);
+				n.setOperation(n.OP_INSERT);
 				editPanel.replaceWith(getEditPanel(target, n, pc, false));
 				target.add(ListaDichiarazioniPanel.this);
 				editPanel = newEditPanel;
 			}
 			@Override
 			public void onEdit(AjaxRequestTarget target, DichiarazioneDiPersonaTari object) {
-				 //add(new ProvaModale("pippo", "Modifica dichiarazione", 800, 600, new EditDichiarazionePanel("paperino", pc)));
-				 /*this.setVisible(false);
-				 edit.setVisible(true);
-				 target.add(ListaDichiarazioniPanel.this);*/
-				 
+				 pc.setOperation(pc.OP_UPDATE);
+				 object.setOperation(object.OP_UPDATE);
 				 editPanel.replaceWith(getEditPanel(target, object, pc, false));
 				 target.add(ListaDichiarazioniPanel.this);
 				 editPanel = newEditPanel;
@@ -72,8 +73,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 		});	
 	}
 	private Panel getEditPanel(AjaxRequestTarget target, DichiarazioneDiPersonaTari dichiarazione, PersonaTariCompleta pc, boolean onNew) {
-		Panel p = new EditDichiarazionePanel("edit", dichiarazione, pc, onNew) {
-		};
+		Panel p = new EditDichiarazionePanel("edit", dichiarazione, pc, onNew);
 		newEditPanel = p;
 		return p;
 	}

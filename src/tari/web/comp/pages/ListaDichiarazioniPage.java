@@ -2,6 +2,7 @@ package tari.web.comp.pages;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import model.E;
 import tari.logic.TariManagerExt;
 import tari.modelExt.PersonaTariCompleta;
 import tari.web.comp.panels.ListaDichiarazioniPanel;
