@@ -56,21 +56,25 @@ public class E implements Serializable {
 			if( isInsert(op) ) ;
 			if( isDelete(op) ) operation=OP_NOP ;
 			if( isUpdate(op) ) ;
+			if( isNop(op) ) ;
 		}
 		if( isDelete(operation) ) {
 			if( isInsert(op) ) operation=OP_INSERT ;
 			if( isDelete(op) ) ;
 			if( isUpdate(op) ) operation=OP_UPDATE;
+			if( isNop(op) ) operation= OP_NOP;
 		}
 		if( isUpdate(operation) ) {
 			if( isInsert(op) ) ;
 			if( isDelete(op) ) operation=OP_DELETE;
 			if( isUpdate(op) ) ;
+			if( isNop(op) ) operation=OP_NOP;
 		}
 		if( isNop(operation) ) {
 			if( isInsert(op) ) operation=OP_INSERT;
 			if( isDelete(op) ) operation=OP_DELETE;
 			if( isUpdate(op) ) operation=OP_UPDATE;
+			if( isNop(op) ) ;
 		}
 		this.operation = operation;
 	}

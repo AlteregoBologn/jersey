@@ -14,6 +14,7 @@ public class PersonaTari extends E {
 	private Date datanascita;
 	private String comunenascita;
 	private String pec;
+	private String recapitotelefonico;
 	
 	public Date getDatanascita() {
 		return datanascita;
@@ -104,5 +105,13 @@ public class PersonaTari extends E {
 	public String getPec() {
 		 
 		return pec;
+	}
+
+	public String getRecapitoTelefonico() {
+		return recapitotelefonico;
+	}
+
+	public void setRecapitoTelefonico(String recapitoTelefonico) {
+		this.recapitotelefonico = recapitoTelefonico;
 	}	
 }

@@ -46,10 +46,13 @@
 			AND UNID = #{unid}
 		</if>
 		<if test="pec != null ">
-    		AND PEC = #{pec} 
-  		</if>
+			AND PEC = #{pec}
+		</if>
+		<if test="recapitotelefonico != null ">
+			AND RECAPITOTELEFONICO = #{recapitotelefonico}
+		</if>
 	</sql>
-	
+
 	<insert id="insert">
 		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
 			SELECT
@@ -64,8 +67,9 @@
 		EMAIL,
 		NOME,
 		PASSWORD,
-		SESSO,
 		PEC,
+		RECAPITOTELEFONICO,
+		SESSO,
 		UNID
 		) VALUES (
 		'N',
@@ -75,44 +79,46 @@
 		#{datanascita},
 		#{email},
 		#{nome},
-		#{password},
-		#{sesso},
 		#{pec},
+		#{recapitotelefonico},
+		#{sesso},
 		#{unid})
 	</insert>
-	
+
 	<sql id="load">
-		SELECT * from T_PERSONA	
+		SELECT * from T_PERSONA
 		<include refid="condition" />
 	</sql>
-	
+
 	<select id="count" resultType="Integer">
 		<include refid="dao.common.preCount" />
 		<include refid="load" />
 		<include refid="dao.common.postCount" />
 	</select>
-	
-	<select id="loadAll" resultType="tari.model.PersonaTari">	
+
+	<select id="loadAll" resultType="tari.model.PersonaTari">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />
 	</select>
-	
+
 	<update id="update">
 		update T_PERSONA set
 		CANC = #{canc},
 		CF = #{cf},
 		COGNOME = #{cognome},
 		COMUNENASCITA = #{comunenascita},
-		DATANASCITA = #{datanascita},
+		DATANASCITA =
+		#{datanascita},
 		EMAIL = #{email},
 		NOME = #{nome},
 		PASSWORD = #{password},
 		PEC = #{pec},
+		RECAPITOTELEFONICO = #{recapitotelefonico},
 		SESSO = #{sesso},
 		UNID = #{unid}
-		WHERE 1=1
-		AND UNID = #{unid}
+		WHERE 
+		UNID = #{unid}
 	</update>
 
 
@@ -121,7 +127,7 @@
 		delete from T_PERSONA
 		WHERE UNID = #{unid}
 	</delete>
-	
+
 	<sql id="cambiaPassword">
 		Update T_PERSONA SET PASSWORD = #{password}
 		<include refid="condition" />

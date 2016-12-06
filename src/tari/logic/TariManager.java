@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import dao.DecodificaDao;
+import model.Decodifica;
+import model.DecodificaSearch;
 import tari.dao.DichiarazioneDao;
 import tari.dao.ImmobileDao;
 import tari.dao.LocaleDao;
@@ -72,7 +75,10 @@ public class TariManager {
 
 	@Autowired
 	private Rel_PersGiuridica_DichiarazionDao relPersgiuridicaDichiarazionDao;
-
+	
+	@Autowired
+	private DecodificaDao decodificaDao;
+	
 	public void inserisciPersonaTari(PersonaTari a)
 	{
 		personaTariDao.insert(a);
@@ -247,6 +253,9 @@ public class TariManager {
 	public void deleteRel_PersGiuridica_Dichiarazion(Rel_PersGiuridica_Dichiarazion a) {
 	  relPersgiuridicaDichiarazionDao.delete(a);
 	}
-
+	
+	public List<Decodifica> cercaDecodifica(DecodificaSearch ds){
+		return decodificaDao.loadAll(ds);
+	}
 }
 

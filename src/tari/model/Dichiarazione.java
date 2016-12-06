@@ -2,6 +2,7 @@ package tari.model;
 
 import java.util.Date;
 
+import model.Decodifica;
 import model.E;
 
 public class Dichiarazione extends E {
@@ -12,6 +13,7 @@ public class Dichiarazione extends E {
 	private String italianoallestero;
 	private String unicooccupante;
 	private Integer unid;
+	private Decodifica decodifica;
 
 	public void setAgricoltore(String a) {
 
@@ -71,5 +73,13 @@ public class Dichiarazione extends E {
 	public Integer getUnid() {
 
 		return unid;
+	}
+
+	public Decodifica getDecodifica() {
+		return decodifica;
+	}
+
+	public void setDecodifica(Decodifica decodifica) {
+		this.decodifica = decodifica;
 	}
 }

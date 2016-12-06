@@ -123,7 +123,7 @@ public class Grid<T extends E > extends Panel {
 		});
 	}
 	if(showEdit){
-		columns.add(new AbstractColumn<T, String>(new Model("Edit")) {
+		columns.add(new AbstractColumn<T, String>(new Model<>("Edit")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

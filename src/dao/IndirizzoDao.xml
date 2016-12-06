@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IndirizzoDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="cap != null ">
+			AND CAP = #{cap}
+		</if>
+		<if test="civico != null ">
+			AND CIVICO = #{civico}
+		</if>
+		<if test="comune != null ">
+			AND COMUNE = #{comune}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+		<if test="via != null ">
+			AND VIA = #{via}
+		</if>
+	</sql>
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT
+			seq.nextval from dual
+		</selectKey>
+		insert into T_INDIRIZZO (
+		CAP,
+		CIVICO,
+		COMUNE,
+		UNID,
+		VIA
+		) VALUES (
+		#{cap},
+		#{civico},
+		#{comune},
+		#{unid},
+		#{via})
+	</insert>
+
+	<sql id="load">
+		SELECT * FROM T_INDIRIZZO
+		<include refid="condition" />
+	</sql>
+
+	<select id="count" resultType="Integer">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<update id="update">
+		update T_INDIRIZZO set
+		CAP = #{cap},
+		CIVICO = #{civico},
+		COMUNE = #{comune},
+		VIA = #{via}
+		WHERE UNID = #{unid}
+	</update>
+
+	<select id="loadAll" resultType="model.Indirizzo">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from T_INDIRIZZO
+		WHERE UNID = #{unid}
+	</delete>
+</mapper>

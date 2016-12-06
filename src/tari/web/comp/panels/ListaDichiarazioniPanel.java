@@ -33,7 +33,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 		
 		Form form = new Form ("form");
 		add(form);
-		form.add(new Grid<DichiarazioneDiPersonaTari>("lista", true, true, true, true, true) {
+		form.add(new Grid<DichiarazioneDiPersonaTari>("lista", true, true, false, false, false) {
 			
 
 			@Override
@@ -58,14 +58,22 @@ public class ListaDichiarazioniPanel extends BasePanel {
 				DichiarazioneDiPersonaTari n = tariManagerExt.createNuovaDichiarazioneDiPersonaTari();
 				pc.setOperation(pc.OP_INSERT);
 				n.setOperation(n.OP_INSERT);
-				editPanel.replaceWith(getEditPanel(target, n, pc, false));
+				editPanel.replaceWith(getEditPanel(target, n, pc, true));
 				target.add(ListaDichiarazioniPanel.this);
 				editPanel = newEditPanel;
 			}
+			/*
 			@Override
 			public void onEdit(AjaxRequestTarget target, DichiarazioneDiPersonaTari object) {
 				 pc.setOperation(pc.OP_UPDATE);
 				 object.setOperation(object.OP_UPDATE);
+				 editPanel.replaceWith(getEditPanel(target, object, pc, false));
+				 target.add(ListaDichiarazioniPanel.this);
+				 editPanel = newEditPanel;
+			}
+			*/
+			@Override
+			public void onSelect(AjaxRequestTarget target, DichiarazioneDiPersonaTari object) {
 				 editPanel.replaceWith(getEditPanel(target, object, pc, false));
 				 target.add(ListaDichiarazioniPanel.this);
 				 editPanel = newEditPanel;

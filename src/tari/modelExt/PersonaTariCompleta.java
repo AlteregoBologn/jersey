@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.E;
-import tari.model.PersonaGiuridica;
+import model.Indirizzo;
 import tari.model.PersonaTari;
 
 public class PersonaTariCompleta extends E {
 	PersonaTari personaTari;
-	
+	Indirizzo residenza;
+	//Indirizzo domicilio;
 	List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona = new ArrayList<DichiarazioneDiPersonaTari>();
 	
 	public PersonaTari getPersonaTari() {

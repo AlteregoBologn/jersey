@@ -1,28 +1,66 @@
 <wicket:panel>
-	<form wicket:id="formEdit">
+	<form wicket:id="formAnagrafica">
 		<div class="container-fluid">
-		<h3>Dati Persona:</h3>
-			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label>		
-			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
-			<label for="cf">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 			
-			<label for="sesso">Sesso: <input type="text" class="form-control" wicket:id="sesso" id="sesso" /></label> 		
-			<label for="datanascita">Data di nascita: <input type="text" class="form-control" wicket:id="datanascita" id="datanascita" /></label>
-			<label for="comunenascita">Comune di nascita: <input type="text" class="form-control" wicket:id="comunenascita" id="comunenascita" /></label> 
-			<label for="email">Email: <input type="email" class="form-control" wicket:id="email" id="email" /></label>
-		</div>
-		
-		<div class="container-fluid">	
-		<h3>Dati Immobile:</h3>
-			<label for="via">Via: <input type="text" class="form-control" wicket:id="via" id="via" /></label>			
+			<label for="nome">Il/la sottoscritto/a <input type="text" wicket:id="nome" id="nome" />	
+												<input type="text" wicket:id="cognome" id="cognome" /></label> 
+			<label for="comunenascita">nato/a a <input type="text" wicket:id="comunenascita" id="comunenascita" /></label> 
+			<label for="datanascita">il <input type="text" wicket:id="datanascita" id="datanascita" /></label><br />
+			<label for="comuneResidenza">residente in: <input type="text" wicket:id="comuneResidenza" id="comuneResidenza" /></label>
+			<label for="viaResidenza">via: <input type="text" wicket:id="viaResidenza" id="viaResidenza" /></label>
+			<label for="civicoResidenza">n°: <input type="text" wicket:id="civicoResidenza" id="civicoResidenza" /></label>
+			<label for="capResidenza">CAP: <input type="text" wicket:id="capResidenza" id="capResidenza" /></label>
+			<label for="cf">codice fiscale: <input type="text" wicket:id="cf" id="cf" /></label> 			
+			<label for="recapito">recapito telefonico: <input type="text" wicket:id="recapito" id="recapito" /></label>	<br />
+			<label for="email">e-mail: <input type="email" wicket:id="email" id="email" /></label>
+			<label for="pec">PEC(posta certificata): <input type="email" wicket:id="pec" id="pec" /></label><br />
 		</div>
 	</form>
-	<form wicket:id="form2">
+	
+	<form wicket:id="formDichiara">
+		<div class="container-fluid">	
+		<h3>DICHIARA</h3>
+			<label for="dataDa">di avere a propria disposizione dal: <input type="text" wicket:id="dataDa" id="dataDa" /></label>
+			<label for="qualita">in qualità di: <input type="text" wicket:id="qualita" id="qualita" /></label>
+			<label>in Bologna i seguenti locali:</label><br />
+			<label for="via">Via: <input type="text" wicket:id="via" id="via" /></label>
+			<label for="civico">N°: <input type="text" wicket:id="civico" id="civico" /></label>
+			<label for="interno">Interno: <input type="text" wicket:id="interno" id="interno" /></label>
+			<label for="piano">Piano: <input type="text" wicket:id="piano" id="piano" /></label><br />
+			<label for="nomeproprietario">nominativo del proprietario: <input type="text" wicket:id="nomeproprietario" id="nomeproprietario" /></label>	<br />
+			<label for="nomeprecedentedetentore">nominativo del precedente detentore: <input type="text" wicket:id="nomeprecedentedetentore" id="nomeprecedentedetentore" /></label> <br />			
+		</div>
+	</form>
+	
+	<form wicket:id="formLocali">
 		<div class="container-fluid">
-			<h3>Lista locali</h3>
+			<h3>Locali tassabili</h3>
 			<div wicket:id="listaLocali">
 				
 			</div>
 			<input type="button" wicket:id="salva" value="Salva" />
+		</div>
+	</form>
+		
+	<form wicket:id="formDichiaraInoltre">
+		<div class="container-fluid">
+			<h3>DICHIARA INOLTRE</h3>
+			<label>-ai fini dell'applicazione delle relative riduzioni di trovarsi nella seguente posizione: </label><br />
+			<div class="radioGroup">
+				<radiogroup wicket:id="posizione"></radiogroup> 
+			</div>
+		</div>
+	</form>
+	
+	<form wicket:id="formPrecDich">
+		<div class="container-fluid">
+			<label>- ai fine della cessazione degli effetti della dichiarazione per l'appartamento precedentemente occupato di essersi trasferito</label><br />
+			<label>dall'appartamento di </label>
+			<label for="via">Via: <input type="text" wicket:id="via" id="via" /></label>
+			<label for="civico">N°: <input type="text" wicket:id="civico" id="civico" /></label>
+			<label for="interno">Interno: <input type="text" wicket:id="interno" id="interno" /></label>
+			<label for="datada">che, a decorrere dal <input type="text" wicket:id="datada" id="datada" /></label><br />
+			<label for="motivo">non è più a sua disposizione per il seguente motivo <input type="text" wicket:id="motivo" id="motivo" /></label>
+			
 		</div>
 	</form>
 </wicket:panel>

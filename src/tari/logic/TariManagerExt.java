@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import model.E;
+import model.Decodifica;
+import model.DecodificaSearch;
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
@@ -84,7 +85,6 @@ public class TariManagerExt extends TariManager {
 	}
 
 	/***** DICHIARAZIONE DI PERSONATARI ****/	
-	
 	public void loadDichiarazioniDiPersonaTari (PersonaTari p, PersonaTariCompleta pc) {
 		
 		Rel_PersonaTari_DichiarazioneSearch rpds = new Rel_PersonaTari_DichiarazioneSearch();
@@ -238,7 +238,6 @@ public class TariManagerExt extends TariManager {
 		} else if (l.isDelete()) {
 			deleteLocale(l);
 		}
-		l.setOperation(l.OP_NOP);
 	}
 	
 	public void saveLocaleDiImmobile(ImmobileDiDichiarazione idd) {
@@ -258,12 +257,21 @@ public class TariManagerExt extends TariManager {
 
 		else if(idd.isUpdate()){
 			for (LocaleDiImmobile ldi : idd.getLocaliDiImmobile()) {
-				ldi.setOperation(ldi.OP_UPDATE);
-				ldi.getLocale().setOperation(ldi.OP_UPDATE);
+				
+				//ldi.getLocale().setOperation(idd.getLocaliDiImmobile().iterator().next().getOperation());
+				
+				if(ldi.isNew()){
+					Rel_Immobile_Locale ril = new Rel_Immobile_Locale();
+					ril.setIdlocale(ldi.getLocale().getUnid());
+					ril.setIdimmobile(idd.getImmobile().getUnid());
+					inserisciRel_Immobile_Locale(ril);
+					ldi.getLocale().setOperation(ldi.OP_INSERT);					
+				}	
 				saveLocale(ldi.getLocale());
 			}
 		}
 	}
+	
 	/***** PRECEDENTEDICHIARAZIONE DI DICHIARAZIONE****/	
 	public void loadPrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari d, PersonaTariCompleta pc){
 		Rel_Dichiarazione_PrecDichiaraSearch rdps = new Rel_Dichiarazione_PrecDichiaraSearch();
@@ -307,6 +315,7 @@ public class TariManagerExt extends TariManager {
 			}			
 		}
 	}
+	
 	/***** CREAZIONE DI PERSONATARICOMPLETA ****/	
 	public PersonaTariCompleta createPersonaTariCompleta(PersonaTari p) throws Exception{
 			
@@ -364,7 +373,8 @@ public class TariManagerExt extends TariManager {
 	}
 
 	public DichiarazioneDiPersonaTari createNuovaDichiarazioneDiPersonaTari() {
-		Dichiarazione dichiarazione1=new Dichiarazione();
+		
+		Dichiarazione dichiarazione1 = new Dichiarazione();
 		dichiarazione1.setData(new Date());
 		dichiarazione1.setAgricoltore("S");
 		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
@@ -407,6 +417,18 @@ public class TariManagerExt extends TariManager {
 		lim.setOperation(lim.OP_NOP);
 
 		return lim;
+	}
+	
+	
+	public List<String> caricaDecodificaPoisizioneDiDicharazione(){
+		DecodificaSearch ds = new DecodificaSearch();
+		ds.setTipo("TIPOPOSIZIONEDICHIARAZIONE");
+		List<Decodifica> decodifiche = cercaDecodifica(ds);
+		List<String> descrizioni = new ArrayList<String>();
+		for(Decodifica d : decodifiche){
+			descrizioni.add(d.getDescrizione());
+		}
+		return descrizioni;
 	}
 	
 }

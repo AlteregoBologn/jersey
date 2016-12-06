@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import model.E;
 import tari.logic.TariManagerExt;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.LocaleDiImmobile;
@@ -28,7 +29,7 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 	DichiarazioneDiPersonaTari dpt;
 	LocaleDiImmobile ldi;
 
-	public ListaLocaliDiImmobilePanel(String id, DichiarazioneDiPersonaTari dpt, PersonaTariCompleta pc) {
+	public ListaLocaliDiImmobilePanel(String id, DichiarazioneDiPersonaTari dpt, PersonaTariCompleta pc, boolean onNew) {
 		super(id);	
 		
 		editPanel = new EmptyPanel("edit");
@@ -37,7 +38,7 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 		
 		Form form = new Form ("form");
 		add(form);
-		form.add(new Grid<LocaleDiImmobile>("lista", true, true, true, true, true) {
+		form.add(new Grid<LocaleDiImmobile>("lista", onNew, false, false, false, false) {
 
 			@Override
 			public List<IColumn> getColumns() {
@@ -64,25 +65,29 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			public void onNew(AjaxRequestTarget target) {
 				LocaleDiImmobile ldi = tariManagerExt.createLocaleDiImmobile();
 				pc.setOperation(pc.OP_UPDATE);
-				ldi.setOperation(ldi.OP_INSERT);			
+				ldi.setOperation(ldi.OP_INSERT);	
+				ldi.setNew(true);				
 				editPanel.replaceWith(getEditPanel(target, ldi, pc, false));
 				target.add(ListaLocaliDiImmobilePanel.this);
 				editPanel = newEditPanel;
 			}
-			
+			/*
 			@Override
 			public void onEdit(AjaxRequestTarget target, LocaleDiImmobile object) {
-				
-				object.setOperation(ldi.OP_UPDATE);
+				pc.setOperation(pc.OP_UPDATE);
+				object.setOperation(object.OP_DELETE);				
+				object.setOperation(object.OP_UPDATE);
 				editPanel.replaceWith(getEditPanel(target, object, pc, false));
 				target.add(ListaLocaliDiImmobilePanel.this);
 				editPanel = newEditPanel;
-			}
-		});	
+			}*/
+		});
 	}
 	private Panel getEditPanel(AjaxRequestTarget target, LocaleDiImmobile locale, PersonaTariCompleta pc, boolean onNew) {
 
 		Panel p = new EditLocaleDiImmobilePanel("edit", locale, pc, onNew) {
+			
+			
 
 			public void onAnnulla(AjaxRequestTarget target, LocaleDiImmobile l){
 				this.setVisible(false);			
@@ -91,11 +96,31 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			}
 			public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l){
 				
-				if(locale.isInsert()) {
+				if(locale.isInsert() && locale.isNew()) {
+			
+					dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(l);
+
+				}
+				else if(locale.isUpdate() && !locale.isNew()){
+					locale.setOperation(locale.OP_DELETE);
+					locale.setOperation(locale.OP_UPDATE);
+					l.setOperation(locale.OP_DELETE);
+					l.setOperation(l.OP_UPDATE);
+				}
+				
+				else if(locale.isUpdate() && locale.isNew()){
+					locale.setOperation(locale.OP_DELETE);
+					locale.setOperation(locale.OP_INSERT);
+					l.setOperation(locale.OP_DELETE);
+					l.setOperation(l.OP_INSERT);
+				}
+				
+				if(locale.isNew()){
+					locale.setOperation(locale.OP_NOP);	
+					locale.setOperation(locale.OP_INSERT);
+					l.setOperation(locale.OP_NOP);	
+					l.setOperation(l.OP_INSERT);
 					
-					locale.setOperation(locale.OP_NOP);
-					l.setOperation(l.OP_NOP);					
-					dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(l);					
 				}
 
 				this.setVisible(false);
