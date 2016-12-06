@@ -104,4 +104,5 @@ public class ManagerExtTest {
 		managerExt.savePersonaCompleta(pc);
 
 	}
+
 }

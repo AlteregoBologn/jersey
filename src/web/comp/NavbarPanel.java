@@ -9,6 +9,7 @@ import web.MySession;
 import web.c.BasePanel;
 import web.comp.cambiaPassword.ChangePwdPage;
 import web.comp.persone.ModificaPersonaPage;
+import web.comp.codifiche.GestioneCodifichePage;
 import web.comp.registrazione.RegistrazionePage;
 
 public class NavbarPanel extends BasePanel {
@@ -76,6 +77,17 @@ public class NavbarPanel extends BasePanel {
 				return true;//utenteLoggato();
 			}
 		});
+		add(new Link("Gestione Codifiche") {
+			@Override
+			public void onClick() {
+				setResponsePage(GestioneCodifichePage.class);
+			}
+			@Override
+			public boolean isVisible() {
+				return true;//utenteLoggato();
+			}
+		});
+		
 	}
 	
 	public boolean utenteLoggato() {

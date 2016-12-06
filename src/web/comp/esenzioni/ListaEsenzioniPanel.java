@@ -11,6 +11,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import logic.Manager;
+import logic.ManagerExt;
 import model.Esenzione;
 import model.EsenzioneSearch;
 import model.Medico;
@@ -25,6 +26,7 @@ public class ListaEsenzioniPanel extends BasePanel {
 	Manager manager;
 	
 	EsenzioneSearch search=new EsenzioneSearch();
+	
 
 	public ListaEsenzioniPanel(String id, final PersonaCompleta pc) {
 		super(id);
@@ -38,7 +40,6 @@ public class ListaEsenzioniPanel extends BasePanel {
 				List<IColumn> columns = new ArrayList();
 				columns.add(new PropertyColumn(new Model("unid"), "unid"));
 				columns.add(new PropertyColumn(new Model("descrizione"), "descrizione"));
-				
 				return columns;
 			}
 
@@ -57,16 +58,16 @@ public class ListaEsenzioniPanel extends BasePanel {
 			public void onSelect(AjaxRequestTarget target, Esenzione esenzione) {
 				onSelezionaEsenzione(target,esenzione);
 				target.add(ListaEsenzioniPanel.this);
-				
 			}
 
 			@Override
 			public void onDelete(AjaxRequestTarget target, Esenzione esenzione) {
-				EsenzioneDiPersona esenzioneAttiva = new EsenzioneDiPersona();
-				esenzioneAttiva.setEsenzione(esenzione);
-				pc.getEsenzioni().remove(esenzioneAttiva);
-				esenzioneAttiva.setOperation(esenzione.OP_DELETE);
-				
+// 				FIX ME operazioni di eliminazione dell'esenzione
+
+//				EsenzioneDiPersona esenzioneAttiva = new EsenzioneDiPersona();
+//				esenzioneAttiva.setEsenzione(esenzione);
+//				pc.getEsenzioni().remove(esenzioneAttiva);
+//				esenzioneAttiva.setOperation(esenzione.OP_DELETE);
 				target.add(ListaEsenzioniPanel.this);
 			}
 			
@@ -74,7 +75,8 @@ public class ListaEsenzioniPanel extends BasePanel {
 	}
 	
 	public void onSelezionaEsenzione(AjaxRequestTarget target, Esenzione esenzione) {
-
+		
+		
 	}
 
 

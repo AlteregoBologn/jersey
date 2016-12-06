@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import model.Codifica;
+import model.CodificaSearch;
+import model.Esenzione;
 import model.Medico;
 import model.MedicoSearch;
 import model.Persona;
@@ -254,4 +257,68 @@ public class ManagerTest
 		System.out.println(count);
 	}
 	
+	@Test
+	public void testsalvaEsenzione(){
+		Esenzione esenzione = new Esenzione();
+		esenzione.setUnid(5);
+		esenzione.setDescrizione("diagnosi precoce");
+		esenzione.setOperation(esenzione.OP_INSERT);
+		manager.insertEsenzione(esenzione);
+	}
+	
+	
+	/************************* CODIFICA *************************/
+	
+	@Test
+	public void testInsertCodifica(){
+		Codifica codifica = new Codifica();
+		codifica.setUnid(10);
+		codifica.setTipo("straordinaria");
+		codifica.setDescrizione("prova di insert");
+		manager.insertCodifica(codifica);
+		
+	}
+	
+	@Test
+	public void testUpdateCodifica(){
+		CodificaSearch cs = new CodificaSearch();
+		cs.setUnid(2);
+		List<Codifica> listaCodifiche = manager.loadCodifica(cs);
+		if (listaCodifiche.isEmpty()){
+			throw new RuntimeException();
+		}
+		listaCodifiche.get(0).setDescrizione("prova di update");
+		manager.updateCodifica(listaCodifiche.get(0));
+	}
+	
+	@Test
+	public void testDeleteCodifica(){
+		CodificaSearch cs = new CodificaSearch();
+		cs.setUnid(2);
+		List<Codifica> listaCodifiche = manager.loadCodifica(cs);
+		if (listaCodifiche.isEmpty()){
+			throw new RuntimeException();
+		}
+		manager.deleteCodifica(listaCodifiche.get(0));
+		
+	}
+	
+	@Test
+	public void testLoadCodifica(){
+		CodificaSearch cs = new CodificaSearch();
+		cs.setUnid(1);
+		List<Codifica> listaCodifiche = manager.loadCodifica(cs);
+		if(listaCodifiche.isEmpty())
+			throw new RuntimeException();
+		System.out.println(listaCodifiche.get(0).toString()); 
+		
+	}
+	
+	@Test
+	public void countCodifica(){
+		CodificaSearch cs = new CodificaSearch();
+		int count = manager.countCodifica(cs);
+		System.out.println("Il numero delle codifiche è: "+count);
+		
+	}
 }

@@ -1,15 +1,19 @@
 package web.comp.esenzioni;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -26,9 +30,11 @@ import modelExt.PersonaCompleta;
 import web.c.BasePanel;
 import web.c.CssBeahvior;
 import web.c.Grid;
+import web.c.ProvaModale;
 import web.comp.medico.ListaMediciDiPersonaPanel;
 import web.comp.medico.ListaMediciPanel;
 import web.comp.medico.ScegliMedicoDiPersonaPanel;
+import web.comp.persone.ModificaPersonaCompletaPanel;
 import web.comp.registrazione.RegistrazionePanel;
 
 public class ListaEsenzioniDiPersonaPanel extends BasePanel {
@@ -53,24 +59,24 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 			}
 		};
 
-		form.add(new TextField<>("unid", new PropertyModel<String>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.esenzione.unid")));
-		form.add(new TextField<>("descrizione", new PropertyModel<String>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.esenzione.descrizione")));
-		DateTextField datanascitaFieldA = new DateTextField("dataA", new PropertyModel(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.relazione.dataA"), new StyleDateConverter("S-", true));
+		form.add(new TextField<String>("unid", new PropertyModel<String>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.esenzione.unid")));
+		form.add(new TextField<String>("descrizione", new PropertyModel<String>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.esenzione.descrizione")));
+		DateTextField datanascitaFieldA = new DateTextField("dataA",
+				new PropertyModel<Date>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.relazione.dataA"),
+				new StyleDateConverter("S-", true));
 		DatePicker datePickerA = new DatePicker();
 		datePickerA.setShowOnFieldClick(true);
 		datePickerA.setAutoHide(true);
 		datanascitaFieldA.add(datePickerA);
-		datanascitaFieldA.setRequired(true);
-		datanascitaFieldA.add(new CssBeahvior());
 		form.add(datanascitaFieldA);
 
-		DateTextField datanascitaFieldDa = new DateTextField("dataDa", new PropertyModel(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.relazione.dataDa"), new StyleDateConverter("S-", true));
+		DateTextField datanascitaFieldDa = new DateTextField("dataDa",
+				new PropertyModel<Date>(ListaEsenzioniDiPersonaPanel.this, "esenzioneAttiva.relazione.dataDa"), 
+				new StyleDateConverter("S-", true));
 		DatePicker datePickerDa = new DatePicker();
 		datePickerDa.setShowOnFieldClick(true);
 		datePickerDa.setAutoHide(true);
 		datanascitaFieldDa.add(datePickerDa);
-		datanascitaFieldDa.setRequired(true);
-		datanascitaFieldDa.add(new CssBeahvior());
 		form.add(datanascitaFieldDa);
 
 		add(new Grid<EsenzioneDiPersona>("lista") {
@@ -80,8 +86,8 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 				List<IColumn> columns = new ArrayList();
 				columns.add(new PropertyColumn(new Model("Unid"), "esenzione.unid"));
 				columns.add(new PropertyColumn(new Model("Descrizione"), "esenzione.descrizione"));
-				columns.add(new PropertyColumn(new Model("data Da"), "relazione.dataDa"));
-				columns.add(new PropertyColumn(new Model("data A"), "relazione.dataA"));
+				columns.add(new PropertyColumn(new Model<>("data Da"), "relazione.dataDa"));
+				columns.add(new PropertyColumn(new Model<>("data A"), "relazione.dataA"));
 				return columns;
 			}
 
@@ -95,28 +101,21 @@ public class ListaEsenzioniDiPersonaPanel extends BasePanel {
 				return pc.getEsenzioni().size();
 			}
 		});
-		AjaxButton scegli = new AjaxButton("scegli") {
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				esenzioniPanel.setVisible(true);
-				target.add(ListaEsenzioniDiPersonaPanel.this);
-			}
-
-		};
-		add(scegli);
-
+		
+		
+		add(new ModaleListaEsenzioni("esenzioni", "Lista di tutte le esenzioni",1000,400,new ListaEsenzioniPanel("esenzioni", pc)));
+	
 		esenzioniPanel = new ListaEsenzioniPanel("esenzioni", pc) {
 			public void onSelezionaEsenzione(AjaxRequestTarget target, Esenzione esenzione) {
 
-				esenzioniPanel.setVisible(false);
+				esenzioniPanel.setVisible(true);
 
 				esenzioneAttiva = managerExt.selezionaEsenzione(pc, esenzione);
 				target.add(ListaEsenzioniDiPersonaPanel.this);
 
 			}
 		};
-		esenzioniPanel.setVisible(false);
-		add(esenzioniPanel);
+		
 		add(form);
 
 	}

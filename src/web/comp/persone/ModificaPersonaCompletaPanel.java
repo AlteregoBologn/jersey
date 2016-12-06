@@ -1,5 +1,7 @@
 package web.comp.persone;
 
+import java.util.Date;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.datetime.StyleDateConverter;
@@ -39,9 +41,9 @@ public class ModificaPersonaCompletaPanel extends BasePanel {
 				return false;
 			}
 		});
-		form.add(new TextField<>("nome", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.nome")));
-		form.add(new TextField<>("cognome", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.cognome")));
-		form.add(new TextField<>("cf", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.cf")));
+		form.add(new TextField<String>("nome", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.nome")));
+		form.add(new TextField<String>("cognome", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.cognome")));
+		form.add(new TextField<String>("cf", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.cf")));
 		form.add(new EmailTextField("email", new PropertyModel<>(ModificaPersonaCompletaPanel.this, "persona.persona.email")) {
 			@Override
 			public boolean isEnabled() {
@@ -50,7 +52,7 @@ public class ModificaPersonaCompletaPanel extends BasePanel {
 		});
 
 		DateTextField datanascitaField = new DateTextField("datanascita",
-				new PropertyModel(ModificaPersonaCompletaPanel.this, "persona.persona.datanascita"),
+				new PropertyModel<Date>(ModificaPersonaCompletaPanel.this, "persona.persona.datanascita"),
 				new StyleDateConverter("S-", true));
 		DatePicker datePicker = new DatePicker();
 		datePicker.setShowOnFieldClick(true);
@@ -62,7 +64,7 @@ public class ModificaPersonaCompletaPanel extends BasePanel {
 		
 		
 		form.add(new ListaEsenzioniDiPersonaPanel("listaEsenzioni", persona));
-		form.add(new ScegliMedicoDiPersonaPanel("sceltaMedico", persona));
+		//form.add(new ScegliMedicoDiPersonaPanel("sceltaMedico", persona));
 
 		AjaxButton button = new AjaxButton("salva") {
 			@Override

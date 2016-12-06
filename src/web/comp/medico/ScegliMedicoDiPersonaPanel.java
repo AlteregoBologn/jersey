@@ -14,6 +14,8 @@ import model.Medico;
 import modelExt.MedicoDiPersona;
 import modelExt.PersonaCompleta;
 import web.c.BasePanel;
+import web.comp.esenzioni.ListaEsenzioniPanel;
+import web.comp.esenzioni.ModaleListaEsenzioni;
 
 public class ScegliMedicoDiPersonaPanel extends BasePanel {
 	@Autowired
@@ -45,35 +47,37 @@ public class ScegliMedicoDiPersonaPanel extends BasePanel {
 		form.add(new DateTextField("dataDa", new PropertyModel(ScegliMedicoDiPersonaPanel.this, "medicoAttivo.relazione.dataDa")));
 
 		
-		AjaxButton scegli = new AjaxButton("scegli") {
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				mediciPanel.setVisible(true);
-				target.add(ScegliMedicoDiPersonaPanel.this);
-			}
-
-		};
-		add(scegli);
+//		AjaxButton scegli = new AjaxButton("scegli") {
+//			@Override
+//			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+//				mediciPanel.setVisible(true);
+//				target.add(ScegliMedicoDiPersonaPanel.this);
+//			}
+//
+//		};
+//		add(scegli);
 		
 		ListaMediciDiPersonaPanel storicoMedici=new ListaMediciDiPersonaPanel("storicoMedici", pc);
 		add(storicoMedici);
 		
-		mediciPanel=new ListaMediciPanel("medici", pc){
-			public void onScegliMedico(AjaxRequestTarget target,Medico m) {
-				
-				mediciPanel.setVisible(false);
-				
-				medicoAttivo=managerExt.scegliMedico(pc,m);
-				//medicoAttivo=managerExt.getMedicoAttivo(pc);
-				//onSalva(target, pc);
-				
-				target.add(ScegliMedicoDiPersonaPanel.this);
-				
-				
-			}
-		};	
-		mediciPanel.setVisible(false);
-		add(mediciPanel);
+		add(new ModaleListaMedici("medici", "Lista di tutti i medici",1500,400,new ListaMediciPanel("medici", pc)));
+		
+//		mediciPanel=new ListaMediciPanel("medici", pc){
+//			public void onScegliMedico(AjaxRequestTarget target,Medico m) {
+//				
+//				mediciPanel.setVisible(false);
+//				
+//				medicoAttivo=managerExt.scegliMedico(pc,m);
+//				//medicoAttivo=managerExt.getMedicoAttivo(pc);
+//				//onSalva(target, pc);
+//				
+//				target.add(ScegliMedicoDiPersonaPanel.this);
+//				
+//				
+//			}
+//		};	
+//		mediciPanel.setVisible(false);
+//		add(mediciPanel);
 		add(form);
 		
 	}

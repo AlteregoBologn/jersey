@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.Esenzione;
 import model.EsenzioneSearch;
-import model.MedicoSearch;
+
 
 public interface EsenzioneDao {
 	

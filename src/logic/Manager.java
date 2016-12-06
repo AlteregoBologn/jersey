@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dao.CittaDao;
+import dao.CodificaDao;
 import dao.EsenzioneDao;
 import dao.MedicoDao;
 import dao.PersonaDao;
@@ -21,6 +22,8 @@ import dao.Rel_Prescrizione_PrestazioneDao;
 import dao.Rel_Visita_PrestazioneDao;
 import model.Citta;
 import model.CittaSearch;
+import model.Codifica;
+import model.CodificaSearch;
 import model.Esenzione;
 import model.EsenzioneSearch;
 import model.Medico;
@@ -38,7 +41,6 @@ import model.Rel_Prescrizione_Farmaco;
 import model.Rel_Prescrizione_Prestazione;
 import model.Rel_Visita_Prestazione;
 import modelExt.MedicoDiPersona;
-import modelExt.PersonaCompleta;
 import web.MySession;
 
 public class Manager {
@@ -67,6 +69,8 @@ public class Manager {
 	private Rel_Prescrizione_PrestazioneDao relPrescrizionePrestazioneDao;
 	@Autowired
 	private CittaDao cittaDao;
+	@Autowired
+	private CodificaDao codificaDao;
 	@Autowired
 	private DataSource dataSource;
 
@@ -127,6 +131,7 @@ public class Manager {
 		return personaDao.count(ps);
 	}
 
+	
 	/************************* MEDICO *************************/
 
 	public void insertMedico(Medico m) {
@@ -184,6 +189,7 @@ public class Manager {
 		}
 	}
 	
+	
 	/************************* ESENZIONE *************************/
 	
 	public void insertEsenzione(Esenzione e) {
@@ -222,6 +228,7 @@ public class Manager {
 		return relPersonaEsenzioneDao.loadAll(s);
 	}
 
+	
 	/************************* AMBULATORIO *************************/
 	
 	public void inserisciRel_Medico_Ambulatorio(Rel_Medico_Ambulatorio a) {
@@ -232,6 +239,7 @@ public class Manager {
 		relMedicoAmbulatorioDao.delete(a);
 	}
 
+	
 	/************************* VISITA *************************/
 	
 	public void inserisciRel_Persona_Visita(Rel_Persona_Visita a) {
@@ -250,6 +258,7 @@ public class Manager {
 		relMedicoVisitaDao.delete(a);
 	}
 
+	
 	/************************* PRESTAZIONE *************************/
 	
 	public void inserisciRel_Visita_Prestazione(Rel_Visita_Prestazione a) {
@@ -260,6 +269,9 @@ public class Manager {
 		relVisitaPrestazioneDao.delete(a);
 	}
 
+	
+	/************************* PRESCRIZIONE *************************/
+	
 	public void inserisciRel_Prescrizione_Farmaco(Rel_Prescrizione_Farmaco a) {
 		relPrescrizioneFarmacoDao.insert(a);
 	}
@@ -276,10 +288,39 @@ public class Manager {
 		relPrescrizionePrestazioneDao.delete(a);
 	}
 
+	
+	/************************* CITTà *************************/
+	
 	public List<Citta> cercaCitta(CittaSearch cs) {
 		return cittaDao.loadAll(cs);
 	}
 
+	
+	/************************* CODIFICA *************************/
+	
+	public void insertCodifica(Codifica c) {
+		codificaDao.insert(c);
+	}
+
+	public void updateCodifica(Codifica c) {
+		codificaDao.update(c);
+	}
+
+	public void deleteCodifica(Codifica c) {
+		codificaDao.delete(c);
+	}
+	
+	public Integer countCodifica(CodificaSearch cs) {
+		return codificaDao.count(cs);
+	}
+	
+	public List<Codifica> loadCodifica(CodificaSearch cs) {
+		return codificaDao.loadAll(cs);
+	}
+	
+	
+	
+	
 	
 	public String save() {
 		return "Jersey + Spring example";

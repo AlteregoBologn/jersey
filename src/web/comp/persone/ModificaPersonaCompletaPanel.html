@@ -5,24 +5,29 @@
 		<form wicket:id="form">
 
 
-			<label for="nome">Unid: <input type="text" class="form-control" wicket:id="unid" id="unid" /></label> 
-			<label for="nome">Nome: <input type="text" class="form-control" wicket:id="nome" id="nome" /></label> 
-			<label for="cognome">Cognome: <input type="text" class="form-control" wicket:id="cognome" id="cognome" /></label> 
-			<label for="codFisc">Codice fiscale: <input type="text" class="form-control" wicket:id="cf" id="cf" /></label> 
-			<label for="email">Email:<input type="email" class="form-control" wicket:id="email" id="email" /></label> 
-			<label for="datanascita">Data di nascita: <input type="text" class="form-control" wicket:id="datanascita" id="datanascita" /></label>
-
+			<label for="nome">Unid: <input class="form-control" type="text"  wicket:id="unid" id="unid" /></label> 
+			<label for="nome">Nome: <input class="form-control" type="text"  wicket:id="nome" id="nome" /></label> 
+			<label for="cognome">Cognome: <input class="form-control" type="text"  wicket:id="cognome" id="cognome" /></label> 
+			<label for="codFisc">Codice fiscale: <input class="form-control" type="text"  wicket:id="cf" id="cf" /></label> 
+			<label for="email">Email:<input class="form-control" type="email" wicket:id="email" id="email" /></label>
+			<label for="datanascita">Data di nascita:<input class="form-control" type="text" wicket:id="datanascita" id="datanascita"/></label>
+			
+			
+			
+  			<fieldset> 
 			<div wicket:id="listaEsenzioni"></div>
-
-			  
+			</fieldset>
+			   
+			<!--      
 			<fieldset>  
 			<div wicket:id="sceltaMedico"></div>
 			</fieldset>
-			
-
+			-->
+			       
+      			
 			<!--  bottone per il salvataggio della persona completa -->
-			<input wicket:id="salva" type="button" value="salva" />
-
+					<input wicket:id="salva" type="button" value="salva" class="btn btn-default" />
+		
 
 		</form>
 	</fieldset>
