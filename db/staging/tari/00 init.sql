@@ -40,10 +40,9 @@
 --  DDL for Table T_IMMOBILE
 --------------------------------------------------------
 
-
 drop table T_IMMOBILE;
 
-  CREATE TABLE "T_IMMOBILE" 
+  CREATE TABLE "TEST"."T_IMMOBILE" 
    (	
    	"VIA" VARCHAR2(50 BYTE), 
 	"CIVICO" VARCHAR2(10 BYTE), 
@@ -51,7 +50,7 @@ drop table T_IMMOBILE;
 	"PIANO" VARCHAR2(10 BYTE), 
 	"DATADA" DATE, 
 	"NOMEPROPRIETARIO" VARCHAR2(20 BYTE), 
-	"QUALITA" VARCHAR2(20 BYTE), 
+	"QUALITA" NUMBER, 
 	"NOMEPRECEDENTEDETENTORE" VARCHAR2(60 BYTE), 
 	"UNID" NUMBER
    );
@@ -68,14 +67,13 @@ drop table T_IMMOBILE;
   ALTER TABLE "T_IMMOBILE" MODIFY ("UNID" NOT NULL ENABLE);
 
    
-   
 --------------------------------------------------------
 --  DDL for Table T_LOCALE
 --------------------------------------------------------
 
   CREATE TABLE "T_LOCALE" 
    (	
-   	"TIPO" VARCHAR2(150 BYTE), 
+   	"TIPO" NUMBER, 
 	"MQ" NUMBER, 
 	"FOGLIO" VARCHAR2(30 BYTE), 
 	"PARTICELLA" VARCHAR2(30 BYTE), 
@@ -92,33 +90,33 @@ drop table T_IMMOBILE;
 --------------------------------------------------------
 
   ALTER TABLE "T_LOCALE" ADD CONSTRAINT "T_LOCALE_PK" PRIMARY KEY ("UNID");
-  ALTER TABLE "TEST"."T_LOCALE" MODIFY ("UNID" NOT NULL ENABLE);
+  ALTER TABLE "T_LOCALE" MODIFY ("UNID" NOT NULL ENABLE);
 
-   
 --------------------------------------------------------
 --  DDL for Table T_DICHIARAZIONE
 --------------------------------------------------------
 
   CREATE TABLE "T_DICHIARAZIONE" 
    (	
-   	"UNICOOCCUPANTE" VARCHAR2(20 BYTE), 
-	"AGRICOLTORE" VARCHAR2(20 BYTE), 
-	"ITALIANOALLESTERO" VARCHAR2(20 BYTE), 
+   	"ITALIANOALLESTERO" NUMBER, 
 	"DATA" DATE, 
 	"FIRMA" VARCHAR2(20 BYTE), 
-	"UNID" NUMBER
+	"UNID" NUMBER, 
+	"AGRICOLTORE" NUMBER, 
+	"UNICOOCCUPANTE" NUMBER
    );
 --------------------------------------------------------
 --  DDL for Index T_DICHIARAZIONE_PK
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "T_DICHIARAZIONE_PK" ON "T_DICHIARAZIONE" ("UNID") ;
+  CREATE UNIQUE INDEX "T_DICHIARAZIONE_PK" ON "T_DICHIARAZIONE" ("UNID");
 --------------------------------------------------------
 --  Constraints for Table T_DICHIARAZIONE
 --------------------------------------------------------
 
   ALTER TABLE "T_DICHIARAZIONE" ADD CONSTRAINT "T_DICHIARAZIONE_PK" PRIMARY KEY ("UNID");
   ALTER TABLE "T_DICHIARAZIONE" MODIFY ("UNID" NOT NULL ENABLE);
+
 
    
 --------------------------------------------------------
@@ -281,6 +279,50 @@ drop table T_IMMOBILE;
 	"CANC" VARCHAR2(20 BYTE), 
 	"FK_DECODIFICA_UNID" VARCHAR2(20 BYTE)
    );
+
+   
+--------------------------------------------------------
+--  DDL for Table T_INDIRIZZO
+--------------------------------------------------------
+
+  CREATE TABLE "T_INDIRIZZO" 
+   (	
+   	"UNID" NUMBER, 
+	"VIA" VARCHAR2(20 BYTE), 
+	"CIVICO" VARCHAR2(20 BYTE), 
+	"COMUNE" VARCHAR2(20 BYTE), 
+	"CAP" VARCHAR2(20 BYTE)
+   );
+--------------------------------------------------------
+--  DDL for Index T_INDIRIZZO_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "T_INDIRIZZO_PK" ON "T_INDIRIZZO" ("UNID");
+--------------------------------------------------------
+--  Constraints for Table T_INDIRIZZO
+--------------------------------------------------------
+
+  ALTER TABLE "T_INDIRIZZO" ADD CONSTRAINT "T_INDIRIZZO_PK" PRIMARY KEY ("UNID");
+  ALTER TABLE "TEST"."T_INDIRIZZO" MODIFY ("UNID" NOT NULL ENABLE);
+
+   
+   --------------------------------------------------------
+--  DDL for Table REL_PERSONA_INDIRIZZO
+--------------------------------------------------------
+
+  CREATE TABLE "REL_PERSONA_INDIRIZZO" 
+   (	
+   	"IDINDIRIZZO" NUMBER, 
+	"IDPERSONA" NUMBER
+   );
+--------------------------------------------------------
+--  Ref Constraints for Table REL_PERSONA_INDIRIZZO
+--------------------------------------------------------
+
+  ALTER TABLE "REL_PERSONA_INDIRIZZO" ADD CONSTRAINT "REL_PERSONA_INDIRIZZO_T_I_FK1" FOREIGN KEY ("IDINDIRIZZO")
+	  REFERENCES "T_INDIRIZZO" ("UNID") ENABLE;
+  ALTER TABLE "REL_PERSONA_INDIRIZZO" ADD CONSTRAINT "REL_PERSONA_INDIRIZZO_T_P_FK1" FOREIGN KEY ("IDPERSONA")
+	  REFERENCES "T_PERSONA" ("UNID") ENABLE;
 
 
 

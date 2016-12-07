@@ -133,11 +133,11 @@ public class TariManagerTest {
 	@Test
 	public void testinserisciDichiarazione() {
 		Dichiarazione a = new Dichiarazione();
-		a.setAgricoltore("true");
+		a.setAgricoltore(1);
 		a.setData(new Date());
 		a.setFirma("agricoltoreGo");
-		a.setItalianoallestero("false");
-		a.setUnicooccupante("false");
+		a.setItalianoallestero(0);
+		a.setUnicooccupante(0);
 		a.setUnid(4);
 		tariManager.inserisciDichiarazione(a);
 	}
@@ -153,7 +153,7 @@ public class TariManagerTest {
 	public void testupdateDichiarazione() {
 		Dichiarazione a = new Dichiarazione();
 		a.setUnid(2);
-		a.setAgricoltore("true");
+		a.setAgricoltore(1);
 		tariManager.updateDichiarazione(a);
 	}
 

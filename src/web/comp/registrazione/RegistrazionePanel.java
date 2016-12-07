@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.string.Strings;
@@ -30,6 +31,7 @@ import model.CittaSearch;
 import model.Persona;
 import web.c.BasePanel;
 import web.c.CssBeahvior;
+import web.c.MyAutoComplete;
 
 public class RegistrazionePanel extends BasePanel {
 	@Autowired
@@ -37,7 +39,7 @@ public class RegistrazionePanel extends BasePanel {
 	Manager manager;
 	Persona persona = new Persona();
 
-	Citta citta = new Citta();
+	Citta citta = new Citta("Binasco");
 
 	public RegistrazionePanel(String Id, Persona p) {
 		super(Id);
@@ -91,7 +93,7 @@ public class RegistrazionePanel extends BasePanel {
 		sesso.setRequired(true);
 		sesso.add(new CssBeahvior());
 
-		/*
+		
 		DateTextField datanascitaField = new DateTextField("datanascita",
 				new PropertyModel<>(RegistrazionePanel.this, "persona.datanascita"),
 				new StyleDateConverter("S-", true));
@@ -101,7 +103,7 @@ public class RegistrazionePanel extends BasePanel {
 		datanascitaField.add(datePicker);
 		datanascitaField.setRequired(true);
 		datanascitaField.add(new CssBeahvior());
-		*/
+		
 		final IModel<String> model = new PropertyModel<String>(RegistrazionePanel.this, "persona.comunenascita"){
 				
 					@Override
@@ -112,7 +114,21 @@ public class RegistrazionePanel extends BasePanel {
 		};
 					
 					
-		
+		MyAutoComplete<Citta> a=new MyAutoComplete<Citta>("cercacitta", new PropertyModel<Citta>(RegistrazionePanel.this,"citta"), new Model("citta"), "citta"){
+			@Override
+			public List<Citta> getList(String input) {
+				CittaSearch cs = new CittaSearch();
+				cs.setNomeCittaLike(input);
+				List<Citta> ret = manager.cercaCitta(cs);
+				return ret;
+			}
+			@Override
+			public String typeToString(Citta a) {
+				return a.getNomecitta();
+			}
+			
+		};
+		form.add(a);
 	
 		final AutoCompleteTextField<String> comunenascita = new AutoCompleteTextField<String>("comunenascita", model ) {
 
@@ -163,7 +179,7 @@ public class RegistrazionePanel extends BasePanel {
 	    form.add(comunenascita);
 	    
 		
-		form.add(nome, cognome, codFisc, email, password, sesso);
+		form.add(nome, cognome, codFisc, email, password, sesso, datanascitaField);
 
 		add(form);
 	}

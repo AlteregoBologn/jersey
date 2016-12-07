@@ -8,6 +8,14 @@ public class Decodifica extends E {
 	private String tipo;
 	private String unid;
 
+	public Decodifica() {
+		
+	}
+	
+	public Decodifica(String un) {
+		unid=un;
+	}
+	
 	public void setCanc(String a) {
 
 		this.canc = a;
@@ -48,4 +56,9 @@ public class Decodifica extends E {
 
 		return unid;
 	}
+	
+	public String getDescrizionePerCombo(){
+		return unid+" - "+descrizione;
+	}
+	
 }

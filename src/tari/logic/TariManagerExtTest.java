@@ -45,7 +45,7 @@ public class TariManagerExtTest {
 		
 		Dichiarazione dichiarazione1=new Dichiarazione();
 		dichiarazione1.setData(new Date());
-		dichiarazione1.setAgricoltore("S");
+		dichiarazione1.setAgricoltore(1);
 		
 		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
 		precedenteDichiarazione1.setDataDa(new Date());
@@ -66,35 +66,28 @@ public class TariManagerExtTest {
 		ImmobileDiDichiarazione di1=new ImmobileDiDichiarazione();
 		di1.setImmobile(immobile1);
 		di1.getLocaliDiImmobile().add(lim);
-		
-		Immobile immobile2=new Immobile();
-		immobile2.setDatada(new Date());
-		immobile2.setCivico("2");
-		
-		ImmobileDiDichiarazione di2=new ImmobileDiDichiarazione();
-		di2.setImmobile(immobile2);
+
 		
 		DichiarazioneDiPersonaTari dich1=new DichiarazioneDiPersonaTari();
 		dich1.setDichiarazione(dichiarazione1);
 		dich1.setPrecedenteDichiarazione(precedenteDichiarazione1);
-		dich1.getDichiarazioniImmobili().add(di1);
-		dich1.getDichiarazioniImmobili().add(di2);
+		dich1.setDichiarazioneImmobile(di1);
 		
 		Dichiarazione dichiarazione2=new Dichiarazione();
 		dichiarazione2.setData(new Date());
-		dichiarazione2.setAgricoltore("N");			
+		dichiarazione2.setAgricoltore(0);			
 		
 		Immobile immobile3=new Immobile();
 		immobile3.setDatada(new Date());
 		immobile3.setCivico("15");
 		immobile3.setInterno("1");
 		
-		ImmobileDiDichiarazione di3=new ImmobileDiDichiarazione();
-		di3.setImmobile(immobile3);
+		ImmobileDiDichiarazione di2=new ImmobileDiDichiarazione();
+		di2.setImmobile(immobile3);
 		
 		DichiarazioneDiPersonaTari dich2=new DichiarazioneDiPersonaTari();		
 		dich2.setDichiarazione(dichiarazione2);
-		dich2.getDichiarazioniImmobili().add(di3);
+		dich2.setDichiarazioneImmobile(di2);		
 		//dich2.setPrecedenteDichiarazione(null);
 		//dich2.getDichiarazioniImmobili().add(e); illegale !
 		

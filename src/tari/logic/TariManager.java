@@ -5,8 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dao.DecodificaDao;
+import dao.IndirizzoDao;
+import dao.Rel_Persona_IndirizzoDao;
 import model.Decodifica;
 import model.DecodificaSearch;
+import model.Indirizzo;
+import model.IndirizzoSearch;
+import model.Rel_Persona_Indirizzo;
+import model.Rel_Persona_IndirizzoSearch;
 import tari.dao.DichiarazioneDao;
 import tari.dao.ImmobileDao;
 import tari.dao.LocaleDao;
@@ -78,6 +84,12 @@ public class TariManager {
 	
 	@Autowired
 	private DecodificaDao decodificaDao;
+	
+	@Autowired
+	private Rel_Persona_IndirizzoDao relPersonaIndirizzoDao;
+	
+	@Autowired
+	private IndirizzoDao indirizzoDao;
 	
 	public void inserisciPersonaTari(PersonaTari a)
 	{
@@ -257,5 +269,40 @@ public class TariManager {
 	public List<Decodifica> cercaDecodifica(DecodificaSearch ds){
 		return decodificaDao.loadAll(ds);
 	}
+
+	public void inserisciRel_Persona_Indirizzo(Rel_Persona_Indirizzo a)
+	{
+		relPersonaIndirizzoDao.insert(a);
+	}
+
+	public List<Rel_Persona_Indirizzo> cercaRel_Persona_Indirizzo(Rel_Persona_IndirizzoSearch as) {
+		return relPersonaIndirizzoDao.loadAll(as);
+	}
+
+	public void updateRel_Persona_Indirizzo(Rel_Persona_Indirizzo a) {
+		relPersonaIndirizzoDao.update(a);
+	}
+
+	public void deleteRel_Persona_Indirizzo(Rel_Persona_Indirizzo a) {
+		relPersonaIndirizzoDao.delete(a);
+	}
+	
+	public void inserisciIndirizzo(Indirizzo a)
+	{
+		indirizzoDao.insert(a);
+	}
+
+	public List<Indirizzo> cercaIndirizzo(IndirizzoSearch as) {
+		return indirizzoDao.loadAll(as);
+	}
+
+	public void updateIndirizzo(Indirizzo a) {
+		indirizzoDao.update(a);
+	}
+
+	public void deleteIndirizzo(Indirizzo a) {
+		indirizzoDao.delete(a);
+	}
+
 }
 

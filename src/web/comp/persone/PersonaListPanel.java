@@ -83,7 +83,6 @@ public class PersonaListPanel extends Panel {
 		form.add(new Grid("persone") {
 			@Override
 			public long getSize() {
-				// TODO Auto-generated method stub
 				return manager.countPersone(search);
 			}
 
@@ -114,7 +113,6 @@ public class PersonaListPanel extends Panel {
 			
 			@Override
 			public void onDelete(AjaxRequestTarget target, Object object) {
-				// TODO Auto-generated method stub
 				super.onDelete(target, object);
 			}
 			*/

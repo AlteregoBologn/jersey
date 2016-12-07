@@ -9,7 +9,7 @@ import model.E;
 public class PrecedenteDichiarazione extends E {
 
 	private String civico;
-	private Date datada;// TODO rivedere tipo per interfaccia
+	private Date datada;
 	private String interno;
 	private String motivo;
 	private Integer unid;

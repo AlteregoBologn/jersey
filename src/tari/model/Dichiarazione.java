@@ -7,20 +7,20 @@ import model.E;
 
 public class Dichiarazione extends E {
 
-	private String agricoltore;
-	private Date data;// TODO trasformare in Date
-	private String firma;
-	private String italianoallestero;
-	private String unicooccupante;
 	private Integer unid;
+	private Date data;
+	private String firma;
+	private Integer italianoallestero;
+	private Integer unicooccupante;
+	private Integer agricoltore;	
 	private Decodifica decodifica;
 
-	public void setAgricoltore(String a) {
+	public void setAgricoltore(Integer a) {
 
 		this.agricoltore = a;
 	}
 
-	public String getAgricoltore() {
+	public Integer getAgricoltore() {
 
 		return agricoltore;
 	}
@@ -45,22 +45,22 @@ public class Dichiarazione extends E {
 		return firma;
 	}
 
-	public void setItalianoallestero(String a) {
+	public void setItalianoallestero(Integer a) {
 
 		this.italianoallestero = a;
 	}
 
-	public String getItalianoallestero() {
+	public Integer getItalianoallestero() {
 
 		return italianoallestero;
 	}
 
-	public void setUnicooccupante(String a) {
+	public void setUnicooccupante(Integer a) {
 
 		this.unicooccupante = a;
 	}
 
-	public String getUnicooccupante() {
+	public Integer getUnicooccupante() {
 
 		return unicooccupante;
 	}

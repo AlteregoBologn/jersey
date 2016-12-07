@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -49,12 +50,12 @@ public class ManagerExtTest
 		ps.setUnid(p.getUnid());
 		List<PersonaCompleta> ret = managerExt.loadPersoneCompleta(ps);
 		if (ret.isEmpty())
-			throw new RuntimeException("L'arrayList delle Persone Complete è vuoto");
+			throw new RuntimeException("L'arrayList delle Persone Complete ï¿½ vuoto");
 		System.out.println("L'arraylist delle Persone Complete contiene: " + ret);
 		
 		if (!pc.equals(ret.get(0)))
 			throw new RuntimeException("Le Persone Complete sono diverse");
-		System.out.println("La persona completa " +pc+ "è uguale alla persona completa dell'arraylist " +ret);
+		System.out.println("La persona completa " +pc+ "ï¿½ uguale alla persona completa dell'arraylist " +ret);
 	}
 	
 	@Test

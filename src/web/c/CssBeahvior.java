@@ -19,7 +19,5 @@ public class CssBeahvior extends AbstractAjaxBehavior {
 
 	@Override
 	public void onRequest() {
-		// TODO Auto-generated method stub
-
 	}
 }

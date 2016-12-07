@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -19,12 +20,17 @@ import tari.logic.TariManagerExt;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.PersonaTariCompleta;
 import web.c.BasePanel;
+import web.c.CssBeahvior;
+import web.c.MyCheckBox;
+import web.c.MyDropDown;
+import web.comp.registrazione.RegistrazionePanel;
 
 public class EditDichiarazionePanel extends BasePanel {
 	
 	@SpringBean
 	TariManagerExt tariManagerExt;
 	DichiarazioneDiPersonaTari dichiarazione;
+	Decodifica decodifica;
 	
 	public EditDichiarazionePanel(String id, final DichiarazioneDiPersonaTari dichiarazione, PersonaTariCompleta pc, boolean onNew) {
 		super(id);
@@ -32,7 +38,7 @@ public class EditDichiarazionePanel extends BasePanel {
 		Form formAnagrafica = new Form("formAnagrafica"){
 			@Override
 			public boolean isEnabled() {
-				return false;// TODO disable!!
+				return false;// Form contenente i dati Anagrafici, non sono modificabili da questa pagina
 			}
 		};
 		add(formAnagrafica);
@@ -56,18 +62,43 @@ public class EditDichiarazionePanel extends BasePanel {
 		Form formDichiara = new Form("formDichiara"){
 			@Override
 			public boolean isEnabled() {
-				return onNew;// TODO disable!!
+				return onNew;
 			}
 		};
 		add(formDichiara);
-		formDichiara.add(new DateTextField("dataDa", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.datada")));
-		formDichiara.add(new TextField<String>("qualita", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.qualita")));
-		formDichiara.add(new TextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.via")));
-		formDichiara.add(new TextField<String>("civico", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.civico")));
-		formDichiara.add(new TextField<String>("interno", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.interno")));
-		formDichiara.add(new TextField<String>("piano", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.piano")));
-		formDichiara.add(new TextField<String>("nomeproprietario", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.nomeproprietario")));
-		formDichiara.add(new TextField<String>("nomeprecedentedetentore", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.nomeprecedentedetentore")));
+		
+		DateTextField dataField = new DateTextField("dataDa",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.dataDa"));
+		DatePicker datePicker = new DatePicker();
+		datePicker.setShowOnFieldClick(true);
+		datePicker.setAutoHide(true);
+		dataField.add(datePicker);
+		dataField.setRequired(true);
+		dataField.add(new CssBeahvior());
+		formDichiara.add(dataField);
+		
+		PropertyModel<String> ddm=new PropertyModel<String>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.qualita");
+		formDichiara.add(new MyDropDown<Decodifica>("qualita", ddm, "unid", "descrizione"){
+			@Override
+			public List<Decodifica> getList() {				
+				return tariManagerExt.caricaDecodificaDiQualitaDi();
+			}
+			/*
+			@Override
+			public void onChange(AjaxRequestTarget target) {
+				dichiarazione.getDichiarazioneImmobile().getImmobile().setVia("pincopanco");
+				target.add(formDichiara);
+			}
+			*/
+		});
+
+		
+		formDichiara.add(new RequiredTextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.via")));
+		formDichiara.add(new RequiredTextField<String>("civico", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.civico")));
+		formDichiara.add(new RequiredTextField<String>("interno", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.interno")));
+		formDichiara.add(new RequiredTextField<String>("piano", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.piano")));
+		formDichiara.add(new RequiredTextField<String>("nomeproprietario", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.nomeProprietario")));
+		formDichiara.add(new RequiredTextField<String>("nomeprecedentedetentore", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.nomePrecedenteDetentore")));
 		
 		Form formLocali = new Form("formLocali"){
 			@Override
@@ -85,30 +116,44 @@ public class EditDichiarazionePanel extends BasePanel {
 				tariManagerExt.saveImmobileDiDichiarazione(dichiarazione, pc);
 				target.add(EditDichiarazionePanel.this);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return onNew;
+			}
 		});
 		add(formLocali);
 		
 		Form formDichiaraInoltre = new Form("formDichiaraInoltre"){
 			@Override
 			public boolean isEnabled() {				
-				return true;// TODO onNew;
+				return onNew;
 			}
 		};
-		add(formDichiaraInoltre);
+		formLocali.add(formDichiaraInoltre);
 		
-		List<String> posizioni = tariManagerExt.caricaDecodificaPoisizioneDiDicharazione();
+		List<Decodifica> posizioni = tariManagerExt.caricaDecodificaPoisizioneDiDicharazione();
 		
-		formDichiaraInoltre.add(new RadioChoice<String>("posizione", 
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore"), posizioni));
+		formDichiaraInoltre.add(new MyCheckBox("unicooccupante",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante"), 
+				new Model(posizioni.get(0).getDescrizione())));
+		
+		formDichiaraInoltre.add(new MyCheckBox("agricoltore",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore"), 
+				new Model(posizioni.get(1).getDescrizione())));
+		
+		formDichiaraInoltre.add(new MyCheckBox("italianoallestero",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero"), 
+				new Model(posizioni.get(2).getDescrizione())));
 		
 		
 		Form formPrecDich = new Form("formPrecDich"){
 			@Override
 			public boolean isEnabled() {
-				return true;// TODO onNew;
+				return onNew;
 			}
 		};
-		add(formPrecDich);
+		formLocali.add(formPrecDich);
 		
 		formPrecDich.add(new TextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.via")));
 		formPrecDich.add(new TextField<String>("civico", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.civico")));

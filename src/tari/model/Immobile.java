@@ -8,10 +8,10 @@ import model.E;
 public class Immobile extends E {
 
 	private String civico;
-	private Date datada;
+	private Date dataDa;
 	private String interno;
-	private String nomeprecedentedetentore;
-	private String nomeproprietario;
+	private String nomePrecedenteDetentore;
+	private String nomeProprietario;
 	private String piano;
 	private String qualita;
 	private String via;
@@ -27,11 +27,11 @@ public class Immobile extends E {
 	}
 	public void setDatada(Date a) {
 
-		this.datada = a;
+		this.dataDa = a;
 	}
 	public Date getDatada() {
 
-		return datada;
+		return dataDa;
 	}
 	public void setInterno(String a) {
 
@@ -43,19 +43,19 @@ public class Immobile extends E {
 	}
 	public void setNomeprecedentedetentore(String a) {
 
-		this.nomeprecedentedetentore = a;
+		this.nomePrecedenteDetentore = a;
 	}
 	public String getNomeprecedentedetentore() {
 
-		return nomeprecedentedetentore;
+		return nomePrecedenteDetentore;
 	}
 	public void setNomeproprietario(String a) {
 
-		this.nomeproprietario = a;
+		this.nomeProprietario = a;
 	}
 	public String getNomeproprietario() {
 
-		return nomeproprietario;
+		return nomeProprietario;
 	}
 	public void setPiano(String a) {
 

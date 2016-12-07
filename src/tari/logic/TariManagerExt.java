@@ -6,6 +6,10 @@ import java.util.List;
 
 import model.Decodifica;
 import model.DecodificaSearch;
+import model.Indirizzo;
+import model.IndirizzoSearch;
+import model.Rel_Persona_Indirizzo;
+import model.Rel_Persona_IndirizzoSearch;
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
@@ -34,7 +38,7 @@ public class TariManagerExt extends TariManager {
 
 	public List<PersonaTariCompleta> loadPersoneTariCompleta(PersonaTariSearch ps) {
 		List<PersonaTariCompleta> ret = new ArrayList<PersonaTariCompleta>();
-
+		
 		List<PersonaTari> personeTari = cercaPersonaTari(ps);
 		for (PersonaTari p : personeTari) {
 			
@@ -42,6 +46,7 @@ public class TariManagerExt extends TariManager {
 			
 			pc.setOperation(pc.OP_NOP);
 			pc.setPersonaTari(p);
+			loadIndirizzoDiPersonaTari(pc);
 			loadDichiarazioniDiPersonaTari(p, pc);
 			ret.add(pc);
 		}
@@ -56,6 +61,8 @@ public class TariManagerExt extends TariManager {
 			throw new RuntimeException("Non trovo una persona con unid: " + unid);
 		return ret.get(0);
 	}
+	
+
 
 	private void savePersonaTari(PersonaTari p) {
 		if (p.isInsert()) {
@@ -71,6 +78,7 @@ public class TariManagerExt extends TariManager {
 	public void savePersonaTariCompleta(PersonaTariCompleta p) {
 		if (p.isInsert() || p.isUpdate()) {
 			savePersonaTari(p.getPersonaTari());
+			saveIndirizzoDiPersonaTari(p);
 			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
 				saveDichiarazioneDiPersonaTari(d, p);
 				
@@ -83,7 +91,41 @@ public class TariManagerExt extends TariManager {
 		}
 		p.setOperation(p.OP_NOP);
 	}
+	
+	/***** INDIRIZZO DI PERSONATARI ****/
+	public void loadIndirizzoDiPersonaTari(PersonaTariCompleta pc){
+		Rel_Persona_IndirizzoSearch rpis = new Rel_Persona_IndirizzoSearch();
+		rpis.setIdPersona(pc.getPersonaTari().getUnid());
+		List<Rel_Persona_Indirizzo> relazioni  = cercaRel_Persona_Indirizzo(rpis);		
+		IndirizzoSearch rs = new IndirizzoSearch();
+		rs.setUnid(relazioni.get(0).getIdIndirizzo());
+		pc.setResidenza(cercaIndirizzo(rs).get(0));
+	}
+	
+	public void saveIndirizzo(Indirizzo i){
+		if(i.isInsert()){
+			inserisciIndirizzo(i);
+		}else if(i.isUpdate()){
+			updateIndirizzo(i);
+		}else if(i.isDelete()){
+			deleteIndirizzo(i);
+		}
+	}
+	
+	public void saveIndirizzoDiPersonaTari(PersonaTariCompleta pc) {
+		
+		if(pc.isInsert()) {			
+			saveIndirizzo(pc.getResidenza());
+			Rel_Persona_Indirizzo rpi = new Rel_Persona_Indirizzo();
+			rpi.setIdPersona(pc.getPersonaTari().getUnid());	
+			rpi.setIdIndirizzo(pc.getResidenza().getUnid());
+			inserisciRel_Persona_Indirizzo(rpi);
+		}
+		if(pc.isUpdate()) {			
+			saveIndirizzo(pc.getResidenza());
+		}
 
+	}
 	/***** DICHIARAZIONE DI PERSONATARI ****/	
 	public void loadDichiarazioniDiPersonaTari (PersonaTari p, PersonaTariCompleta pc) {
 		
@@ -324,10 +366,8 @@ public class TariManagerExt extends TariManager {
 		pc.setPersonaTari(p);
 		
 		Dichiarazione dichiarazione1=new Dichiarazione();
-		/* TODO Inserire il setData corretto
-		 * dichiarazione1.setData(new Date());
-		 */
-		dichiarazione1.setAgricoltore("S");
+		dichiarazione1.setData(new Date());
+		dichiarazione1.setAgricoltore(1);
 		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
 		precedenteDichiarazione1.setDataDa(new Date());
 		
@@ -357,10 +397,9 @@ public class TariManagerExt extends TariManager {
 		dich1.setDichiarazioneImmobile(di2);
 		
 		Dichiarazione dichiarazione2=new Dichiarazione();
-		/* TODO Inserire il setData corretto
-		 * dichiarazione2.setData(new Date());
-		 */
-		dichiarazione2.setAgricoltore("N");		
+		dichiarazione2.setData(new Date());
+		dichiarazione2.setAgricoltore(0);	
+		
 		DichiarazioneDiPersonaTari dich2=new DichiarazioneDiPersonaTari();		
 		dich2.setDichiarazione(dichiarazione2);
 		dich2.setPrecedenteDichiarazione(null);
@@ -375,14 +414,14 @@ public class TariManagerExt extends TariManager {
 	public DichiarazioneDiPersonaTari createNuovaDichiarazioneDiPersonaTari() {
 		
 		Dichiarazione dichiarazione1 = new Dichiarazione();
-		dichiarazione1.setData(new Date());
-		dichiarazione1.setAgricoltore("S");
+		dichiarazione1.setAgricoltore(0);// TODO Rivedere se non porta problemi
 		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
-		precedenteDichiarazione1.setDataDa(new Date());
+		precedenteDichiarazione1.setInterno("");
 		
 		Immobile immobile1=new Immobile();
-		immobile1.setDatada(new Date());
-		immobile1.setCivico("1");
+		immobile1.setCivico("");
+		immobile1.setInterno("");
+		immobile1.setNomeprecedentedetentore("");
 		
 		Locale l=new Locale();
 		
@@ -394,8 +433,7 @@ public class TariManagerExt extends TariManager {
 		di1.getLocaliDiImmobile().add(lim);
 		
 		Immobile immobile2=new Immobile();
-		immobile2.setDatada(new Date());
-		immobile2.setCivico("2");
+		immobile2.setCivico("");
 		
 		ImmobileDiDichiarazione di2=new ImmobileDiDichiarazione();
 		di2.setImmobile(immobile2);
@@ -419,16 +457,23 @@ public class TariManagerExt extends TariManager {
 		return lim;
 	}
 	
-	
-	public List<String> caricaDecodificaPoisizioneDiDicharazione(){
+	public List<Decodifica> caricaDecodificaPoisizioneDiDicharazione() {
 		DecodificaSearch ds = new DecodificaSearch();
 		ds.setTipo("TIPOPOSIZIONEDICHIARAZIONE");
-		List<Decodifica> decodifiche = cercaDecodifica(ds);
-		List<String> descrizioni = new ArrayList<String>();
-		for(Decodifica d : decodifiche){
-			descrizioni.add(d.getDescrizione());
-		}
-		return descrizioni;
+		return cercaDecodifica(ds);
+	}
+	
+	public List<Decodifica> caricaDecodificaDiTipoLocale() {
+		DecodificaSearch ds = new DecodificaSearch();
+		ds.setTipo("TIPOLOCALE");
+		return cercaDecodifica(ds);
+	}
+	
+	
+	public List<Decodifica> caricaDecodificaDiQualitaDi() {
+		DecodificaSearch ds = new DecodificaSearch();
+		ds.setTipo("QUALITADI");
+		return cercaDecodifica(ds);
 	}
 	
 }

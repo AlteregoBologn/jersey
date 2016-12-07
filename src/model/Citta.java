@@ -5,6 +5,12 @@ public class Citta {
 	private String nomecitta;
 	private String unid;
 
+	public Citta(){
+		
+	}
+	public Citta(String a){
+		nomecitta=a;
+	}
 	public void setNomecitta(String a) {
 
 		this.nomecitta = a;

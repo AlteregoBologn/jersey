@@ -25,4 +25,10 @@ public class PersonaTariCompleta extends E {
 	public void setDichiarazioniDiPersona(List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona) {
 		this.dichiarazioniDiPersona = dichiarazioniDiPersona;
 	}
+	public Indirizzo getResidenza() {
+		return residenza;
+	}
+	public void setResidenza(Indirizzo residenza) {
+		this.residenza = residenza;
+	}
 }

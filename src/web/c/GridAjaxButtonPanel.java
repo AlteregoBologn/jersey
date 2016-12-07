@@ -25,7 +25,5 @@ public class GridAjaxButtonPanel<T> extends Panel {
 	}
 	
 	public void onClick(AjaxRequestTarget target, T o) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -27,7 +27,6 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 	Panel editPanel;
 	Panel newEditPanel;
 	DichiarazioneDiPersonaTari dpt;
-	LocaleDiImmobile ldi;
 
 	public ListaLocaliDiImmobilePanel(String id, DichiarazioneDiPersonaTari dpt, PersonaTariCompleta pc, boolean onNew) {
 		super(id);	
@@ -87,8 +86,6 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 
 		Panel p = new EditLocaleDiImmobilePanel("edit", locale, pc, onNew) {
 			
-			
-
 			public void onAnnulla(AjaxRequestTarget target, LocaleDiImmobile l){
 				this.setVisible(false);			
 				locale.setOperation(locale.OP_NOP);

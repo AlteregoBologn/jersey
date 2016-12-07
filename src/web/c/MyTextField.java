@@ -13,7 +13,6 @@ public class MyTextField extends Panel  {
 		TextField<String> field = new TextField<String>("field",model){
 			@Override
 			public boolean isRequired() {
-				// TODO Auto-generated method stub
 				return MyTextField.this.isRequired();
 			}
 		};

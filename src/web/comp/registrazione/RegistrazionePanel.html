@@ -1,19 +1,5 @@
 <wicket:panel>
-		<style>
-                div.wicket-aa {
-                    font-family: "Lucida Grande","Lucida Sans Unicode",Tahoma,Verdana;
-                    font-size: 12px;
-                    background-color: white;
-                    border-width: 1px;
-                    border-color: #cccccc;
-                    border-style: solid;
-                    padding: 2px;
-                    margin: 1px 0 0 0;
-                    text-align:left;
-                }
-                div.wicket-aa ul { list-style:none; padding: 2px; margin:0; }
-                div.wicket-aa ul li.selected { background-color: #FFFF00; padding: 2px; margin:0; }
-            </style>
+		
 <form wicket:id="form">
 	<h2>Pagina di registrazione</h2>
     <label for="nome">Nome:
@@ -42,18 +28,17 @@
     <br />
     
     <label for="sessoGroup">Sesso: <br />
-    <radiogroup wicket:id="sessoGroup" >
-        <input type="radio" id="sessoGroup" /> M
-        <input type="radio" id="sessoGroup" /> F
-  		<input type="radio" id="sessoGroup" /> Altro 
-  	</radiogroup> 
+    <radiogroup wicket:id="sessoGroup" ></radiogroup> 
     </label>
     <br />
     
 
     <br />
-
+	 <input type="text"  wicket:id="datanascita"  />
+	
     <input type="text"  wicket:id="comunenascita"  />
+
+	<div  wicket:id="cercacitta"></div>
 
     <br />
     
