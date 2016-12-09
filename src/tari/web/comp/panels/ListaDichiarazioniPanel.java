@@ -25,6 +25,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 	TariManagerExt tariManagerExt;
 	Panel editPanel;
 	Panel newEditPanel;
+	boolean selectVisible = false;// Per far comparire/scomparire i pannelli sotto il grid iniziale al clic del Select
 	
 	public ListaDichiarazioniPanel(String id, PersonaTariCompleta pc) {
 		super(id);	
@@ -57,7 +58,7 @@ public class ListaDichiarazioniPanel extends BasePanel {
 			public void onNew(AjaxRequestTarget target) {
 				DichiarazioneDiPersonaTari n = tariManagerExt.createNuovaDichiarazioneDiPersonaTari();
 				pc.setOperation(pc.OP_INSERT);
-				n.setOperation(n.OP_INSERT);
+				n.setOperation(n.OP_INSERT);			
 				editPanel.replaceWith(getEditPanel(target, n, pc, true));
 				target.add(ListaDichiarazioniPanel.this);
 				editPanel = newEditPanel;
@@ -71,12 +72,12 @@ public class ListaDichiarazioniPanel extends BasePanel {
 				 target.add(ListaDichiarazioniPanel.this);
 				 editPanel = newEditPanel;
 			}
-			*/
+			 */
 			@Override
 			public void onSelect(AjaxRequestTarget target, DichiarazioneDiPersonaTari object) {
-				 editPanel.replaceWith(getEditPanel(target, object, pc, false));
-				 target.add(ListaDichiarazioniPanel.this);
-				 editPanel = newEditPanel;
+				editPanel.replaceWith(getEditPanel(target, object, pc, false));				 
+				target.add(ListaDichiarazioniPanel.this);
+				editPanel = newEditPanel;
 			}
 		});	
 	}

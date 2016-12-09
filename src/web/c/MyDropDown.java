@@ -28,7 +28,7 @@ public class MyDropDown<T> extends Panel {
 	
 	T value;
 
-	public MyDropDown(String id, final IModel<String> ddm, String key,String desc) {
+	public MyDropDown(String id, final IModel<Integer> ddm, String key,String desc) {
 		super(id);
 		setOutputMarkupId(true);
 		
@@ -38,16 +38,16 @@ public class MyDropDown<T> extends Panel {
 		PropertyModel<T> dpm=new PropertyModel<T>(MyDropDown.this, "value"){
 			@Override
 			public void setObject(T object) {
-				String v=(String) PropertyResolver.getValue(key, object);
+				Integer v=(Integer) PropertyResolver.getValue(key, object);
 				ddm.setObject(v);
 			}
 			@Override
 			public T getObject() {
-				String letto=ddm.getObject();
+				Integer letto=ddm.getObject();
 				if( letto!=null ) {
 					List<T> a=getList();
 					for(T t:a) {
-						String v=(String) PropertyResolver.getValue(key, t);
+						Integer v=(Integer) PropertyResolver.getValue(key, t);
 						if(v.equals(letto)){
 							return t;
 						}
@@ -56,6 +56,7 @@ public class MyDropDown<T> extends Panel {
 				return null;
 			}
 		};
+		
 		final DropDownChoice field2;
 		add(field2=new DropDownChoice<T>("field2", dpm , getList(),  new ChoiceRenderer<T>(desc, key) ) {
 			@Override
@@ -69,6 +70,7 @@ public class MyDropDown<T> extends Panel {
 				MyDropDown.this.onChange(target);
 			}
 		});	
+		field2.setRequired(true);
 		
 	}
 

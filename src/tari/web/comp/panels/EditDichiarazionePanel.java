@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.datetime.StyleDateConverter;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
@@ -23,7 +23,6 @@ import web.c.BasePanel;
 import web.c.CssBeahvior;
 import web.c.MyCheckBox;
 import web.c.MyDropDown;
-import web.comp.registrazione.RegistrazionePanel;
 
 public class EditDichiarazionePanel extends BasePanel {
 	
@@ -34,6 +33,8 @@ public class EditDichiarazionePanel extends BasePanel {
 	
 	public EditDichiarazionePanel(String id, final DichiarazioneDiPersonaTari dichiarazione, PersonaTariCompleta pc, boolean onNew) {
 		super(id);
+		
+		Form formFirst = new Form("formFirst");
 		
 		Form formAnagrafica = new Form("formAnagrafica"){
 			@Override
@@ -65,7 +66,7 @@ public class EditDichiarazionePanel extends BasePanel {
 				return onNew;
 			}
 		};
-		add(formDichiara);
+		formFirst.add(formDichiara);
 		
 		DateTextField dataField = new DateTextField("dataDa",
 				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.dataDa"));
@@ -77,7 +78,7 @@ public class EditDichiarazionePanel extends BasePanel {
 		dataField.add(new CssBeahvior());
 		formDichiara.add(dataField);
 		
-		PropertyModel<String> ddm=new PropertyModel<String>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.qualita");
+		PropertyModel<Integer> ddm=new PropertyModel<Integer>(EditDichiarazionePanel.this, "dichiarazione.dichiarazioneImmobile.immobile.qualita");
 		formDichiara.add(new MyDropDown<Decodifica>("qualita", ddm, "unid", "descrizione"){
 			@Override
 			public List<Decodifica> getList() {				
@@ -109,12 +110,14 @@ public class EditDichiarazionePanel extends BasePanel {
 		
 		formLocali.add(new ListaLocaliDiImmobilePanel("listaLocali", dichiarazione, pc, onNew));
 		
-		formLocali.add(new AjaxButton("salva") {
+		formFirst.add(new AjaxButton("salva") {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				tariManagerExt.saveImmobileDiDichiarazione(dichiarazione, pc);
-				target.add(EditDichiarazionePanel.this);
+				tariManagerExt.saveDichiarazioneDiPersonaTari(dichiarazione, pc);
+				formFirst.setVisible(false);	
+				formAnagrafica.setVisible(false);
+				target.add(EditDichiarazionePanel.this);							
 			}
 			
 			@Override
@@ -122,7 +125,23 @@ public class EditDichiarazionePanel extends BasePanel {
 				return onNew;
 			}
 		});
-		add(formLocali);
+		formFirst.add(new AjaxButton("chiudi") {
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				formFirst.setVisible(false);	
+				formAnagrafica.setVisible(false);
+				target.add(EditDichiarazionePanel.this);							
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return !onNew;
+			}
+
+		});
+		
+		formFirst.add(formLocali);
 		
 		Form formDichiaraInoltre = new Form("formDichiaraInoltre"){
 			@Override
@@ -130,21 +149,50 @@ public class EditDichiarazionePanel extends BasePanel {
 				return onNew;
 			}
 		};
-		formLocali.add(formDichiaraInoltre);
+		formFirst.add(formDichiaraInoltre);
+		/*PropertyModel propAgricoltore = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore");
+		PropertyModel propEstero = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero");
+		PropertyModel propResidente = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante");
+		MyRadioGroup<Decodifica> mioRadio = new MyRadioGroup<Decodifica>("mioRadio", propAgricoltore, propEstero, propResidente, "unid", "descrizione"){
+			@Override
+			public List<Decodifica> getList() {
+				return tariManagerExt.caricaDecodificaPosizioneDiDicharazione();
+			}
+		};
+		formDichiaraInoltre.add(mioRadio);
+		*/
 		
-		List<Decodifica> posizioni = tariManagerExt.caricaDecodificaPoisizioneDiDicharazione();
+		List<Decodifica> posizioni = tariManagerExt.caricaDecodificaPosizioneDiDicharazione();
+		//formDichiaraInoltre.add(
 		
-		formDichiaraInoltre.add(new MyCheckBox("unicooccupante",
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante"), 
-				new Model(posizioni.get(0).getDescrizione())));
-		
-		formDichiaraInoltre.add(new MyCheckBox("agricoltore",
+		MyCheckBox agricoltore = new MyCheckBox("agricoltore",
 				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore"), 
-				new Model(posizioni.get(1).getDescrizione())));
+				new Model(posizioni.get(1).getDescrizione()));
 		
-		formDichiaraInoltre.add(new MyCheckBox("italianoallestero",
+		MyCheckBox italianoallestero = new MyCheckBox("italianoallestero",
 				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero"), 
-				new Model(posizioni.get(2).getDescrizione())));
+				new Model(posizioni.get(2).getDescrizione()));
+		
+		MyCheckBox unico = new MyCheckBox("unicooccupante",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante"), 
+				new Model(posizioni.get(0).getDescrizione()));
+		
+		
+		formDichiaraInoltre.add(unico, agricoltore, italianoallestero);
+
+		/* 
+		 * Metodo errato per i RadioButton (RadioChoice) ma l'unico che funziona correttamente sull'interfaccia.
+		 * Non visualizza correttamente sul load ovviamente, il problema che ho riscontrato è stato
+		 * il controllo di 3 proprietà e non solo una come ad esempio "qualità" di immobile.
+		 * MyRadioGroup e MyCheckBoxGroup sono prove fallite per questo componente
+		 */
+		
+		List<String> posizioniSBAGLIATO = tariManagerExt.caricaDecodificaPosizioneDiDicharazioneSBAGLIATO();
+		
+		RadioChoice<Object> posizione = new RadioChoice<Object>("posizione",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero"), posizioniSBAGLIATO);
+		posizione.setRequired(true);
+		formDichiaraInoltre.add(posizione);
 		
 		
 		Form formPrecDich = new Form("formPrecDich"){
@@ -153,14 +201,25 @@ public class EditDichiarazionePanel extends BasePanel {
 				return onNew;
 			}
 		};
-		formLocali.add(formPrecDich);
+		formFirst.add(formPrecDich);
 		
 		formPrecDich.add(new TextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.via")));
 		formPrecDich.add(new TextField<String>("civico", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.civico")));
 		formPrecDich.add(new TextField<String>("interno", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.interno")));
-		formPrecDich.add(new DateTextField("datada", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.datada")));
+		//formPrecDich.add(new DateTextField("datada", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.datada")));
+
+		DateTextField dataField2 = new DateTextField("datada",
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.datada"));
+		DatePicker datePicker2 = new DatePicker();
+		datePicker2.setShowOnFieldClick(true);
+		datePicker2.setAutoHide(true);
+		dataField2.add(datePicker2);
+		dataField2.add(new CssBeahvior());
+		formPrecDich.add(dataField2);
+				
 		formPrecDich.add(new TextField<String>("motivo", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.motivo")));
 		
+		add(formFirst);
 	}
 
 }

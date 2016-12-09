@@ -6,13 +6,12 @@ public class Decodifica extends E {
 	private String descrizione;
 	private String fkDecodificaUnid;
 	private String tipo;
-	private String unid;
+	private Integer unid;
 
 	public Decodifica() {
 		
 	}
-	
-	public Decodifica(String un) {
+	public Decodifica(Integer un) {
 		unid=un;
 	}
 	
@@ -48,17 +47,17 @@ public class Decodifica extends E {
 
 		return tipo;
 	}
-	public void setUnid(String a) {
+	public void setUnid(Integer a) {
 
 		this.unid = a;
 	}
-	public String getUnid() {
+	public Integer getUnid() {
 
 		return unid;
 	}
-	
+	/*
 	public String getDescrizionePerCombo(){
 		return unid+" - "+descrizione;
-	}
+	}*/
 	
 }

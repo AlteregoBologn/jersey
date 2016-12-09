@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.model.IModel;
+
 import model.Decodifica;
 import model.DecodificaSearch;
 import model.Indirizzo;
@@ -33,6 +35,7 @@ import tari.modelExt.ImmobileDiDichiarazione;
 import tari.modelExt.LocaleDiImmobile;
 import tari.modelExt.PersonaTariCompleta;
 import util.JACK;
+import web.c.MyCheckBox;
 
 public class TariManagerExt extends TariManager {
 
@@ -62,8 +65,6 @@ public class TariManagerExt extends TariManager {
 		return ret.get(0);
 	}
 	
-
-
 	private void savePersonaTari(PersonaTari p) {
 		if (p.isInsert()) {
 			inserisciPersonaTari(p);
@@ -126,6 +127,7 @@ public class TariManagerExt extends TariManager {
 		}
 
 	}
+	
 	/***** DICHIARAZIONE DI PERSONATARI ****/	
 	public void loadDichiarazioniDiPersonaTari (PersonaTari p, PersonaTariCompleta pc) {
 		
@@ -140,13 +142,11 @@ public class TariManagerExt extends TariManager {
 		else {
 
 		for (Rel_PersonaTari_Dichiarazione rpd : rel_Persona_Dichiarazione) {
-			rpd.setOperation(pc.OP_NOP);
 			DichiarazioneSearch ds = new DichiarazioneSearch();
 			ds.setUnid(rpd.getIddichiarazione());
 			List<Dichiarazione> dichiarazioni = cercaDichiarazione(ds);
 
 			DichiarazioneDiPersonaTari d = new DichiarazioneDiPersonaTari();
-			d.setOperation(pc.OP_NOP);
 			d.setDichiarazione(dichiarazioni.get(0));
 			d.setRel_Persona_Dichiarazione(rpd);
 			pc.getDichiarazioniDiPersona().add(d);
@@ -172,6 +172,7 @@ public class TariManagerExt extends TariManager {
 		if (mp.isInsert()) {
 			Rel_PersonaTari_Dichiarazione rpd = new Rel_PersonaTari_Dichiarazione();
 			mp.getDichiarazione().setOperation(mp.OP_INSERT);
+			if(mp.getDichiarazione().getData() == null) mp.getDichiarazione().setData(new Date());			
 			saveDichiarazione(mp.getDichiarazione());
 			rpd.setIddichiarazione(mp.getDichiarazione().getUnid());
 			rpd.setIdpersona(pc.getPersonaTari().getUnid());			
@@ -192,7 +193,7 @@ public class TariManagerExt extends TariManager {
 	}
 	
 	/***** IMMOBILE DI DICHIARAZIONE ****/	
-	public void loadImmobileDiDichiarazione (DichiarazioneDiPersonaTari d, PersonaTariCompleta pc){
+	public void loadImmobileDiDichiarazione (DichiarazioneDiPersonaTari d, PersonaTariCompleta pc){		
 		Rel_Dichiarazione_ImmobileSearch rdis = new Rel_Dichiarazione_ImmobileSearch();
 		rdis.setIddichiarazione(d.getDichiarazione().getUnid());
 		List<Rel_Dichiarazione_Immobile> rel_Dichiarazione_Immobile = cercarel_Dichiarazione_Immobile(rdis);
@@ -265,8 +266,12 @@ public class TariManagerExt extends TariManager {
 					locali.get(0).setParticella("Nessun locale corrispondente, è illegale se c'è l'immobile");
 			}
 			LocaleDiImmobile li = new LocaleDiImmobile();
-			li.setOperation(pc.OP_NOP);
+			li.setOperation(pc.OP_NOP);			
 			li.setLocale(locali.get(0));
+			DecodificaSearch ds = new DecodificaSearch();
+			ds.setUnid(li.getLocale().getTipo());
+			List<Decodifica> dec = cercaDecodifica(ds);
+			li.getDecodifica().setDescrizione(dec.get(0).getDescrizione());
 			li.setRel_Immobile_Locale(ril);
 			d.getDichiarazioneImmobile().getLocaliDiImmobile().add(li);
 		}
@@ -344,17 +349,19 @@ public class TariManagerExt extends TariManager {
 	}
 	
 	public void savePrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc){
-		if (pc.isInsert() || pc.isUpdate()) {
+		if (mp.isInsert()) {
 			Rel_Dichiarazione_PrecDichiara rdpd = new Rel_Dichiarazione_PrecDichiara();
-			for (DichiarazioneDiPersonaTari dpt : pc.getDichiarazioniDiPersona()) {
-				if(dpt.getPrecedenteDichiarazione() != null) {
-					savePrecedenteDichiarazione(dpt.getPrecedenteDichiarazione());
-					rdpd.setIddichiarazione(dpt.getDichiarazione().getUnid());
-					rdpd.setIdPrecedenteDichiarazione(dpt.getPrecedenteDichiarazione().getUnid());				
+			PrecedenteDichiarazione dpt = mp.getPrecedenteDichiarazione();
+				if(dpt != null) {
+					dpt.setOperation(dpt.OP_INSERT);
+					savePrecedenteDichiarazione(dpt);
+					rdpd.setIddichiarazione(mp.getDichiarazione().getUnid());
+					rdpd.setIdPrecedenteDichiarazione(dpt.getUnid());				
 					inserisciRel_Dichiarazione_PrecDichiara(rdpd);
 				}
-				else new RuntimeException("Nessuna precedente dichiarazione inserita, auguri per la nuova casa");
 			}			
+		else if(mp.isUpdate()){
+			
 		}
 	}
 	
@@ -457,10 +464,22 @@ public class TariManagerExt extends TariManager {
 		return lim;
 	}
 	
-	public List<Decodifica> caricaDecodificaPoisizioneDiDicharazione() {
+	/*****OPERAZIONI PER INTERFACCIA*****/
+	public List<Decodifica> caricaDecodificaPosizioneDiDicharazione() {
 		DecodificaSearch ds = new DecodificaSearch();
 		ds.setTipo("TIPOPOSIZIONEDICHIARAZIONE");
 		return cercaDecodifica(ds);
+	}
+	
+	public List<String> caricaDecodificaPosizioneDiDicharazioneSBAGLIATO() {
+		DecodificaSearch ds = new DecodificaSearch();
+		ds.setTipo("TIPOPOSIZIONEDICHIARAZIONE");
+		List<Decodifica> decodifiche = cercaDecodifica(ds);
+		List<String> posizioni = new ArrayList<String>();
+		for(Decodifica d : decodifiche){
+			posizioni.add(d.getDescrizione());
+		}
+		return posizioni;
 	}
 	
 	public List<Decodifica> caricaDecodificaDiTipoLocale() {
@@ -469,11 +488,44 @@ public class TariManagerExt extends TariManager {
 		return cercaDecodifica(ds);
 	}
 	
-	
+
 	public List<Decodifica> caricaDecodificaDiQualitaDi() {
 		DecodificaSearch ds = new DecodificaSearch();
 		ds.setTipo("QUALITADI");
 		return cercaDecodifica(ds);
+	}
+	
+	public void salvaLocaleDiImmobile(LocaleDiImmobile locale, DichiarazioneDiPersonaTari dpt){
+		
+		if(locale.isInsert() && locale.isNew()) {
+			
+			dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(locale);
+			locale.setOperation(locale.OP_INSERT);
+
+		}
+		visualizzaTipoSuGridOnSalva(locale);
+		/*
+		else if(locale.isUpdate() && !locale.isNew()){
+			locale.setOperation(locale.OP_DELETE);
+			locale.setOperation(locale.OP_UPDATE);
+		}
+		
+		else if(locale.isUpdate() && locale.isNew()){
+			locale.setOperation(locale.OP_DELETE);
+			locale.setOperation(locale.OP_INSERT);
+		}
+		
+		if(locale.isNew()){
+			
+		}
+		*/
+	}
+
+	public void visualizzaTipoSuGridOnSalva(LocaleDiImmobile locale){
+		DecodificaSearch ds = new DecodificaSearch();
+		ds.setUnid(locale.getLocale().getTipo());
+		List<Decodifica> decodifica = cercaDecodifica(ds);
+		locale.getDecodifica().setDescrizione(decodifica.get(0).getDescrizione());		
 	}
 	
 }

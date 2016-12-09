@@ -13,7 +13,7 @@ public class Immobile extends E {
 	private String nomePrecedenteDetentore;
 	private String nomeProprietario;
 	private String piano;
-	private String qualita;
+	private Integer qualita;
 	private String via;
 	private Integer unid;
 
@@ -65,11 +65,11 @@ public class Immobile extends E {
 
 		return piano;
 	}
-	public void setQualita(String a) {
+	public void setQualita(Integer a) {
 
 		this.qualita = a;
 	}
-	public String getQualita() {
+	public Integer getQualita() {
 
 		return qualita;
 	}

@@ -3,6 +3,7 @@ package tari.web.comp.panels;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.javassist.runtime.DotClass;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
@@ -42,7 +43,7 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			@Override
 			public List<IColumn> getColumns() {
 				List<IColumn> columns = new ArrayList();
-				columns.add(new PropertyColumn(new Model<>("Tipo"), "locale.tipo"));
+				columns.add(new PropertyColumn(new Model<>("Tipo"), "decodifica.descrizione"));
 				columns.add(new PropertyColumn(new Model<>("MQ"), "locale.mq"));
 				columns.add(new PropertyColumn(new Model<>("Riferimenti"), "locale.foglio"));
 				columns.add(new PropertyColumn(new Model<>("Riferimenti"), "locale.particella"));
@@ -51,7 +52,7 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 			}
 
 			@Override
-			public List<LocaleDiImmobile> getList(int f, int c) {				
+			public List<LocaleDiImmobile> getList(int f, int c) {						
 				return dpt.getDichiarazioneImmobile().getLocaliDiImmobile();
 			}
 
@@ -91,35 +92,9 @@ public class ListaLocaliDiImmobilePanel extends BasePanel {
 				locale.setOperation(locale.OP_NOP);
 				target.add(ListaLocaliDiImmobilePanel.this);
 			}
-			public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l){
+			public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l) {
 				
-				if(locale.isInsert() && locale.isNew()) {
-			
-					dpt.getDichiarazioneImmobile().getLocaliDiImmobile().add(l);
-
-				}
-				else if(locale.isUpdate() && !locale.isNew()){
-					locale.setOperation(locale.OP_DELETE);
-					locale.setOperation(locale.OP_UPDATE);
-					l.setOperation(locale.OP_DELETE);
-					l.setOperation(l.OP_UPDATE);
-				}
-				
-				else if(locale.isUpdate() && locale.isNew()){
-					locale.setOperation(locale.OP_DELETE);
-					locale.setOperation(locale.OP_INSERT);
-					l.setOperation(locale.OP_DELETE);
-					l.setOperation(l.OP_INSERT);
-				}
-				
-				if(locale.isNew()){
-					locale.setOperation(locale.OP_NOP);	
-					locale.setOperation(locale.OP_INSERT);
-					l.setOperation(locale.OP_NOP);	
-					l.setOperation(l.OP_INSERT);
-					
-				}
-
+				tariManagerExt.salvaLocaleDiImmobile(l, dpt);
 				this.setVisible(false);
 				target.add(ListaLocaliDiImmobilePanel.this);
 			}

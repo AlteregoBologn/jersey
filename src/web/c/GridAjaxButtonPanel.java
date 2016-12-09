@@ -18,7 +18,6 @@ public class GridAjaxButtonPanel<T> extends Panel {
 				onClick(target,o);
 			}
 
-			
 		};		
 		//bottone.setLabel(new Model(label));
 		add(bottone);

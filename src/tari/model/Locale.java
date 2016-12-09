@@ -8,7 +8,7 @@ public class Locale extends E {
 	private Integer mq;
 	private String particella;
 	private String subalterno;
-	private String tipo;
+	private Integer tipo;
 	private Integer unid;
 
 	public void setFoglio(String a) {
@@ -43,11 +43,11 @@ public class Locale extends E {
 
 		return subalterno;
 	}
-	public void setTipo(String a) {
+	public void setTipo(Integer a) {
 
 		this.tipo = a;
 	}
-	public String getTipo() {
+	public Integer getTipo() {
 
 		return tipo;
 	}

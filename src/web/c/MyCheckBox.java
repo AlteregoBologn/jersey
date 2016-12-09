@@ -22,7 +22,7 @@ public class MyCheckBox extends Panel {
 		PropertyModel pm=new PropertyModel<Boolean>(MyCheckBox.this,"value"){
 			@Override
 			public Boolean getObject() {
-				Integer valueS=model.getObject();
+				Integer valueS = model.getObject();
 				if(S.equals(valueS)) {
 					value=true;
 				} else {
@@ -37,7 +37,7 @@ public class MyCheckBox extends Panel {
 			}
 		};
 		
-		CheckBox field = new CheckBox("field", pm ) ;
+		CheckBox field = new CheckBox("field", pm) ;
 		field.add(new AjaxEventBehavior("click") {
 			protected void onEvent(AjaxRequestTarget target) {
 				value=!value;
@@ -59,3 +59,4 @@ public class MyCheckBox extends Panel {
 	public void onClick(AjaxRequestTarget target) {
 	}
 }
+

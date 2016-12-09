@@ -32,7 +32,7 @@ public class EditLocaleDiImmobilePanel extends BasePanel {
 		/*List<String> tipi = tariManagerExt.caricaDecodificaDiTipoLocale();
 		form.add(new DropDownChoice<String>("tipo", new PropertyModel<>(locale, "locale.tipo"), tipi));*/
 		
-		PropertyModel<String> ddm=new PropertyModel<String>(locale, "locale.tipo");
+		PropertyModel<Integer> ddm=new PropertyModel<Integer>(locale, "locale.tipo");
 		form.add(new MyDropDown<Decodifica>("tipo", ddm, "unid", "descrizione"){
 			@Override
 			public List<Decodifica> getList() {				
@@ -63,6 +63,5 @@ public class EditLocaleDiImmobilePanel extends BasePanel {
 		
 	}
 	public void onSalva(AjaxRequestTarget target, LocaleDiImmobile l){
-		
 	}
 }

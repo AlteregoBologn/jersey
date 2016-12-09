@@ -84,7 +84,7 @@ public class TariManagerTest {
 		a.setNomeprecedentedetentore("Pippo Pappo");
 		a.setNomeproprietario("Pluto Pap");
 		a.setPiano("3");
-		a.setQualita("locatario");
+		a.setQualita(7);
 		a.setUnid(1);
 		a.setVia("Via Ranzani");
 		tariManager.inserisciImmobile(a);
@@ -111,7 +111,7 @@ public class TariManagerTest {
 		a.setMq(40);
 		a.setParticella("3");
 		a.setSubalterno("15");
-		a.setTipo("Superficie a filo dei muri dell'abitazione compresa mansarda, taverna e scale (esclusi balconi e terrazze scoperte)");
+		a.setTipo(8);
 		a.setUnid(1);
 		tariManager.inserisciLocale(a);
 	}

@@ -14,8 +14,7 @@ public class Home extends BasePage {
 		
 		Persona persona = MySession.get().getUtente();
 
-		PersonaCompleta pc = managerExt.loadPersonaCompleta(29);// TODO persona.getUnid());
-
+		PersonaCompleta pc = managerExt.loadPersonaCompleta(411);// TODO persona.getUnid());
 		//add(new ProvaModale("prova", "Edit Persona",600,400,new ModificaPersonaCompletaPanel("pippo", pc)));
 	}
 }
