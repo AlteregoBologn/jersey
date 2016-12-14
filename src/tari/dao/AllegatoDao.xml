@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tari.dao.AllegatoDao">
+	<sql id="orderBy">
+		<if test="orderBy != null">
+  <![CDATA[ order by $orderBy$]]>
+		</if>
+	</sql>
+
+	<sql id="condition">
+		WHERE 1=1
+		<if test="data != null ">
+			AND DATA = #{data}
+		</if>
+		<if test="tipo != null ">
+			AND TIPO = #{tipo}
+		</if>
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+	</sql>
+	<insert id="insert">
+		<selectKey keyProperty="unid" resultType="int" order="BEFORE">
+			SELECT
+			seq.nextval from dual
+		</selectKey>
+		insert into T_ALLEGATO (
+		DATA,
+		TIPO,
+		UNID) VALUES (
+		#{data},
+		#{tipo},
+		#{unid})
+	</insert>
+
+	<update id="update">
+		update T_ALLEGATO set
+		DATA =
+		#{data},
+		TIPO = #{tipo},
+		WHERE UNID = #{unid}
+	</update>
+	
+	<sql id="load">
+		SELECT * FROM T_ALLEGATO
+		<include refid="condition" />
+	</sql>
+	
+	<select id="loadAll" resultType="tari.model.Allegato">
+		<include refid="dao.common.prePage" />
+		<include refid="load" />
+		<include refid="dao.common.postPage" />
+	</select>
+
+	<delete id="delete">
+		delete from T_ALLEGATO
+		WHERE UNID= #{unid}
+	</delete>
+</mapper>

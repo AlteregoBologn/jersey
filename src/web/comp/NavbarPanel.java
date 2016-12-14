@@ -3,6 +3,7 @@ package web.comp;
 import org.apache.wicket.markup.html.link.Link;
 
 import tari.web.comp.pages.ListaDichiarazioniPage;
+import tari.web.comp.pages.PersonaTariCompletaPage;
 import web.Home;
 import web.LoginPage;
 import web.LogoutPage;
@@ -82,6 +83,17 @@ public class NavbarPanel extends BasePanel {
 			@Override
 			public void onClick() {
 				setResponsePage(ListaDichiarazioniPage.class);
+			}
+			@Override
+			public boolean isVisible() {
+				return true;//utenteLoggato();
+			}
+		});
+		
+		add(new Link("Modifica Profilo") {
+			@Override
+			public void onClick() {
+				setResponsePage(PersonaTariCompletaPage.class);
 			}
 			@Override
 			public boolean isVisible() {

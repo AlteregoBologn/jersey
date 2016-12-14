@@ -1,0 +1,44 @@
+<wicket:panel>
+<div class="container-fluid">
+	<form wicket:id="formAnagrafica">
+		<div wicket:id="isditta" ></div> 
+		<br/>
+			<label wicket:for="nome">Il/la sottoscritto/a <input type="text" wicket:id="nome" />	
+												<input type="text" wicket:id="cognome" /></label> 
+			<label wicket:for="comunenascita">nato/a a <input type="text" wicket:id="comunenascita"/></label> 
+			<label wicket:for="datanascita">il <input type="text" wicket:id="datanascita" /></label><br />
+			<label wicket:for="comuneResidenza">residente in: <input type="text" wicket:id="comuneResidenza" /></label>
+			<label wicket:for="viaResidenza">via: <input type="text" wicket:id="viaResidenza"/></label>
+			<label wicket:for="civicoResidenza">n°: <input type="text" wicket:id="civicoResidenza" /></label>
+			<label wicket:for="capResidenza">CAP: <input type="text" wicket:id="capResidenza" /></label>
+			<label wicket:for="cf">codice fiscale: <input type="text" wicket:id="cf" /></label> 			
+			<label wicket:for="recapito">recapito telefonico: <input type="text" wicket:id="recapito" /></label>	<br />
+			<label wicket:for="email">e-mail: <input type="email" wicket:id="email" /></label>
+			<label wicket:for="pec">PEC(posta certificata): <input type="email" wicket:id="pec" /></label><br />
+			
+		
+	
+	</form>
+	<form wicket:id="formAnagrafica2">
+		
+			<label wicket:for="descrizione">legale rappresentante della ditta<input type="text" wicket:id="descrizione"></label>
+			<label wicket:for="sedeLegale">con sede legale in <input type="text" wicket:id="sedeLegale"></label>
+			<label wicket:for="provincia">prov.<input type="text" wicket:id="provincia"></label>
+			<label wicket:for="indirizzo">via <input type="text" wicket:id="indirizzo"></label>
+			<label wicket:for="numeroCivico">n° <input type="text" wicket:id="numeroCivico"></label>
+			<label wicket:for="pIva">codice fiscale <input type="text" wicket:id="pIva"></label>		
+			<label wicket:for="recapitoTelefonico">recapito telefonico <input type="text" wicket:id="recapitoTelefonico" /></label>	<br />
+			<label wicket:for="emailPG">e-mail: <input type="email" wicket:id="emailPG" /></label>
+			<label wicket:for="pecPG">PEC(posta certificata): <input type="email" wicket:id="pecPG" /></label><br />
+	
+	</form>
+	
+	<h3>ALLEGATI</h3>
+	<div wicket:id="allegato1"></div>
+	<div wicket:id="allegato2"></div>
+	
+	<form wicket:id="formAnagrafica3">			
+			<input type="button" wicket:id="salva" value="Salva" />	
+	</form>
+		</div>
+</wicket:panel>

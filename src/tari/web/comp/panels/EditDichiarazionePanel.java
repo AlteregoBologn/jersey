@@ -1,15 +1,21 @@
 package tari.web.comp.panels;
 
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -23,6 +29,8 @@ import web.c.BasePanel;
 import web.c.CssBeahvior;
 import web.c.MyCheckBox;
 import web.c.MyDropDown;
+import web.c.MyRadioGroup;
+import web.c.ProvaModale;
 
 public class EditDichiarazionePanel extends BasePanel {
 	
@@ -45,6 +53,8 @@ public class EditDichiarazionePanel extends BasePanel {
 		add(formAnagrafica);
 		this.dichiarazione=dichiarazione;
 		
+		// edit persona tari  panel
+		// dentro ha anche allegati tari panel
 		formAnagrafica.add(new TextField<String>("nome", new PropertyModel<>(pc, "personaTari.nome")));
 		formAnagrafica.add(new TextField<String>("cognome", new PropertyModel<>(pc, "personaTari.cognome")));
 		formAnagrafica.add(new TextField<String>("comunenascita", new PropertyModel<>(pc, "personaTari.comunenascita")));
@@ -55,10 +65,16 @@ public class EditDichiarazionePanel extends BasePanel {
 		formAnagrafica.add(new DateTextField("capResidenza", new PropertyModel<>(pc, "residenza.cap")));
 		formAnagrafica.add(new TextField<String>("cf", new PropertyModel<>(pc, "personaTari.cf")));
 		formAnagrafica.add(new DateTextField("recapito", new PropertyModel<>(pc, "personaTari.recapitoTelefonico")));
-		//formAnagrafica.add(new TextField<String>("sesso", new PropertyModel<>(pc, "personaTari.sesso")));		
 		formAnagrafica.add(new EmailTextField("email", new PropertyModel<>(pc, "personaTari.email")));
 		formAnagrafica.add(new EmailTextField("pec", new PropertyModel<>(pc, "personaTari.pec")));
 		
+		// add blocco persona giuridica panel
+		add(new EditPersonaTariPanel("persona", pc,false){
+			@Override
+			public boolean isEnabled() {
+				return false;
+			}
+		});
 		
 		Form formDichiara = new Form("formDichiara"){
 			@Override
@@ -150,51 +166,24 @@ public class EditDichiarazionePanel extends BasePanel {
 			}
 		};
 		formFirst.add(formDichiaraInoltre);
-		/*PropertyModel propAgricoltore = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore");
-		PropertyModel propEstero = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero");
-		PropertyModel propResidente = new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante");
-		MyRadioGroup<Decodifica> mioRadio = new MyRadioGroup<Decodifica>("mioRadio", propAgricoltore, propEstero, propResidente, "unid", "descrizione"){
+		
+		
+		Map checks=new HashMap();
+		checks.put("unicooccupante","Abitazione con unico occupante residente");
+		checks.put("agricoltore","Agricoltori che occupano la parte abitativa della costruzione rurale");
+		checks.put("italianoallestero","Persona che risiede o dimora per più di 6 mesi all'anno in località al di fuori del territorio nazionale (Si dichiara che "
+				+ "l'abitazione oggetto della presente denuncia è la propria abitazione principale e che non si intende cederla in locazione o comodato)");
+		
+		MyRadioGroup radios=new MyRadioGroup("radios", 
+				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione"), 
+				checks){
 			@Override
-			public List<Decodifica> getList() {
-				return tariManagerExt.caricaDecodificaPosizioneDiDicharazione();
+			public boolean isRadio() {
+				return false;
 			}
 		};
-		formDichiaraInoltre.add(mioRadio);
-		*/
-		
-		List<Decodifica> posizioni = tariManagerExt.caricaDecodificaPosizioneDiDicharazione();
-		//formDichiaraInoltre.add(
-		
-		MyCheckBox agricoltore = new MyCheckBox("agricoltore",
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.agricoltore"), 
-				new Model(posizioni.get(1).getDescrizione()));
-		
-		MyCheckBox italianoallestero = new MyCheckBox("italianoallestero",
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero"), 
-				new Model(posizioni.get(2).getDescrizione()));
-		
-		MyCheckBox unico = new MyCheckBox("unicooccupante",
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.unicooccupante"), 
-				new Model(posizioni.get(0).getDescrizione()));
-		
-		
-		formDichiaraInoltre.add(unico, agricoltore, italianoallestero);
+		formDichiaraInoltre.add(radios);
 
-		/* 
-		 * Metodo errato per i RadioButton (RadioChoice) ma l'unico che funziona correttamente sull'interfaccia.
-		 * Non visualizza correttamente sul load ovviamente, il problema che ho riscontrato è stato
-		 * il controllo di 3 proprietà e non solo una come ad esempio "qualità" di immobile.
-		 * MyRadioGroup e MyCheckBoxGroup sono prove fallite per questo componente
-		 */
-		
-		List<String> posizioniSBAGLIATO = tariManagerExt.caricaDecodificaPosizioneDiDicharazioneSBAGLIATO();
-		
-		RadioChoice<Object> posizione = new RadioChoice<Object>("posizione",
-				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.dichiarazione.italianoallestero"), posizioniSBAGLIATO);
-		posizione.setRequired(true);
-		formDichiaraInoltre.add(posizione);
-		
-		
 		Form formPrecDich = new Form("formPrecDich"){
 			@Override
 			public boolean isEnabled() {
@@ -206,7 +195,6 @@ public class EditDichiarazionePanel extends BasePanel {
 		formPrecDich.add(new TextField<String>("via", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.via")));
 		formPrecDich.add(new TextField<String>("civico", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.civico")));
 		formPrecDich.add(new TextField<String>("interno", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.interno")));
-		//formPrecDich.add(new DateTextField("datada", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.datada")));
 
 		DateTextField dataField2 = new DateTextField("datada",
 				new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.datada"));
@@ -218,6 +206,10 @@ public class EditDichiarazionePanel extends BasePanel {
 		formPrecDich.add(dataField2);
 				
 		formPrecDich.add(new TextField<String>("motivo", new PropertyModel<>(EditDichiarazionePanel.this, "dichiarazione.precedenteDichiarazione.motivo")));
+		formPrecDich.add(new TextArea<String>("comunicazione",new PropertyModel<>(EditDichiarazionePanel.this,"dichiarazione.precedenteDichiarazione.comunicazione")));
+		
+		
+	
 		
 		add(formFirst);
 	}

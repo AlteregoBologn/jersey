@@ -13,6 +13,7 @@ import model.Indirizzo;
 import model.IndirizzoSearch;
 import model.Rel_Persona_Indirizzo;
 import model.Rel_Persona_IndirizzoSearch;
+import tari.dao.AllegatoDao;
 import tari.dao.DichiarazioneDao;
 import tari.dao.ImmobileDao;
 import tari.dao.LocaleDao;
@@ -24,6 +25,8 @@ import tari.dao.relationDao.Rel_Dichiarazione_PrecDichiaraDao;
 import tari.dao.relationDao.Rel_Immobile_LocaleDao;
 import tari.dao.relationDao.Rel_PersGiuridica_DichiarazionDao;
 import tari.dao.relationDao.Rel_Persona_DichiarazioneDao;
+import tari.model.Allegato;
+import tari.model.AllegatoSearch;
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
@@ -48,6 +51,9 @@ import tari.model.relationModel.Rel_PersonaTari_Dichiarazione;
 import tari.model.relationModel.Rel_PersonaTari_DichiarazioneSearch;
 
 public class TariManager {
+	
+	@Autowired
+	private AllegatoDao allegatoDao;
 
 	@Autowired
 	private ImmobileDao immobileDao;
@@ -302,6 +308,22 @@ public class TariManager {
 
 	public void deleteIndirizzo(Indirizzo a) {
 		indirizzoDao.delete(a);
+	}
+	
+	public void insertAllegato(Allegato allegato){
+		allegatoDao.insert(allegato);
+	}
+	
+	public void updateAllegato(Allegato allegato){
+		allegatoDao.update(allegato);
+	}
+	
+	public void deleteAllegato(Allegato allegato){
+		allegatoDao.delete(allegato);
+	}
+	
+	public List<Allegato> searchAllegato(AllegatoSearch allegatoSearch) {
+		return allegatoDao.loadAll(allegatoSearch);
 	}
 
 }

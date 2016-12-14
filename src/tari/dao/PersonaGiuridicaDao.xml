@@ -9,6 +9,24 @@
 
 	<sql id="condition">
 		WHERE 1=1
+		<if test="sedeLegale != null ">
+			AND SEDELEGALE = #{sedeLegale}
+		</if>
+		<if test="provincia != null ">
+			AND PROVINCIA = #{provincia}
+		</if>
+		<if test="indirizzo != null ">
+			AND INDIRIZZO = #{indirizzo}
+		</if>
+		<if test="numeroCivico != null ">
+			AND NUMEROCIVICO = #{numeroCivico}
+		</if>
+		<if test="recapitoTelefonico != null ">
+			AND RECAPITOTELEFONICO = #{recapitoTelefonico}
+		</if>
+		<if test="email != null ">
+			AND EMAIL = #{email}
+		</if>
 		<if test="descrizione != null ">
 			AND DESCRIZIONE = #{descrizione}
 		</if>
@@ -31,12 +49,24 @@
 			seq.nextval from dual
 		</selectKey>
 		insert into T_PERSONAGIURIDICA (
+		SEDELEGALE,
+		PROVINCIA,
+		INDIRIZZO,
+		NUMEROCIVICO,
+		RECAPITOTELEFONICO,
+		EMAIL,
 		DESCRIZIONE,
 		PEC,
 		PIVA,
 		RAPPRESENTANTE,
 		UNID)
 		VALUES (
+		#{sedeLegale},
+		#{provincia},
+		#{indirizzo},
+		#{numeroCivico},
+		#{recapitoTelefonico},
+		#{email},
 		#{descrizione},
 		#{pec},
 		#{piva},
@@ -57,11 +87,17 @@
 
 	<update id="update">
 		update T_PERSONAGIURIDICA set
+		UNID = #{unid},
 		DESCRIZIONE = #{descrizione},
+		SEDELEGALE = #{sedeLegale},
+		PROVINCIA = #{provincia},
+		INDIRIZZO = #{indirizzo},
+		NUMEROCIVICO = #{numeroCivico},
+		PIVA = #{pIva},
+		RECAPITOTELEFONICO = #{recapitoTelefonico} ,
+		EMAIL = #{email},
 		PEC = #{pec},
-		PIVA = #{piva},
 		RAPPRESENTANTE = #{rappresentante},
-		UNID = #{unid}
 		WHERE 1=1
 	</update>
 

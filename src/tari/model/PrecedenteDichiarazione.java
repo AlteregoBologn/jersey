@@ -14,6 +14,8 @@ public class PrecedenteDichiarazione extends E {
 	private String motivo;
 	private Integer unid;
 	private String via;
+	private String comunicazione;
+	
 
 	public void setCivico(String a) {
 
@@ -74,4 +76,14 @@ public class PrecedenteDichiarazione extends E {
 
 		return via;
 	}
+
+	public String getComunicazione() {
+		return comunicazione;
+	}
+
+	public void setComunicazione(String comunicazione) {
+		this.comunicazione = comunicazione;
+	}
+	
+	
 }

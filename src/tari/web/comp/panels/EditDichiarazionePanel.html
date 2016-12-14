@@ -15,6 +15,9 @@
 			<label wicket:for="pec">PEC(posta certificata): <input type="email" wicket:id="pec" /></label><br />
 		</div>
 	</form>
+	
+	<div wicket:id="persona"></div><br /> 
+	
 	<form wicket:id="formFirst">
 		<div class="container-fluid">
 		<form wicket:id="formDichiara">
@@ -39,23 +42,36 @@
 		</form>
 				<form wicket:id="formDichiaraInoltre">
 					<h3>DICHIARA INOLTRE</h3>
-					<label>-ai fini dell'applicazione delle relative riduzioni di trovarsi nella seguente posizione: </label><br />
-					<radiogroup wicket:id="posizione"></radiogroup>
-					<div wicket:id="unicooccupante"></div> 
-					<div wicket:id="agricoltore"></div> 
-					<div wicket:id="italianoallestero"></div>  
+					<label>- ai fini dell'applicazione delle relative riduzioni di trovarsi nella seguente posizione: </label><br />
+					 
+					<div wicket:id="radios"></div><br /> 
 				</form>
 				
 				<form wicket:id="formPrecDich">
-					<label>- ai fine della cessazione degli effetti della dichiarazione per l'appartamento precedentemente occupato di essersi trasferito</label><br />
+				 
+					<label>- ai fini della cessazione degli effetti della dichiarazione per l'appartamento precedentemente occupato di essersi trasferito</label><br />
 					<label>dall'appartamento di </label>
 					<label wicket:for="via">Via: <input type="text" wicket:id="via" /></label>
 					<label wicket:for="civico">N°: <input type="text" wicket:id="civico" /></label>
 					<label wicket:for="interno">Interno: <input type="text" wicket:id="interno" /></label>
 					<label wicket:for="datada">che, a decorrere dal <input type="text" wicket:id="datada" /></label><br />
 					<label wicket:for="motivo">non è più a sua disposizione per il seguente motivo <input type="text" wicket:id="motivo" /></label>
-					<label>(N.B. : da compilare solo se di intenda dichiarare il cambiamento di abitazione entro la città con contestuale 
+					<label>(N.B. : da compilare solo se si intenda dichiarare il cambiamento di abitazione entro la città con contestuale 
 								perdita della disponibilità del precedente appartamento per il quale si stava già pagando a proprio nome il tributo)</label>
+				
+				
+				<h3> DICHIARA ALTRESì</h3>
+				<label>- di essere stato informato, nel caso di dichiarazione tardiva dell'applicazione delle sanzioni previste dalla disciplina
+				normativa del relativo tributo </label>
+				<label>(rif.D.Lgs 507/1993 TARSU - D.L. 201/2011 art.14 e ssmmii TARES - L.147/2013 art.1 comma 639 e ss TARI) e dal vigente Regolamento delle 
+				entrate comunali e della relativa riscossione approvato con delibera PG
+				n.1579/2012</label><br /> 
+				<label wicket:for="comunicazione">Comunicazioni del dichiarante:</label><br /> 
+					<textarea wicket:id="comunicazione" rows="6" cols="180" /><br />
+					
+				<label>Per informazioni circa le modalità di raccolta rifiuti in essere in città occorre rivolgersi all'URP centrale o di quartiere oppure utilizzare il
+				seguente link <a href="http://www.comune.bologna.it/ambiente/servizi/6:3242/" target="_blank">http://www.comune.bologna.it/ambiente/servizi/6:3242/</a></label>
+			
 				</form>
 			<input type="button" wicket:id="chiudi" value="Chiudi" />
 			<input type="button" wicket:id="salva" value="Salva" />

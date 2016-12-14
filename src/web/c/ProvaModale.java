@@ -13,7 +13,8 @@ import web.comp.persone.PersonaListPanel;
 public class ProvaModale extends Panel {
 
 	ModalWindow modal;
-	private String result="niente";
+	
+	//private String result="niente";
 	
 	public ProvaModale(String id,String title,int w, int h, Panel toShow) {
 		super(id);
@@ -49,7 +50,10 @@ public class ProvaModale extends Panel {
 				show(target);
 			}
 		});
+
 	}
+	
+	
 	
 	public void show(AjaxRequestTarget target) {
 		modal.show(target);
@@ -67,24 +71,26 @@ public class ProvaModale extends Panel {
 		
 	}
 	
-	 /**
-     * @return the result
-     */
-    public String getResult()
-    {
-        return result;
-    }
-
-    /**
-     * @param result
-     *            the result to set
-     */
-    public void setResult(String result)
-    {
-        this.result = result;
-    }
-
-	public void setContent(Panel toShow) {
-		modal.setContent(new Container(modal.getContentId(),toShow));
-	}
+	
+	
+//	 /**
+//     * @return the result
+//     */
+//    public String getResult()
+//    {
+//        return result;
+//    }
+//
+//    /**
+//     * @param result
+//     *            the result to set
+//     */
+//    public void setResult(String result)
+//    {
+//        this.result = result;
+//    }
+//
+//	public void setContent(Panel toShow) {
+//		modal.setContent(new Container(modal.getContentId(),toShow));
+//	}
 }

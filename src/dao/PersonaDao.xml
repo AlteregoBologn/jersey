@@ -79,6 +79,7 @@
 		#{datanascita},
 		#{email},
 		#{nome},
+		#{password},
 		#{pec},
 		#{recapitotelefonico},
 		#{sesso},

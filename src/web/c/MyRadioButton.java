@@ -9,17 +9,17 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-public class MyCheckBox extends Panel {
+public class MyRadioButton extends Panel {
 	final public static Integer S = 1;
 	final public static Integer N = 0;
 	
 	private Boolean value=false;
 
-	public MyCheckBox(String id, final IModel<Integer> model, final IModel labelModel) {
+	public MyRadioButton(String id, final IModel<Integer> model, final IModel labelModel) {
 		super(id);
 		setOutputMarkupId(true);
 		
-		PropertyModel pm=new PropertyModel<Boolean>(MyCheckBox.this,"value"){
+		PropertyModel pm=new PropertyModel<Boolean>(MyRadioButton.this,"value"){
 			@Override
 			public Boolean getObject() {
 				Integer valueS = model.getObject();
@@ -43,11 +43,11 @@ public class MyCheckBox extends Panel {
 				value=!value;
 				if(value) model.setObject(S);
 				else model.setObject(N);
-				onChange(target,value);
+				onClick(target);
 				
 				//labelModel.setObject(""+value+" "+model.getObject());
 				
-				target.add(MyCheckBox.this);
+				target.add(MyRadioButton.this);
 			}
 		});
 		field.setLabel(labelModel);
@@ -56,7 +56,7 @@ public class MyCheckBox extends Panel {
 		add(field);
 	}
 
-	public void onChange(AjaxRequestTarget target,boolean value) {
+	public void onClick(AjaxRequestTarget target) {
 	}
 }
 

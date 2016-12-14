@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import model.E;
 import tari.logic.TariManagerExt;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.PersonaTariCompleta;
@@ -23,13 +22,19 @@ public class ListaDichiarazioniPanel extends BasePanel {
 	
 	@SpringBean
 	TariManagerExt tariManagerExt;
+	
+	
 	Panel editPanel;
 	Panel newEditPanel;
+	
+	
+	
 	boolean selectVisible = false;// Per far comparire/scomparire i pannelli sotto il grid iniziale al clic del Select
 	
 	public ListaDichiarazioniPanel(String id, PersonaTariCompleta pc) {
-		super(id);	
-		editPanel = new EmptyPanel("edit");
+		super(id);
+		
+		editPanel = new EmptyPanel("editTari");
 		add(editPanel);
 		
 		Form form = new Form ("form");
@@ -62,7 +67,8 @@ public class ListaDichiarazioniPanel extends BasePanel {
 				editPanel.replaceWith(getEditPanel(target, n, pc, true));
 				target.add(ListaDichiarazioniPanel.this);
 				editPanel = newEditPanel;
-			}
+				
+			}			
 			/*
 			@Override
 			public void onEdit(AjaxRequestTarget target, DichiarazioneDiPersonaTari object) {
@@ -81,9 +87,12 @@ public class ListaDichiarazioniPanel extends BasePanel {
 			}
 		});	
 	}
+	
 	private Panel getEditPanel(AjaxRequestTarget target, DichiarazioneDiPersonaTari dichiarazione, PersonaTariCompleta pc, boolean onNew) {
-		Panel p = new EditDichiarazionePanel("edit", dichiarazione, pc, onNew);
+		Panel p = new EditDichiarazionePanel("editTari", dichiarazione, pc, onNew);
 		newEditPanel = p;
 		return p;
 	}
+	
+
 }

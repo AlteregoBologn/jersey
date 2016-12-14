@@ -9,6 +9,9 @@
 
 	<sql id="condition">
 		WHERE 1=1
+		<if test="comunicazione != null ">
+			AND COMUNICAZIONE = #{comunicazione}
+		</if>
 		<if test="civico != null ">
 			AND CIVICO = #{civico}
 		</if>
@@ -34,6 +37,7 @@
 			seq.nextval from dual
 		</selectKey>
 		insert into T_PRECEDENTEDICHIARAZIONE (
+		COMUNICAZIONE,
 		CIVICO,
 		DATADA,
 		INTERNO,
@@ -41,6 +45,7 @@
 		UNID,
 		VIA) 
 		VALUES (
+		#{comunicazione},
 		#{civico},
 		#{datada},
 		#{interno},
@@ -62,6 +67,7 @@
 
 	<update id="update">
 		update T_PRECEDENTEDICHIARAZIONE set
+		COMUNICAZIONE = #{comunicazione},
 		CIVICO = #{civico},
 		DATADA = #{datada},
 		INTERNO = #{interno},
