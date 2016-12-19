@@ -1,46 +1,48 @@
 <wicket:panel>
-		
-<form wicket:id="form">
-	<h2>Pagina di registrazione</h2>
-    <label for="nome">Nome:
-        <input type="text" class="form-control" wicket:id="nome" id="nome" />
-    </label>    
-    <br />
-    
-    <label for="cognome">Cognome:
-         <input type="text" class="form-control" wicket:id="cognome" id="cognome" />
-    </label>
-    <br />  
-    
-    <label for="codFisc">Codice fiscale: 
-        <input type="text" class="form-control" wicket:id="codFisc" id="codFisc" />
-    </label>
-    <br />
-    
-    <label for="email">Email: 
-        <input type="email" class="form-control" wicket:id="email" id="email" />
-    </label>
-    <br />
-    
-    <label for="password">Password:
-        <input type="password" class="form-control" wicket:id="password" id="password" />
-    </label>
-    <br />
-    
-    <label for="sessoGroup">Sesso: <br />
-    <radiogroup wicket:id="sessoGroup" ></radiogroup> 
-    </label>
-    <br />
-    
 
-    <br />
-	 <input type="text"  wicket:id="datanascita"  />
+	<form wicket:id="form">
 	
-    <input type="text"  wicket:id="comunenascita"  />
+		<h2>Pagina di registrazione</h2>
+		<label for="nome">Nome: <input type="text"
+			class="form-control" wicket:id="nome" id="nome" />
+		</label> 
+		<label for="cognome">Cognome: <input type="text"
+			class="form-control" wicket:id="cognome" id="cognome" />
+		</label>
+		 <label for="codFisc">Codice fiscale: <input type="text"
+			class="form-control" wicket:id="codFisc" id="codFisc" />
+		</label> 
+		<label for="email">Email: <input type="email"
+			class="form-control" wicket:id="email" id="email" />
+		</label> 
+		<label for="password">Password: <input type="password"
+			class="form-control" wicket:id="password" id="password" />
+		</label>
+		 <label for="sessoGroup">Sesso: <br /> <radiogroup
+				wicket:id="sessoGroup"></radiogroup>
+		</label> 
+		<label for="datanascita">Data di nascita <input type="text"
+			class="form-control" wicket:id="datanascita" />
+		</label> 
+		<label for="comunenascita">Comune di nascita <input
+			type="text" wicket:id="comunenascita" />
+		</label>
 
+		<!--  
 	<div  wicket:id="cercacitta"></div>
+	-->
 
-    <br />
-    
-   </form>
+
+		<label for="pec">Pec: <input type="email" class="form-control"
+			wicket:id="pec" id="pec" />
+		</label> 
+		<label for="recapitotelefonico">Recapito telefonico: <input
+			type="text" class="form-control" wicket:id="recapitotelefonico"
+			id="recapitotelefonico" />
+		</label>
+
+		<!--  
+		<div wicket:id="isditta" ></div>
+		--> 
+	</form>
 </wicket:panel>

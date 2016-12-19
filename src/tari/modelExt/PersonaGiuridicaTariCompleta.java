@@ -3,6 +3,7 @@ package tari.modelExt;
 import tari.model.PersonaGiuridica;
 
 public class PersonaGiuridicaTariCompleta extends PersonaTariCompleta  {
+	
 	PersonaGiuridica personaGiuridicaTari;
 
 	public PersonaGiuridica getPersonaGiuridicaTari() {

@@ -4,6 +4,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import model.Persona;
 import tari.logic.TariManagerExt;
+import tari.model.PersonaTari;
 import tari.modelExt.PersonaTariCompleta;
 import tari.web.comp.panels.EditPersonaTariPanel;
 import web.BasePage;
@@ -16,9 +17,9 @@ public class PersonaTariCompletaPage extends BasePage {
 	
 	public PersonaTariCompletaPage () throws Exception {
 		
-		Persona p=MySession.get().getUtente();
+		Persona persona = MySession.get().getUtente();
 		
-		PersonaTariCompleta pc = tariManagerExt.loadPersonaTariCompleta(p.getUnid());// TODO: persona.getUnid());
+		PersonaTariCompleta pc = tariManagerExt.loadPersonaTariCompleta(persona.getUnid());
 		
 		add(new EditPersonaTariPanel("persona", pc,false));
 	}

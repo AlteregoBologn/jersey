@@ -4,15 +4,15 @@ import model.E;
 
 public class Allegato extends E {
 	
-	private String 	unid;
+	private Integer unid;
 	private String 	tipo;
 	private byte[]	data;
 	
 
-	public String getUnid() {
+	public Integer getUnid() {
 		return unid;
 	}
-	public void setUnid(String unid) {
+	public void setUnid(Integer unid) {
 		this.unid = unid;
 	}
 	public String getTipo() {

@@ -4,6 +4,8 @@ public class Rel_Persona_Indirizzo extends E {
 
 	private Integer idIndirizzo;
 	private Integer idPersona;
+	
+	
 	public Integer getIdIndirizzo() {
 		return idIndirizzo;
 	}

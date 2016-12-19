@@ -12,6 +12,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import tari.logic.TariManagerExt;
+import tari.model.PersonaGiuridica;
 import tari.modelExt.PersonaTariCompleta;
 import web.c.BasePanel;
 import web.c.MyAllegato;
@@ -20,6 +21,7 @@ import web.c.MyCheckBox;
 public class EditPersonaTariPanel extends BasePanel{
 	@SpringBean
 	TariManagerExt tariManagerExt;
+
 	
 	public EditPersonaTariPanel(String id,PersonaTariCompleta pc, boolean onNew) {
 		super(id);
@@ -53,7 +55,7 @@ public class EditPersonaTariPanel extends BasePanel{
 			
 			@Override
 			public boolean isVisible() {
-				return pc.getPersonaTari().getDittaIndividuale()==1;
+				return pc.getPersonaTari().getDittaIndividuale() == 1;
 			}
 		};
 		add(formAnagrafica2);
@@ -69,7 +71,8 @@ public class EditPersonaTariPanel extends BasePanel{
 		
 		add(new MyAllegato("allegato1", "Invio del Documento di Identita'", 320, 200, "Invia carta di Identita'" ){
 			@Override
-			public void onUpload(AjaxRequestTarget target, FileUpload fileInviato) {				
+			public void onUpload(AjaxRequestTarget target, FileUpload fileInviato) {
+				pc.getCartaIdentita().setOperation(pc.OP_INSERT);
 				pc.getCartaIdentita().setData(fileInviato.getBytes());
 			}
 			@Override

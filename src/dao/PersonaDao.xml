@@ -51,6 +51,9 @@
 		<if test="recapitotelefonico != null ">
 			AND RECAPITOTELEFONICO = #{recapitotelefonico}
 		</if>
+		<if test="dittaIndividuale != null ">
+			AND DITTAINDIVIDUALE = #{dittaIndividuale}
+		</if>
 	</sql>
 
 	<insert id="insert">
@@ -70,6 +73,7 @@
 		PEC,
 		RECAPITOTELEFONICO,
 		SESSO,
+		DITTAINDIVIDUALE,
 		UNID
 		) VALUES (
 		'N',
@@ -83,6 +87,7 @@
 		#{pec},
 		#{recapitotelefonico},
 		#{sesso},
+		#{dittaIndividuale},
 		#{unid})
 	</insert>
 
@@ -109,16 +114,15 @@
 		CF = #{cf},
 		COGNOME = #{cognome},
 		COMUNENASCITA = #{comunenascita},
-		DATANASCITA =
-		#{datanascita},
+		DATANASCITA = #{datanascita},
 		EMAIL = #{email},
 		NOME = #{nome},
 		PASSWORD = #{password},
 		PEC = #{pec},
 		RECAPITOTELEFONICO = #{recapitotelefonico},
 		SESSO = #{sesso},
+		DIITAINDIVIDUALE = #{dittaIndividuale},
 		UNID = #{unid}
-		WHERE 1=1
 		AND
 		UNID = #{unid}
 	</update>

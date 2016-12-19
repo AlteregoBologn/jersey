@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="tari.dao.relationDao.Rel_PersGiuridica_DichiarazionDao">
+<mapper namespace="tari.dao.relationDao.Rel_PersGiur_DichiarazioneDao">
 
 	<sql id="orderBy">
 		<if test="orderBy != null">
@@ -18,7 +18,7 @@
 		</if>
 	</sql>
 	<insert id="insert">
-		insert into REL_PERSGIURIDICA_DICHIARAZION (
+		insert into REL_PERSGIUR_DICHIARAZIONE (
 		IDDICHIARAZIONE,
 		IDPERSONAGIURIDICA) 
 		VALUES (
@@ -27,7 +27,7 @@
 	</insert>
 
 	<sql id="load">
-		SELECT * FROM REL_PERSGIURIDICA_DICHIARAZION
+		SELECT * FROM REL_PERSGIUR_DICHIARAZIONE
 		<include refid="condition" />
 	</sql>
 
@@ -38,20 +38,20 @@
 	</select>
 
 	<update id="update">
-		update REL_PERSGIURIDICA_DICHIARAZION set
+		update REL_PERSGIUR_DICHIARAZIONE set
 		IDDICHIARAZIONE = #{iddichiarazione},
 		IDPERSONAGIURIDICA = #{idpersonagiuridica}
 		WHERE 1=1
 	</update>
 
-	<select id="loadAll" resultType="tari.model.relationModel.Rel_PersGiuridica_Dichiarazion">
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_PersGiur_Dichiarazione">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />
 	</select>
 
 	<delete id="delete">
-		delete from REL_PERSGIURIDICA_DICHIARAZION
+		delete from REL_PERSGIUR_DICHIARAZIONE
 		WHERE IDDICHIARAZIONE = #{iddichiarazione}
 			AND IDPERSONAGIURIDICA = #{idpersonagiuridica}
 	</delete>

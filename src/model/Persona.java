@@ -13,6 +13,7 @@ public class Persona extends E {
 	private String comunenascita;
 	private String pec;
 	private String recapitotelefonico;
+	private Integer dittaIndividuale;
 
 	public Date getDatanascita() {
 		return datanascita;
@@ -111,5 +112,15 @@ public class Persona extends E {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Integer getDittaIndividuale() {
+		return dittaIndividuale;
+	}
+
+	public void setDittaIndividuale(Integer dittaIndividuale) {
+		this.dittaIndividuale = dittaIndividuale;
+	}
+	
+	
 
 }

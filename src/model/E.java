@@ -13,7 +13,7 @@ public class E implements Serializable {
 	Long pageTo = 10L;
 	String orderBy;
 	String operation = OP_NOP; // I,U,D,NOP
-
+	String canc="N";
 	
 	public boolean isNew() {
 		return isNew;
@@ -49,6 +49,15 @@ public class E implements Serializable {
 
 	public String getOperation() {
 		return operation;
+	}
+
+	
+	public String getCanc() {
+		return canc;
+	}
+
+	public void setCanc(String canc) {
+		this.canc = canc;
 	}
 
 	public void setOperation(String op) {

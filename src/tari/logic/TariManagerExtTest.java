@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import model.Indirizzo;
 import tari.dao.relationDao.Rel_Persona_DichiarazioneDao;
+import tari.model.Allegato;
 import tari.model.Dichiarazione;
 import tari.model.Immobile;
 import tari.model.Locale;
+import tari.model.PersonaGiuridica;
 import tari.model.PersonaTari;
 import tari.model.PersonaTariSearch;
 import tari.model.PrecedenteDichiarazione;
@@ -29,95 +32,198 @@ public class TariManagerExtTest {
 	@Autowired
 	private TariManagerExt tariManagerExt;
 
-	@Test
-	public void testSalvaPersonaTariCompleta() throws Exception {
-		
-		PersonaTari p = new PersonaTari();
-		p.setNome("Paperino");
-		p.setCognome("Giacomu");
-		p.setEmail("gr.pilot@grf.com");
-		p.setPassword("cio");
-		p.setCf("cf");	
-		p.setUnid(null);
-		
-		PersonaTariCompleta pc=new PersonaTariCompleta();
-		pc.setPersonaTari(p);
-		
-		Dichiarazione dichiarazione1=new Dichiarazione();
-		dichiarazione1.setData(new Date());
-		dichiarazione1.setAgricoltore(1);
-		
-		PrecedenteDichiarazione precedenteDichiarazione1=new PrecedenteDichiarazione();
-		precedenteDichiarazione1.setDataDa(new Date());
-		precedenteDichiarazione1.setInterno("8");
-		precedenteDichiarazione1.setCivico("12/5");
-		
-		Immobile immobile1=new Immobile();
-		immobile1.setDatada(new Date());
-		immobile1.setCivico("1");
-		
-		Locale l = new Locale();
-		l.setMq(120);
-		l.setParticella("Particella");
-		
-		LocaleDiImmobile lim=new LocaleDiImmobile();
-		lim.setLocale(l);	
-
-		ImmobileDiDichiarazione di1=new ImmobileDiDichiarazione();
-		di1.setImmobile(immobile1);
-		di1.getLocaliDiImmobile().add(lim);
-
-		
-		DichiarazioneDiPersonaTari dich1=new DichiarazioneDiPersonaTari();
-		dich1.setDichiarazione(dichiarazione1);
-		dich1.setPrecedenteDichiarazione(precedenteDichiarazione1);
-		dich1.setDichiarazioneImmobile(di1);
-		
-		Dichiarazione dichiarazione2=new Dichiarazione();
-		dichiarazione2.setData(new Date());
-		dichiarazione2.setAgricoltore(0);			
-		
-		Immobile immobile3=new Immobile();
-		immobile3.setDatada(new Date());
-		immobile3.setCivico("15");
-		immobile3.setInterno("1");
-		
-		ImmobileDiDichiarazione di2=new ImmobileDiDichiarazione();
-		di2.setImmobile(immobile3);
-		
-		DichiarazioneDiPersonaTari dich2=new DichiarazioneDiPersonaTari();		
-		dich2.setDichiarazione(dichiarazione2);
-		dich2.setDichiarazioneImmobile(di2);		
-		//dich2.setPrecedenteDichiarazione(null);
-		//dich2.getDichiarazioniImmobili().add(e); illegale !
-		
-		pc.getDichiarazioniDiPersona().add(dich1);
-		pc.getDichiarazioniDiPersona().add(dich2);
-		
-		System.out.println(JACK.toJSON(pc));
-		
-		//PersonaTariCompleta copia =(PersonaTariCompleta) JACK.copy(pc);
-		
-		//pc=tariManagerExt.createPersonaTariCompleta(p);
-
-		tariManagerExt.savePersonaTariCompleta(pc);
-		
-		PersonaTariSearch ps=new PersonaTariSearch();
-		ps.setUnid(p.getUnid());
-		
-		//System.out.println(JACK.toJSON(ps));
-		
-		PersonaTariCompleta pcFound = tariManagerExt.loadPersoneTariCompleta(ps).get(0);
-		System.out.println(JACK.toJSON(pcFound));
-		
-		/* Le due personeTari complete saranno sempre diverse a causa degli ID autogenerati, 
-		 * le relazioni con gli id ancora non assegnati (autogenerati),
-		 * le date (new Date()). Il confronto dei dati effettutato grazie al JSON 
-		 * ha esito positivo in quanto i dati inseriti sono uguali a quelli trovati
-		 *  
-		 * if( !pcFound.equals(pc) ) throw new RuntimeException("nonva");
-		 */
-	}
-
+//	@Test
+//	public void testSalvaPersonaTariCompleta() throws Exception {
+//		
+//		PersonaTari p = new PersonaTari();
+//		p.setUnid(12);
+//		p.setNome("Paperino");
+//		p.setCognome("Paperone");
+//		p.setCf("0258741369");
+//		p.setCanc("N");
+//		p.setPassword("p");
+//		p.setEmail("gr.pilot@grf.com");
+//		p.setSesso("M");
+//		p.setDatanascita(new Date());
+//		p.setComunenascita("Milano");
+//		p.setPec("paperino@pec.it");
+//		p.setRecapitoTelefonico("036974125");
+//		p.setDittaIndividuale(0);
+//		p.setOperation(p.OP_INSERT);
+//		
+//		PersonaGiuridica pg = new PersonaGiuridica();
+//		pg.setUnid(null);
+//		pg.setDescrizione("DittaSRL");
+//		pg.setSedeLegale("Beragmo");
+//		pg.setProvincia("BG");
+//		pg.setIndirizzo("via brutta");
+//		pg.setNumeroCivico(23);
+//		pg.setpIva("12546546");
+//		pg.setRecapitoTelefonico("465987621");
+//		pg.setEmail("alterego@alterego.it");
+//		pg.setPec("ditta@pec.it");
+//		pg.setOperation(pg.OP_INSERT);
+//		
+//		Indirizzo indirizzo = new Indirizzo();
+//		indirizzo.setCap("123654");
+//		indirizzo.setVia("Via Teulada");
+//		indirizzo.setCivico("48");
+//		indirizzo.setComune("Bologna");
+//		indirizzo.setCap("549");
+//		indirizzo.setOperation(indirizzo.OP_INSERT);
+//		
+//		PersonaTariCompleta pc=new PersonaTariCompleta();
+//		pc.setOperation(pc.OP_INSERT);
+//		pc.setPersonaTari(p);
+//		pc.setPersonaGiuridica(pg);
+//		pc.setResidenza(indirizzo);
+//		
+//		Allegato cartaIdentita = new Allegato();
+//		cartaIdentita.setOperation(cartaIdentita.OP_INSERT);
+//		cartaIdentita.setTipo("CI");
+//		pc.setCartaIdentita(cartaIdentita);
+//		
+//		Allegato visuraCamerale = new Allegato();
+//		visuraCamerale.setOperation(visuraCamerale.OP_INSERT);
+//		visuraCamerale.setTipo("VC");
+//		pc.setVisuraCamerale(visuraCamerale);
+//			
+//		Dichiarazione dichiarazione = new Dichiarazione();
+//		dichiarazione.setUnid(8);
+//		dichiarazione.setData(new Date());
+//		dichiarazione.setFirma("Firma di prova");
+//		dichiarazione.setItalianoallestero(1);
+//		dichiarazione.setUnicooccupante(1);
+//		dichiarazione.setAgricoltore(1);
+//		
+//		PrecedenteDichiarazione pd = new PrecedenteDichiarazione();
+//		pd.setUnid(6);
+//		pd.setCivico("2/A");
+//		pd.setDataDa(new Date());
+//		pd.setInterno("8");
+//		pd.setMotivo("adesso non ce l'ho");
+//		pd.setVia("Via di qua");
+//		pd.setComunicazione("non ho comunicazioni");
+//		
+//		Immobile immobile = new Immobile();
+//		immobile.setUnid(7);
+//		immobile.setCivico("1");
+//		immobile.setDatada(new Date());
+//		immobile.setInterno("78/B");
+//		immobile.setNomeprecedentedetentore("Ciccio Paperone");
+//		immobile.setNomeproprietario("Nonna Papera");
+//		immobile.setPiano("8");
+//		immobile.setQualita(8);
+//		immobile.setVia("Via di Mezzo");
+//		
+//		Locale locale = new Locale();
+//		locale.setUnid(9);
+//		locale.setFoglio("H6quaire");
+//		locale.setMq(120);
+//		locale.setParticella("Particella 9");
+//		locale.setSubalterno("Alberto Brambilla");
+//		locale.setTipo(2);
+//		
+//		LocaleDiImmobile ldi = new LocaleDiImmobile();
+//		ldi.setLocale(locale);	
+//
+//		ImmobileDiDichiarazione idd = new ImmobileDiDichiarazione();
+//		idd.setImmobile(immobile);
+//		idd.getLocaliDiImmobile().add(ldi);
+//
+//		DichiarazioneDiPersonaTari ddpt=new DichiarazioneDiPersonaTari();
+//		ddpt.setOperation(ddpt.OP_INSERT);
+//		ddpt.setDichiarazione(dichiarazione);
+//		ddpt.setPrecedenteDichiarazione(pd);
+//		ddpt.setDichiarazioneImmobile(idd);
+//		pc.getDichiarazioniDiPersona().add(ddpt);
+//			
+//		System.out.println(JACK.toJSON(pc));
+//
+//		tariManagerExt.savePersonaTariCompleta(pc);
+//		
+//	}
 	
+	@Test
+	public void testSalvaUpdatePersonaTariCompleta() throws Exception {
+		
+//		PersonaTariSearch pts=new PersonaTariSearch();
+//		pts.setUnid(908);
+		
+//		PersonaTariCompleta pcFound = tariManagerExt.loadPersoneTariCompleta(pts).get(0);
+		
+		PersonaTariCompleta pcFound = tariManagerExt.loadPersonaTariCompleta(908);
+		
+		// AGGIORNAMENTO DELLA PERSONA TARI.
+		
+		pcFound.getPersonaTari().setCognome("prova2");
+		pcFound.getPersonaTari().setEmail("prova@prova2.it");
+		pcFound.getPersonaTari().setComunenascita("Chieti2");
+		pcFound.getPersonaTari().setDittaIndividuale(1);  // è una ditta ---> persona giuridica
+		pcFound.getPersonaTari().setOperation(pcFound.OP_UPDATE);
+		
+		// AGGIORNAMENTO DELLA PERSONA GIURIDICA
+		
+		pcFound.getPersonaGiuridica().setDescrizione("ENEL IMPIANTI");
+		pcFound.getPersonaGiuridica().setpIva("457895468");
+		pcFound.getPersonaGiuridica().setEmail("enel@enel.it");
+		pcFound.getPersonaGiuridica().setNumeroCivico(89);
+		pcFound.getPersonaGiuridica().setOperation(pcFound.OP_UPDATE);
+		
+		// AGGIORNAMENTO INDIRIZZO DELLA PERSONA TARI.
+		
+		pcFound.getResidenza().setVia("Via Cattani");
+		pcFound.getResidenza().setCap("41012");
+		pcFound.getResidenza().setCivico("96");
+		pcFound.getResidenza().setComune("Carpi");
+		pcFound.getResidenza().setOperation(pcFound.OP_UPDATE);
+		
+		
+		// AGGIORNAMENTO ALLEGATO PERSONA TARI (CARTA DI IDENTITA')      TODO test da verificare
+		
+//		pcFound.getCartaIdentita().setData();
+//		pcFound.getCartaIdentita().setOperation(pcFound.OP_UPDATE);
+		
+		// AGGIORNAMENTO ALLEGATO PERSONA GIURIDICA (VISURA CAMERALE)    TODO test da verificare
+		
+//		pcFound.getVisuraCamerale().setData(); 
+//		pcFound.getVisuraCamerale().setOperation(pcFound.OP_UPDATE);
+		
+		for(DichiarazioneDiPersonaTari ddpt : pcFound.getDichiarazioniDiPersona()){
+			
+			
+			ddpt.getDichiarazione().setFirma("Firma aggiornata");
+			ddpt.getDichiarazione().setItalianoallestero(0);
+			ddpt.getDichiarazione().setAgricoltore(null);
+			ddpt.getDichiarazione().setUnicooccupante(null);
+			ddpt.getDichiarazione().setOperation(ddpt.OP_UPDATE);
+			
+			
+			ddpt.getPrecedenteDichiarazione().setCivico("3");
+			ddpt.getPrecedenteDichiarazione().setMotivo("non è stata effettuata nessuna verifica");
+			ddpt.getPrecedenteDichiarazione().setVia("Via Molisana");
+			ddpt.getPrecedenteDichiarazione().setOperation(ddpt.OP_UPDATE);
+			
+			
+			ddpt.getDichiarazioneImmobile().getImmobile().setCivico("45");
+			ddpt.getDichiarazioneImmobile().getImmobile().setInterno("4");
+			ddpt.getDichiarazioneImmobile().getImmobile().setQualita(7);
+			ddpt.getDichiarazioneImmobile().getImmobile().setOperation(ddpt.OP_UPDATE);
+			
+			
+			
+//			LocaleDiImmobile last=new LocaleDiImmobile();
+//			for(LocaleDiImmobile l:p.getDichiarazioneImmobile().getLocaliDiImmobile()){
+//				l.getLocale().setOperation(l.OP_UPDATE);
+//				l.getLocale().setMq(56);
+//				
+//				last=(LocaleDiImmobile) JACK.copy(l);
+//			}
+//			
+//			last.setOperation(p.OP_INSERT);
+//			p.getDichiarazioneImmobile().getLocaliDiImmobile().add(last);
+		}
+		
+		tariManagerExt.savePersonaTariCompleta(pcFound);
+	}
 }

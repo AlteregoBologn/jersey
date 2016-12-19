@@ -5,22 +5,28 @@ import java.util.List;
 
 import model.E;
 import model.Indirizzo;
+import model.Rel_Persona_Indirizzo;
 import tari.model.Allegato;
 import tari.model.PersonaGiuridica;
 import tari.model.PersonaTari;
+import tari.model.relationModel.Rel_PersonaTari_Allegato;
+import tari.model.relationModel.Rel_PersonaTari_PersonaGiuridica;
 
 public class PersonaTariCompleta extends E {
 	PersonaTari personaTari;
 	
-	PersonaGiuridica personaGiuridica;
+	PersonaGiuridica personaGiuridica=new PersonaGiuridica();
+	Rel_PersonaTari_PersonaGiuridica rel_PersonaTari_PersonaGiuridica=new Rel_PersonaTari_PersonaGiuridica();
 	
-	Allegato	cartaIdentita=new Allegato();
-
-	Allegato	visuraCamerale=new Allegato();
+	Allegato	cartaIdentita;
+	Rel_PersonaTari_Allegato relCartaIdentita;
+	
+	Allegato	visuraCamerale;
+	Rel_PersonaTari_Allegato relVisuraCamerale;
 	
 	Indirizzo residenza;
+	Rel_Persona_Indirizzo rel_Persona_Indirizzo;
 	
-	//Indirizzo domicilio;
 	List<DichiarazioneDiPersonaTari> dichiarazioniDiPersona = new ArrayList<DichiarazioneDiPersonaTari>();
 	
 	public PersonaTari getPersonaTari() {

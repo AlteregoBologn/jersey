@@ -14,13 +14,18 @@ import model.Indirizzo;
 import model.IndirizzoSearch;
 import model.Rel_Persona_Indirizzo;
 import model.Rel_Persona_IndirizzoSearch;
+import modelExt.MedicoDiPersona;
+import modelExt.PersonaCompleta;
 import tari.model.Allegato;
+import tari.model.AllegatoSearch;
 import tari.model.Dichiarazione;
 import tari.model.DichiarazioneSearch;
 import tari.model.Immobile;
 import tari.model.ImmobileSearch;
 import tari.model.Locale;
 import tari.model.LocaleSearch;
+import tari.model.PersonaGiuridica;
+import tari.model.PersonaGiuridicaSearch;
 import tari.model.PersonaTari;
 import tari.model.PersonaTariSearch;
 import tari.model.PrecedenteDichiarazione;
@@ -31,8 +36,14 @@ import tari.model.relationModel.Rel_Dichiarazione_PrecDichiara;
 import tari.model.relationModel.Rel_Dichiarazione_PrecDichiaraSearch;
 import tari.model.relationModel.Rel_Immobile_Locale;
 import tari.model.relationModel.Rel_Immobile_LocaleSearch;
+import tari.model.relationModel.Rel_PersGiur_Dichiarazione;
+import tari.model.relationModel.Rel_PersonaGiuridica_Allegato;
+import tari.model.relationModel.Rel_PersonaTari_Allegato;
+import tari.model.relationModel.Rel_PersonaTari_AllegatoSearch;
 import tari.model.relationModel.Rel_PersonaTari_Dichiarazione;
 import tari.model.relationModel.Rel_PersonaTari_DichiarazioneSearch;
+import tari.model.relationModel.Rel_PersonaTari_PersonaGiuridica;
+import tari.model.relationModel.Rel_PersonaTari_PersonaGiuridicaSearch;
 import tari.modelExt.DichiarazioneDiPersonaTari;
 import tari.modelExt.ImmobileDiDichiarazione;
 import tari.modelExt.LocaleDiImmobile;
@@ -50,12 +61,20 @@ public class TariManagerExt extends TariManager {
 
 			PersonaTariCompleta pc = new PersonaTariCompleta();
 
-			pc.setOperation(pc.OP_NOP);
+			// pc.setOperation(pc.OP_NOP);
+			pc.setOperation(pc.OP_UPDATE);
 			pc.setPersonaTari(p);
+
+			loadPersonaGiuridicaDiPersona(pc);
+
+			//loadAllegatiDiPersonaTariCompleta(pc);
+
 			loadIndirizzoDiPersonaTari(pc);
+
 			loadDichiarazioniDiPersonaTari(p, pc);
 			ret.add(pc);
 		}
+
 		return ret;
 	}
 
@@ -63,6 +82,7 @@ public class TariManagerExt extends TariManager {
 		PersonaTariSearch ps = new PersonaTariSearch();
 		ps.setUnid(unid);
 		List<PersonaTariCompleta> ret = loadPersoneTariCompleta(ps);
+
 		if (ret.isEmpty())
 			throw new RuntimeException("Non trovo una persona con unid: " + unid);
 		return ret.get(0);
@@ -70,7 +90,7 @@ public class TariManagerExt extends TariManager {
 
 	private void savePersonaTari(PersonaTari p) {
 		if (p.isInsert()) {
-			inserisciPersonaTari(p);
+			insertPersonaTari(p);
 		} else if (p.isUpdate()) {
 			updatePersonaTari(p);
 		} else if (p.isDelete()) {
@@ -79,18 +99,143 @@ public class TariManagerExt extends TariManager {
 		}
 	}
 
+	private void savePersonaGiuridica(PersonaGiuridica pg) {
+		if (pg.isInsert()) {
+			insertPersonaGiuridica(pg);
+		} else if (pg.isUpdate()) {
+			updatePersonaGiuridica(pg);
+		} else if (pg.isDelete()) {
+			deletePersonaGiuridica(pg);
+		}
+	}
+
+//	private void salvaAllegato(Allegato allegato) {
+//		if (allegato.isInsert()) {
+//			insertAllegato(allegato);
+//		} else if (allegato.isUpdate()) {
+//			updateAllegato(allegato);
+//		} else if (allegato.isDelete()) {
+//			deleteAllegato(allegato);
+//		}
+//
+//	}
+
+//	private void saveCartaIdentita(PersonaTariCompleta pc) {
+//		if (pc.isInsert()) {
+//
+//			salvaAllegato(pc.getCartaIdentita());
+//
+//			Rel_PersonaTari_Allegato rel = new Rel_PersonaTari_Allegato();
+//			rel.setIdAllegato(pc.getCartaIdentita().getUnid());
+//			rel.setIdPersonaTari(pc.getPersonaTari().getUnid());
+//			insertRel_PersonaTari_Allegato(rel);
+//		}
+//		if (pc.isUpdate()) {
+//			salvaAllegato(pc.getCartaIdentita());
+//		}
+//	}
+
+//	private void saveVisuraCamerale(PersonaTariCompleta pc) {
+//		if (pc.isInsert()) {
+//			salvaAllegato(pc.getVisuraCamerale());
+//
+//			Rel_PersonaGiuridica_Allegato rel = new Rel_PersonaGiuridica_Allegato();
+//			rel.setIdPersonaGiuridica(pc.getPersonaGiuridica().getUnid());
+//			rel.setIdAllegato(pc.getVisuraCamerale().getUnid());
+//			insertRel_PersonaGiuridica_Allegato(rel);
+//		}
+//		if (pc.isUpdate()) {
+//			salvaAllegato(pc.getVisuraCamerale());
+//		}
+//	}
+
+	private void loadAllegatiDiPersonaTariCompleta(PersonaTariCompleta pc) {
+		Rel_PersonaTari_AllegatoSearch rs = new Rel_PersonaTari_AllegatoSearch();
+		rs.setIdPersonaTari(pc.getPersonaTari().getUnid());
+		List<Rel_PersonaTari_Allegato> listaRel = searchRel_PersonaTari_Allegato(rs);
+		for (Rel_PersonaTari_Allegato rel : listaRel) {
+			AllegatoSearch allegatoSearch = new AllegatoSearch();
+			allegatoSearch.setUnid(rel.getIdAllegato());
+			List<Allegato> allegati = searchAllegato(allegatoSearch);
+			for (Allegato a : allegati) {
+				if ("CI".equals(a.getTipo())) {
+					pc.setCartaIdentita(a);
+				}
+				if ("VC".equals(a.getTipo())) {
+					pc.setVisuraCamerale(a);
+				} else {
+					//
+				}
+			}
+		}
+
+	}
+
+	public void salvaPersonaGiuridicaDiPersona(PersonaTariCompleta p) {
+		if (p.isInsert()) {
+			savePersonaGiuridica(p.getPersonaGiuridica());
+
+			Rel_PersonaTari_PersonaGiuridica rel = new Rel_PersonaTari_PersonaGiuridica();
+			rel.setIdPersTari(p.getPersonaTari().getUnid());
+			rel.setIdPersGiur(p.getPersonaGiuridica().getUnid());
+			insertRel_PersonaTari_PersonaGiuridica(rel);
+		} else if (p.isUpdate()) {
+			savePersonaGiuridica(p.getPersonaGiuridica());
+		}
+	}
+
+	public void loadPersonaGiuridicaDiPersona(PersonaTariCompleta p) {
+		Rel_PersonaTari_PersonaGiuridicaSearch s = new Rel_PersonaTari_PersonaGiuridicaSearch();
+		s.setIdPersTari(p.getPersonaTari().getUnid());
+		List<Rel_PersonaTari_PersonaGiuridica> listRel = searchRel_PersonaTari_PersonaGiuridica(s);
+		for (Rel_PersonaTari_PersonaGiuridica rel : listRel) {
+			PersonaGiuridicaSearch ps = new PersonaGiuridicaSearch();
+			ps.setUnid(rel.getIdPersGiur());
+			List<PersonaGiuridica> listaPg = cercaPersonaGiuridica(ps);
+			if (!listaPg.isEmpty()) {
+				p.setPersonaGiuridica(listaPg.get(0));
+			}
+		}
+	}
+
 	public void savePersonaTariCompleta(PersonaTariCompleta p) {
-		if (p.isInsert() || p.isUpdate()) {
+		if (p.isInsert()) {
+			p.getPersonaTari().setOperation(p.OP_INSERT);
 			savePersonaTari(p.getPersonaTari());
-			
+
+			salvaPersonaGiuridicaDiPersona(p);
+			//saveCartaIdentita(p);
+			//saveVisuraCamerale(p);
+
 			saveIndirizzoDiPersonaTari(p);
+
 			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
 				saveDichiarazioneDiPersonaTari(d, p);
 
 			}
 
+			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
+				saveDichiarazioneDiPersonaGiuridica(d, p);
+
+			}
+		} else if (p.isUpdate()) {
+			p.getPersonaTari().setOperation(p.OP_UPDATE);
+			savePersonaTari(p.getPersonaTari());
+
+			salvaPersonaGiuridicaDiPersona(p);
+			//saveCartaIdentita(p);
+			//saveVisuraCamerale(p);
+
+			saveIndirizzoDiPersonaTari(p);
+
+			// TODO da rivedere
+
 		} else if (p.isDelete()) {
 			savePersonaTari(p.getPersonaTari());
+
+			p.getPersonaGiuridica().setCanc("S");
+			salvaPersonaGiuridicaDiPersona(p);
+
 			for (DichiarazioneDiPersonaTari d : p.getDichiarazioniDiPersona()) {
 				saveDichiarazioneDiPersonaTari(d, p);
 			}
@@ -186,7 +331,7 @@ public class TariManagerExt extends TariManager {
 			inserisciRel_Persona_Dichiarazione(rpd);
 			pc.setOperation(pc.OP_INSERT);
 			saveImmobileDiDichiarazione(mp, pc);
-			savePrecedenteDichiarazioneDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp);
 		}
 
 		if (mp.isUpdate()) {
@@ -195,7 +340,33 @@ public class TariManagerExt extends TariManager {
 
 			pc.setOperation(pc.OP_UPDATE);
 			saveImmobileDiDichiarazione(mp, pc);
-			savePrecedenteDichiarazioneDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp);
+		}
+	}
+
+	public void saveDichiarazioneDiPersonaGiuridica(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc) {
+
+		if (mp.isInsert()) {
+			Rel_PersGiur_Dichiarazione rpgd = new Rel_PersGiur_Dichiarazione();
+			mp.getDichiarazione().setOperation(mp.OP_INSERT);
+			if (mp.getDichiarazione().getData() == null)
+				mp.getDichiarazione().setData(new Date());
+			saveDichiarazione(mp.getDichiarazione());
+			rpgd.setIddichiarazione(mp.getDichiarazione().getUnid());
+			rpgd.setIdpersonagiuridica(pc.getPersonaGiuridica().getUnid());
+			insertRel_PersGiuridica_Dichiarazione(rpgd);
+			pc.setOperation(pc.OP_INSERT);
+			saveImmobileDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp);
+		}
+
+		if (mp.isUpdate()) {
+			mp.getDichiarazione().setOperation(mp.OP_UPDATE);
+			saveDichiarazione(mp.getDichiarazione());
+
+			pc.setOperation(pc.OP_UPDATE);
+			saveImmobileDiDichiarazione(mp, pc);
+			savePrecedenteDichiarazioneDiDichiarazione(mp);
 		}
 	}
 
@@ -355,7 +526,7 @@ public class TariManagerExt extends TariManager {
 		}
 	}
 
-	public void savePrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari mp, PersonaTariCompleta pc) {
+	public void savePrecedenteDichiarazioneDiDichiarazione(DichiarazioneDiPersonaTari mp) {
 		if (mp.isInsert()) {
 			Rel_Dichiarazione_PrecDichiara rdpd = new Rel_Dichiarazione_PrecDichiara();
 			PrecedenteDichiarazione dpt = mp.getPrecedenteDichiarazione();

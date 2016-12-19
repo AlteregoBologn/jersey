@@ -39,5 +39,12 @@ public class ImmobileDiDichiarazione extends E {
 		this.localiDiImmobile = localiDiImmobile;
 	}
 
+	@Override
+	public String toString() {
+		return "ImmobileDiDichiarazione [immobile=" + immobile + ", rel_Dichiarazione_Immobile="
+				+ rel_Dichiarazione_Immobile + ", localiDiImmobile=" + localiDiImmobile + "]";
+	}
+
+	
 	
 }

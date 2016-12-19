@@ -2,7 +2,7 @@ package tari.model.relationModel;
 
 import model.E;
 
-public class Rel_PersGiuridica_Dichiarazion extends E {
+public class Rel_PersGiur_Dichiarazione extends E {
 
 	private Integer iddichiarazione;
 	private Integer idpersonagiuridica;

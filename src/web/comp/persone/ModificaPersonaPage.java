@@ -17,8 +17,10 @@ public class ModificaPersonaPage extends BasePage {
 	ManagerExt managerExt;
 	
 	public ModificaPersonaPage () {
+		
+		Persona p=MySession.get().getUtente();
 
-		PersonaCompleta pc = managerExt.loadPersonaCompleta(29);// TODO: persona.getUnid());
+		PersonaCompleta pc = managerExt.loadPersonaCompleta(p.getUnid());
 		
 		add(new ModificaPersonaCompletaPanel("modificaPersona", pc){
 			@Override

@@ -29,9 +29,11 @@ import logic.Manager;
 import model.Citta;
 import model.CittaSearch;
 import model.Persona;
+import tari.web.comp.panels.EditPersonaTariPanel;
 import web.c.BasePanel;
 import web.c.CssBeahvior;
 import web.c.MyAutoComplete;
+import web.c.MyCheckBox;
 
 public class RegistrazionePanel extends BasePanel {
 	@Autowired
@@ -113,7 +115,7 @@ public class RegistrazionePanel extends BasePanel {
 					}
 		};
 					
-					
+		/*			
 		MyAutoComplete<Citta> a=new MyAutoComplete<Citta>("cercacitta", new PropertyModel<Citta>(RegistrazionePanel.this,"citta"), new Model("citta"), "citta"){
 			@Override
 			public List<Citta> getList(String input) {
@@ -129,6 +131,7 @@ public class RegistrazionePanel extends BasePanel {
 			
 		};
 		form.add(a);
+		*/
 	
 		final AutoCompleteTextField<String> comunenascita = new AutoCompleteTextField<String>("comunenascita", model ) {
 
@@ -176,10 +179,29 @@ public class RegistrazionePanel extends BasePanel {
 	        }
 	    });
 	    */
+		
+		EmailTextField pec = new EmailTextField("pec",
+				new PropertyModel<>(RegistrazionePanel.this, "persona.pec"));
+		pec.setRequired(true);
+		pec.add(new CssBeahvior());
+		
+		TextField<String> recapitotelefonico = new TextField<String>("recapitotelefonico",
+				new PropertyModel<>(RegistrazionePanel.this, "persona.recapitotelefonico"));
+		recapitotelefonico.setRequired(true);
+		recapitotelefonico.add(new CssBeahvior());
+		
 	    form.add(comunenascita);
 	    
+	    
+//	    form.add(new MyCheckBox("isditta", new PropertyModel<>(p, "persona.dittaIndividuale"),  new Model("Ditta") ) {
+//			@Override
+//			public void onChange(AjaxRequestTarget target, boolean value) {
+//				target.add(RegistrazionePanel.this);
+//			}
+//		});
+	    
 		
-		form.add(nome, cognome, codFisc, email, password, sesso, datanascitaField);
+		form.add(nome, cognome, codFisc, email, password, sesso, datanascitaField,pec,recapitotelefonico);
 
 		add(form);
 	}

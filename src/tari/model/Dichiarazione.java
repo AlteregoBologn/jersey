@@ -82,4 +82,13 @@ public class Dichiarazione extends E {
 	public void setDecodifica(Decodifica decodifica) {
 		this.decodifica = decodifica;
 	}
+
+	@Override
+	public String toString() {
+		return "Dichiarazione [unid=" + unid + ", data=" + data + ", firma=" + firma + ", italianoallestero="
+				+ italianoallestero + ", unicooccupante=" + unicooccupante + ", agricoltore=" + agricoltore
+				+ ", decodifica=" + decodifica + "]";
+	}
+	
+	
 }

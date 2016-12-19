@@ -7,6 +7,7 @@ import model.E;
 
 public class Immobile extends E {
 
+	private Integer unid;
 	private String civico;
 	private Date dataDa;
 	private String interno;
@@ -15,8 +16,17 @@ public class Immobile extends E {
 	private String piano;
 	private Integer qualita;
 	private String via;
-	private Integer unid;
+	
 
+	public void setUnid(Integer a) {
+
+		this.unid = a;
+	}
+	public Integer getUnid() {
+
+		return unid;
+	}
+	
 	public void setCivico(String a) {
 
 		this.civico = a;
@@ -81,12 +91,5 @@ public class Immobile extends E {
 
 		return via;
 	}
-	public void setUnid(Integer a) {
-
-		this.unid = a;
-	}
-	public Integer getUnid() {
-
-		return unid;
-	}
+	
 }

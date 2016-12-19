@@ -15,7 +15,7 @@ public class PersonaTari extends E {
 	private String comunenascita;
 	private String pec;
 	private String recapitotelefonico;
-	private Integer dittaIndividuale=0;
+	private Integer dittaIndividuale;
 	
 	public Date getDatanascita() {
 		return datanascita;
@@ -112,16 +112,26 @@ public class PersonaTari extends E {
 		return recapitotelefonico;
 	}
 
-	public void setRecapitoTelefonico(String recapitoTelefonico) {
-		this.recapitotelefonico = recapitoTelefonico;
+	public void setRecapitoTelefonico(String recapitotelefonico) {
+		this.recapitotelefonico = recapitotelefonico;
 	}
 
 	public Integer getDittaIndividuale() {
 		return dittaIndividuale;
 	}
 
-	public void setDittaIndividuale(Integer dittaIndividuale) {
-		this.dittaIndividuale = dittaIndividuale;
+	public void setDittaIndividuale(Integer dittaindividuale) {
+		this.dittaIndividuale = dittaindividuale;
 	}
+
+	@Override
+	public String toString() {
+		return "PersonaTari [unid=" + unid + ", nome=" + nome + ", cognome=" + cognome + ", cf=" + cf + ", canc=" + canc
+				+ ", password=" + password + ", email=" + email + ", sesso=" + sesso + ", datanascita=" + datanascita
+				+ ", comunenascita=" + comunenascita + ", pec=" + pec + ", recapitotelefonico=" + recapitotelefonico
+				+ ", dittaIndividuale=" + dittaIndividuale + "]";
+	}
+	
+	
 	
 }

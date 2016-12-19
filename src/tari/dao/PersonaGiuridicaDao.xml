@@ -9,6 +9,12 @@
 
 	<sql id="condition">
 		WHERE 1=1
+		<if test="unid != null ">
+			AND UNID = #{unid}
+		</if>
+		<if test="descrizione != null ">
+			AND DESCRIZIONE = #{descrizione}
+		</if>
 		<if test="sedeLegale != null ">
 			AND SEDELEGALE = #{sedeLegale}
 		</if>
@@ -21,26 +27,17 @@
 		<if test="numeroCivico != null ">
 			AND NUMEROCIVICO = #{numeroCivico}
 		</if>
+		<if test="pIva != null ">
+			AND PIVA = #{pIva}
+		</if>
 		<if test="recapitoTelefonico != null ">
 			AND RECAPITOTELEFONICO = #{recapitoTelefonico}
 		</if>
 		<if test="email != null ">
 			AND EMAIL = #{email}
 		</if>
-		<if test="descrizione != null ">
-			AND DESCRIZIONE = #{descrizione}
-		</if>
 		<if test="pec != null ">
 			AND PEC = #{pec}
-		</if>
-		<if test="piva != null ">
-			AND PIVA = #{piva}
-		</if>
-		<if test="rappresentante != null ">
-			AND RAPPRESENTANTE = #{rappresentante}
-		</if>
-		<if test="unid != null ">
-			AND UNID = #{unid}
 		</if>
 	</sql>
 	<insert id="insert">
@@ -58,7 +55,6 @@
 		DESCRIZIONE,
 		PEC,
 		PIVA,
-		RAPPRESENTANTE,
 		UNID)
 		VALUES (
 		#{sedeLegale},
@@ -69,8 +65,7 @@
 		#{email},
 		#{descrizione},
 		#{pec},
-		#{piva},
-		#{rappresentante},
+		#{pIva},
 		#{unid})
 	</insert>
 
@@ -87,7 +82,6 @@
 
 	<update id="update">
 		update T_PERSONAGIURIDICA set
-		UNID = #{unid},
 		DESCRIZIONE = #{descrizione},
 		SEDELEGALE = #{sedeLegale},
 		PROVINCIA = #{provincia},
@@ -96,9 +90,9 @@
 		PIVA = #{pIva},
 		RECAPITOTELEFONICO = #{recapitoTelefonico} ,
 		EMAIL = #{email},
-		PEC = #{pec},
-		RAPPRESENTANTE = #{rappresentante},
-		WHERE 1=1
+		PEC = #{pec}
+		WHERE 
+		UNID = #{unid}
 	</update>
 
 	<select id="loadAll" resultType="tari.model.PersonaGiuridica">

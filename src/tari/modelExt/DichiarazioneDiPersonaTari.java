@@ -4,6 +4,7 @@ import model.E;
 import tari.model.Dichiarazione;
 import tari.model.PrecedenteDichiarazione;
 import tari.model.relationModel.Rel_Dichiarazione_PrecDichiara;
+import tari.model.relationModel.Rel_PersGiur_Dichiarazione;
 import tari.model.relationModel.Rel_PersonaTari_Dichiarazione;
 
 public class DichiarazioneDiPersonaTari extends E {
@@ -17,7 +18,9 @@ public class DichiarazioneDiPersonaTari extends E {
 	Rel_Dichiarazione_PrecDichiara rel_Dichiarazione_PrecDichiara;
 	
 	Rel_PersonaTari_Dichiarazione rel_Persona_Dichiarazione;
-
+	
+	//Rel_PersGiur_Dichiarazione rel_PersGiur_Dichiarazione;
+	
 
 	public Dichiarazione getDichiarazione() {
 		return dichiarazione;
@@ -57,4 +60,22 @@ public class DichiarazioneDiPersonaTari extends E {
 	public void setDichiarazioneImmobile(ImmobileDiDichiarazione dichiarazioneImmobili) {
 		this.dichiarazioneImmobile = dichiarazioneImmobili;
 	}
+
+	@Override
+	public String toString() {
+		return "DichiarazioneDiPersonaTari [dichiarazione=" + dichiarazione + ", precedenteDichiarazione="
+				+ precedenteDichiarazione + ", dichiarazioneImmobile=" + dichiarazioneImmobile
+				+ ", rel_Dichiarazione_PrecDichiara=" + rel_Dichiarazione_PrecDichiara + ", rel_Persona_Dichiarazione="
+				+ rel_Persona_Dichiarazione + ", getDichiarazione()=" + getDichiarazione()
+				+ ", getRel_Persona_Dichiarazione()=" + getRel_Persona_Dichiarazione()
+				+ ", getRel_Dichiarazione_PrecDichiara()=" + getRel_Dichiarazione_PrecDichiara()
+				+ ", getPrecedenteDichiarazione()=" + getPrecedenteDichiarazione() + ", getDichiarazioneImmobile()="
+				+ getDichiarazioneImmobile() + "]";
+	}
+
+	
+
+	
+	
+	
 }

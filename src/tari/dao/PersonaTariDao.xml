@@ -12,11 +12,11 @@
 
 	<sql id="condition">
 		WHERE 1=1
-		<if test="canc != null ">
-			AND CANC = #{canc}
+		<if test="unid != null ">
+			AND UNID = #{unid}
 		</if>
-		<if test="cf != null ">
-			AND CF = #{cf}
+		<if test="nome != null ">
+			AND NOME = #{nome}
 		</if>
 		<if test="cognome != null ">
 			AND COGNOME = #{cognome}
@@ -24,26 +24,26 @@
 		<if test="cognomeLike != null ">
 			AND COGNOME Like #{cognomeLike}||'%'
 		</if>
-		<if test="comunenascita != null ">
-			AND COMUNENASCITA = #{comunenascita}
+		<if test="cf != null ">
+			AND CF = #{cf}
 		</if>
-		<if test="datanascita != null ">
-			AND DATANASCITA = #{datanascita}
-		</if>
-		<if test="email != null ">
-			AND EMAIL = #{email}
-		</if>
-		<if test="nome != null ">
-			AND NOME = #{nome}
+		<if test="canc != null ">
+			AND CANC = #{canc}
 		</if>
 		<if test="password != null ">
 			AND PASSWORD = #{password}
 		</if>
+		<if test="email != null ">
+			AND EMAIL = #{email}
+		</if>
 		<if test="sesso != null ">
 			AND SESSO = #{sesso}
 		</if>
-		<if test="unid != null ">
-			AND UNID = #{unid}
+		<if test="datanascita != null ">
+			AND DATANASCITA = #{datanascita}
+		</if>
+		<if test="comunenascita != null ">
+			AND COMUNENASCITA = #{comunenascita}
 		</if>
 		<if test="pec != null ">
 			AND PEC = #{pec}
@@ -51,6 +51,10 @@
 		<if test="recapitotelefonico != null ">
 			AND RECAPITOTELEFONICO = #{recapitotelefonico}
 		</if>
+		<if test="dittaIndividuale != null ">
+			AND DITTAINDIVIDUALE = #{dittaIndividuale}
+		</if>
+		
 	</sql>
 
 	<insert id="insert">
@@ -59,32 +63,33 @@
 			seq.nextval from dual
 		</selectKey>
 		insert into T_PERSONA (
-		CANC,
-		CF,
-		COGNOME,
-		COMUNENASCITA,
-		DATANASCITA,
-		EMAIL,
+		UNID,
 		NOME,
+		COGNOME,
+		CF,
+		CANC,
 		PASSWORD,
+		EMAIL,
+		SESSO,
+		DATANASCITA,
+		COMUNENASCITA,
 		PEC,
 		RECAPITOTELEFONICO,
-		SESSO,
-		UNID,
-		DITTAINDIVIDUALE
-		) VALUES (
-		'N',
-		#{cf},
-		#{cognome},
-		#{comunenascita},
-		#{datanascita},
-		#{email},
+		DITTAINDIVIDUALE) VALUES (
+		#{unid},
 		#{nome},
+		#{cognome},
+		#{cf},
+		#{canc},
+		#{password},
+		#{email},
+		#{sesso},
+		#{datanascita},
+		#{comunenascita},
 		#{pec},
 		#{recapitotelefonico},
-		#{sesso},
-		#{unid},
-		#{dittaIndividuale})
+		#{dittaIndividuale}
+		)
 	</insert>
 
 	<sql id="load">
@@ -106,24 +111,21 @@
 
 	<update id="update">
 		update T_PERSONA set
-		CANC = #{canc},
-		CF = #{cf},
-		COGNOME = #{cognome},
-		COMUNENASCITA = #{comunenascita},
-		DATANASCITA =
-		#{datanascita},
-		EMAIL = #{email},
 		NOME = #{nome},
+		COGNOME = #{cognome},
+		CF = #{cf},
+		CANC = #{canc},
 		PASSWORD = #{password},
+		EMAIL = #{email},
+		SESSO = #{sesso},
+		DATANASCITA = #{datanascita},
+		COMUNENASCITA = #{comunenascita},
 		PEC = #{pec},
 		RECAPITOTELEFONICO = #{recapitotelefonico},
-		SESSO = #{sesso},
-		UNID = #{unid}
+		DITTAINDIVIDUALE = #{dittaIndividuale}
 		WHERE 
 		UNID = #{unid}
 	</update>
-
-
 
 	<delete id="delete">
 		delete from T_PERSONA

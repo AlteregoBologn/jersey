@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dao.Rel_Persona_IndirizzoDao">
+<mapper namespace="tari.dao.relationDao.Rel_PersonaTari_PersonaGiuridicaDao">
 	<sql id="orderBy">
 		<if test="orderBy != null">
   <![CDATA[ order by $orderBy$]]>
@@ -9,24 +9,24 @@
 
 	<sql id="condition">
 		WHERE 1=1
-		<if test="idIndirizzo != null ">
-			AND IDINDIRIZZO = #{idIndirizzo}
+		<if test="idPersTari != null ">
+			AND IDPERSTARI = #{idPersTari}
 		</if>
-		<if test="idPersona != null ">
-			AND IDPERSONA = #{idPersona}
+		<if test="idPersGiur != null ">
+			AND IDPERSGIUR = #{idPersGiur}
 		</if>
 	</sql>
 	<insert id="insert">
-		insert into REL_PERSONA_INDIRIZZO (
-		IDINDIRIZZO,
-		IDPERSONA
-		) VALUES (
-		#{idIndirizzo},
-		#{idPersona})
+		insert into REL_PERSONATARI_PERSGIURIDICA (
+		IDPERSTARI,
+		IDPERSGIUR) 
+		VALUES (
+		#{idPersTari},
+		#{idPersGiur})
 	</insert>
 
 	<sql id="load">
-		SELECT * FROM REL_PERSONA_INDIRIZZO
+		SELECT * FROM REL_PERSONATARI_PERSGIURIDICA
 		<include refid="condition" />
 	</sql>
 
@@ -37,21 +37,21 @@
 	</select>
 
 	<update id="update">
-		update REL_PERSONA_INDIRIZZO set
-		IDINDIRIZZO = #{idIndirizzo},
-		IDPERSONA = #{idPersona}
+		update REL_PERSONATARI_PERSGIURIDICA set
+		IDPERSTARI = #{idPersTari},
+		IDPERSGIUR = #{idPersGiur},
 		WHERE 1=1
 	</update>
 
-	<select id="loadAll" resultType="model.Rel_Persona_Indirizzo">
+	<select id="loadAll" resultType="tari.model.relationModel.Rel_PersonaTari_PersonaGiuridica">
 		<include refid="dao.common.prePage" />
 		<include refid="load" />
 		<include refid="dao.common.postPage" />
 	</select>
 
 	<delete id="delete">
-		delete from REL_PERSONA_INDIRIZZO
-		WHERE IDINDIRIZZO = #{idIndirizzo}
-		AND	IDPERSONA = #{idPersona}
+		delete from REL_PERSONATARI_PERSGIURIDICA
+		WHERE IDPERSTARI = #{idPersTari} AND
+		IDPERSGIUR = #{idPersGiur}
 	</delete>
 </mapper>

@@ -9,14 +9,14 @@
 
 	<sql id="condition">
 		WHERE 1=1
-		<if test="data != null ">
-			AND DATA = #{data}
+		<if test="unid != null ">
+			AND UNID = #{unid}
 		</if>
 		<if test="tipo != null ">
 			AND TIPO = #{tipo}
 		</if>
-		<if test="unid != null ">
-			AND UNID = #{unid}
+		<if test="data != null ">
+			AND DATA = #{data}
 		</if>
 	</sql>
 	<insert id="insert">
@@ -25,19 +25,18 @@
 			seq.nextval from dual
 		</selectKey>
 		insert into T_ALLEGATO (
-		DATA,
 		TIPO,
+		DATA,
 		UNID) VALUES (
-		#{data},
 		#{tipo},
+		#{data},
 		#{unid})
 	</insert>
 
 	<update id="update">
 		update T_ALLEGATO set
-		DATA =
-		#{data},
 		TIPO = #{tipo},
+		DATA = #{data},
 		WHERE UNID = #{unid}
 	</update>
 	

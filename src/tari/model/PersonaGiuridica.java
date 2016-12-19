@@ -14,7 +14,6 @@ public class PersonaGiuridica extends E {
 	private String recapitoTelefonico;
 	private String email;
 	private String pec;
-	private Integer rappresentante;// ?
 	
 	public Integer getUnid() {
 		return unid;
@@ -96,12 +95,14 @@ public class PersonaGiuridica extends E {
 		this.pec = pec;
 	}
 
-	public Integer getRappresentante() {
-		return rappresentante;
-	}
 
-	public void setRappresentante(Integer rappresentante) {
-		this.rappresentante = rappresentante;
+	@Override
+	public String toString() {
+		return "PersonaGiuridica [unid=" + unid + ", descrizione=" + descrizione + ", sedeLegale=" + sedeLegale
+				+ ", provincia=" + provincia + ", indirizzo=" + indirizzo + ", numeroCivico=" + numeroCivico + ", pIva="
+				+ pIva + ", recapitoTelefonico=" + recapitoTelefonico + ", email=" + email + ", pec=" + pec + "]";
 	}
+	
+	
 	
 }

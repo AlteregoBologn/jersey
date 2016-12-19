@@ -4,13 +4,21 @@ import model.E;
 
 public class Locale extends E {
 
+	private Integer unid;
 	private String foglio;
 	private Integer mq;
 	private String particella;
 	private String subalterno;
 	private Integer tipo;
-	private Integer unid;
+	
 
+	public Integer getUnid() {
+		return unid;
+	}
+	public void setUnid(Integer unid) {
+		this.unid = unid;
+	}
+	
 	public void setFoglio(String a) {
 
 		this.foglio = a;
@@ -51,10 +59,5 @@ public class Locale extends E {
 
 		return tipo;
 	}
-	public Integer getUnid() {
-		return unid;
-	}
-	public void setUnid(Integer unid) {
-		this.unid = unid;
-	}
+	
 }

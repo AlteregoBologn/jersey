@@ -24,17 +24,22 @@ public class PersonaSearch extends Persona {
 
 	@Override
 	public String toString() {
-		return "PersonaSearch [orderBy=" + orderBy + ", cognomeLike=" + cognomeLike + ", pageFrom=" + pageFrom
-				+ ", pageTo=" + pageTo + ", operation=" + operation + ", getDatanascita()=" + getDatanascita()
+		return "PersonaSearch [orderBy=" + orderBy + ", cognomeLike=" + cognomeLike + ", isNew=" + isNew + ", pageFrom="
+				+ pageFrom + ", pageTo=" + pageTo + ", operation=" + operation + ", getCognomeLike()="
+				+ getCognomeLike() + ", getOrderBy()=" + getOrderBy() + ", getDatanascita()=" + getDatanascita()
 				+ ", getComunenascita()=" + getComunenascita() + ", getSesso()=" + getSesso() + ", getUnid()="
 				+ getUnid() + ", getNome()=" + getNome() + ", getCognome()=" + getCognome() + ", getCf()=" + getCf()
-				+ ", getCanc()=" + getCanc() + ", getPassword()=" + getPassword() + ", getEmail()=" + getEmail()
-				+ ", hashCode()=" + hashCode() + ", getPageFrom()=" + getPageFrom() + ", getPageTo()=" + getPageTo()
-				+ ", getOperation()=" + getOperation() + ", isInsert()=" + isInsert() + ", isDelete()=" + isDelete()
-				+ ", isUpdate()=" + isUpdate() + ", isNop()=" + isNop() + ", getClass()=" + getClass() + ", toString()="
+				+ ", getCanc()=" + getCanc() + ", getPassword()=" + getPassword() + ", getPec()=" + getPec()
+				+ ", getRecapitotelefonico()=" + getRecapitotelefonico() + ", getEmail()=" + getEmail()
+				+ ", getDittaIndividuale()=" + getDittaIndividuale() + ", isNew()=" + isNew() + ", getPageFrom()="
+				+ getPageFrom() + ", getPageTo()=" + getPageTo() + ", getOperation()=" + getOperation()
+				+ ", isInsert()=" + isInsert() + ", isDelete()=" + isDelete() + ", isUpdate()=" + isUpdate()
+				+ ", isNop()=" + isNop() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
 				+ super.toString() + "]";
 	}
 
+	
+	
 
 	
 	
