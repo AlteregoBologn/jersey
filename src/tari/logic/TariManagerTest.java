@@ -195,7 +195,7 @@ public class TariManagerTest {
 		PersonaGiuridica a = new PersonaGiuridica();
 		a.setDescrizione("Pippo S.R.L");
 		a.setPec("pipposrl@pec.it");
-		a.setPiva("frsv2954weg");
+		a.setpIva("frsv2954weg");
 		a.setRappresentante(29);
 		a.setUnid(1);		
 		tariManager.inserisciPersonaGiuridica(a);
